@@ -5,14 +5,16 @@
  */
 package kkdev.kksystem.controller.pluginmanager;
 
+import java.io.Serializable;
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.classes.PluginPin;
+
 
 /**
  *
  * @author blinov_is
  */
-public class KKSystemConfig {
+public class KKSystemConfig implements Serializable {
     public PluginInfo[] ConfPlugins;
     public PluginPin[] ConfPins;
     public PinConnections ConfConnections;
