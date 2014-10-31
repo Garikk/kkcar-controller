@@ -42,6 +42,7 @@ public class PluginManager {
         int Counter = 0;
         IPluginKKConnector[] Ret = new IPluginKKConnector[Plugins.length];
         //
+        //
         File folder = new File(SystemConsts.KK_BASE_PLUGINPATH);
         File[] PluginFiles = folder.listFiles();
 

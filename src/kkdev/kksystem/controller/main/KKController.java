@@ -6,7 +6,7 @@
 package kkdev.kksystem.controller.main;
 
 import java.io.IOException;
-import kkdev.kksystem.controller.pluginmanager.PluginChainManager;
+import kkdev.kksystem.controller.pluginmanager.SettingsManager;
 import kkdev.kksystem.controller.pluginmanager.PluginManager;
 
 /**
@@ -14,7 +14,7 @@ import kkdev.kksystem.controller.pluginmanager.PluginManager;
  * @author blinov_is
  */
 public class KKController {
-    static PluginChainManager CManager;
+    static SettingsManager CManager;
     /**
      * @param args the command line arguments
      */
@@ -29,7 +29,7 @@ public class KKController {
     private static void InitChainManager() throws IOException
     {
             System.out.println("Init Chain Manager:");
-            CManager=new PluginChainManager();
+            CManager=new SettingsManager();
             //
             CManager.Init();
             //
