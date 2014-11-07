@@ -3,7 +3,6 @@ package kkdev.kksystem.controller.main;
 
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.constants.PluginConsts;
-import kkdev.kksystem.controller.pluginmanager.KKSystemConfig;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,6 +38,7 @@ public final class kk_defaultconfig {
             Ret.PluginJarName="kksystem.plugin.odb2.jar";
             Ret.ConnectorClass="kkdev.kksystem.plugins.odb2.elm372.KKPlugin";
             Ret.PluginVersion=1;
+            Ret.Enabled=true;
             return Ret;
         
     }
@@ -51,6 +51,7 @@ public final class kk_defaultconfig {
             Ret.PluginJarName="kksystem.plugin.textlog.jar";
             Ret.ConnectorClass="kkdev.kksystem.plugins.textlog.KKPlugin";
             Ret.PluginVersion=1;
+            Ret.Enabled=true;
             return Ret;
         
     }
@@ -63,6 +64,8 @@ public final class kk_defaultconfig {
             Ret.PluginJarName="kksystem.plugin.leddisplay.jar";
             Ret.ConnectorClass="kkdev.kksystem.plugins.leddisplay.KKPlugin";
             Ret.PluginVersion=1;
+            Ret.Enabled=true;
+            
             return Ret;
         
     }

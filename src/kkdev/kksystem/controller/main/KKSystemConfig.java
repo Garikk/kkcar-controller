@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kkdev.kksystem.controller.pluginmanager;
+package kkdev.kksystem.controller.main;
 
 import java.io.Serializable;
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.classes.PluginPin;
+import kkdev.kksystem.controller.pluginmanager.PinConnections;
+
 
 
 /**

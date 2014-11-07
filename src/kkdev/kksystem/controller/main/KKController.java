@@ -6,7 +6,6 @@
 package kkdev.kksystem.controller.main;
 
 import java.io.IOException;
-import kkdev.kksystem.controller.pluginmanager.SettingsManager;
 import kkdev.kksystem.controller.pluginmanager.PluginManager;
 
 /**
@@ -14,26 +13,33 @@ import kkdev.kksystem.controller.pluginmanager.PluginManager;
  * @author blinov_is
  */
 public class KKController {
-    static SettingsManager CManager;
+    static SettingsManager SManager;
+    static PluginManager PM;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
         System.out.println("KK System INIT Begin");
         //
-        InitChainManager();
+        InitSettingsManager();
         //
     }
     
     
-    private static void InitChainManager() throws IOException
+    private static void InitSettingsManager() throws IOException
     {
-            System.out.println("Init Chain Manager:");
-            CManager=new SettingsManager();
+            System.out.println("Settings:");
+            SManager=new SettingsManager();
             //
-            CManager.Init();
+            SManager.Init();
             //
-            
+            System.out.println("Plugins:");
+            //
+            PM=new PluginManager();
+            //
+            PM.InitPlugins(SManager.SysConf.ConfPlugins);
+            //
+            System.out.println("System start:");
     }
     
 }

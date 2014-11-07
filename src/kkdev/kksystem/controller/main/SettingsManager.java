@@ -3,23 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kkdev.kksystem.controller.pluginmanager;
+package kkdev.kksystem.controller.main;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.io.File;
 import kkdev.kksystem.base.constants.SystemConsts;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import kkdev.kksystem.controller.main.kk_defaultconfig;
 
@@ -30,7 +24,6 @@ import kkdev.kksystem.controller.main.kk_defaultconfig;
 public class SettingsManager {
 
     KKSystemConfig SysConf;
-    PluginManager PM;
 
     public void Init() throws IOException {
         //
@@ -41,8 +34,6 @@ public class SettingsManager {
             LoadConf();
         }
         //
-        PM = new PluginManager();
-        PM.LoadPlugins(SysConf.ConfPlugins);
     }
 
     ///
