@@ -20,23 +20,42 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import kkdev.kksystem.base.classes.PluginInfo;
+import kkdev.kksystem.base.classes.PluginPin;
 import kkdev.kksystem.base.constants.SystemConsts;
+import kkdev.kksystem.base.interfaces.IKKConnector;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 
 /**
  *
  * @author blinov_is
  */
-public class PluginManager {
+public class PluginManager  {
 
     KKSystemConfig MainConfiguraion;
     IPluginKKConnector[] ActivePlugins;
+    PinConnections PluginConnectons;
 
-    public PluginManager() {
-
-    }
-
+  
+    public void InitPlugins(PluginInfo[] PluginsToLoad) {
+        ActivePlugins = ConnectPlugins(PluginsToLoad);
+        System.out.println("Init plugin connections:");
+        PluginConnectons=new PinConnections(ActivePlugins);
+        InitPlugins();
+        System.out.println("Test system:");
+   }
     //
+    private void InitPlugins()
+    {
+        for (IPluginKKConnector PL : ActivePlugins)
+        {
+            PL.PluginInit(PluginConnectons);
+        }
+    }
+    private void SelfTest()
+    {
+        
+    }
+    
     private boolean CheckPlugin(PluginInfo Plugins[], PluginInfo CheckPlugin) {
         for (PluginInfo Pl : Plugins) {
            if (Pl.PluginName.equals(CheckPlugin.PluginName))
@@ -45,6 +64,7 @@ public class PluginManager {
         return false;
     }
 
+    
     private PluginInfo GetJarPluginInfo(File FileToCheck) {
         PluginInfo Ret;
 
@@ -79,11 +99,7 @@ public class PluginManager {
         return Ret;
     }
 
-    public void InitPlugins(PluginInfo[] PluginsToLoad) {
-        ActivePlugins = LoadPlugins(PluginsToLoad);
-    }
-
-    private IPluginKKConnector[] LoadPlugins(PluginInfo Plugins[]) {
+    private IPluginKKConnector[] ConnectPlugins(PluginInfo Plugins[]) {
         System.out.println("Required plugins count: " + Plugins.length);
         //
         int Counter = 0;
@@ -135,7 +151,7 @@ public class PluginManager {
                 //
                 Counter++;
             } catch (MalformedURLException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
-                System.out.println("Load Error: " + loadFile.getName() + " " + e.getMessage());
+                System.out.println("Load Error: " + loadFile.getName() + " " + e.toString());
             }
            //
 
@@ -147,8 +163,8 @@ public class PluginManager {
             }
         }
         //
-
         return Ret;
     }
 
+    
 }

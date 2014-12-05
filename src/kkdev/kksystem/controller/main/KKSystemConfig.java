@@ -18,6 +18,7 @@ import kkdev.kksystem.controller.pluginmanager.PinConnections;
  */
 public class KKSystemConfig implements Serializable {
     public PluginInfo[] ConfPlugins;
-    public PluginPin[] ConfPins;
-    public PinConnections ConfConnections;
+   
+    
 }
+
