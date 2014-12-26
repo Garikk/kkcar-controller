@@ -114,7 +114,6 @@ public class PluginManager  {
 
         for (File loadFile : PluginFiles) {
             boolean Err = false;
-            PluginInfo PluginLoad;
             //Check load only Jar file
             if (!loadFile.getName().endsWith(".jar") | loadFile.isDirectory()) {
                 continue;
@@ -146,7 +145,8 @@ public class PluginManager  {
                 URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
                 //
                 Ret[Counter] = (IPluginKKConnector) CLoader.loadClass(Check.ConnectorClass).newInstance();
-                //
+                Ret[Counter].SetPluginInfo_FOR_DEBUG_(Check);
+//
                  System.out.println("Load: ok");
                 //
                 Counter++;
