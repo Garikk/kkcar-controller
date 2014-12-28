@@ -46,7 +46,7 @@ public class PluginManager  {
         InitPlugins();
         System.out.println("Test system:");
    }
-    //
+    //test
     private void InitPlugins()
     {
         for (IPluginKKConnector PL : ActivePlugins)
