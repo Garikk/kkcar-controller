@@ -10,10 +10,12 @@ package kkdev.kksystem.controller.pluginmanager;
  * @author blinov_is
  */
 public class PluginConnection{
-    String ConnectionName;
-    String[] ReceivePlugins;
-    String[] TransmitPlugins;
-    String PinConnections;
+    String ConnectionName;      //Connection name
+    String SourcePluginName;    //source plugin name for info
+    String TargetPluginName;    //target plugin name for info
+    String SourcePluginUID;     //UUID srource plugin
+    String TargetPluginUID;     //UUID target plugin
+    String PinName;             //Pin Name
     boolean Enabled;
     
 }

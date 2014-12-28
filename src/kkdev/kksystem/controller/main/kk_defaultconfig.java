@@ -23,10 +23,11 @@ public final class kk_defaultconfig {
     public static KKSystemConfig GetDefaultSystemConfig()
     {
         KKSystemConfig Ret=new KKSystemConfig();
-        Ret.ConfPlugins=new PluginInfo[3];
+        Ret.ConfPlugins=new PluginInfo[4];
         Ret.ConfPlugins[0]=GetODBPlugin();
         Ret.ConfPlugins[1]=GetTextLogPlugin();
         Ret.ConfPlugins[2]=GetLEDDisplayPlugin();
+        Ret.ConfPlugins[3]=GetDataDisplayPluginInfo();
         return Ret;
     }
     
@@ -61,6 +62,19 @@ public final class kk_defaultconfig {
             Ret.PluginDescription="Basic LED Display plugin";
             Ret.PluginType = PluginConsts.KK_PLUGIN_TYPE.PLUGIN_OUTPUT;
             Ret.ConnectorClass="kkdev.kksystem.plugins.leddisplay.KKPlugin";
+            Ret.PluginVersion=1;
+            Ret.Enabled=true;
+            
+            return Ret;
+        
+    }
+      private static PluginInfo GetDataDisplayPluginInfo()
+    {
+        PluginInfo Ret=new PluginInfo();
+            Ret.PluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
+            Ret.PluginDescription="Data Display Processor";
+            Ret.PluginType = PluginConsts.KK_PLUGIN_TYPE.PLUGIN_PROCESSOR;
+            Ret.ConnectorClass="kkdev.kksystem.plugins.datadisplay.KKPlugin";
             Ret.PluginVersion=1;
             Ret.Enabled=true;
             
