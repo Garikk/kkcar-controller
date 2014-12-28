@@ -8,10 +8,12 @@ package kkdev.kksystem.controller.pluginmanager;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.*;
 import com.thoughtworks.xstream.io.xml.*;
+import java.io.BufferedReader;
 import kkdev.kksystem.controller.main.KKSystemConfig;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -22,6 +24,7 @@ import java.util.logging.Logger;
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.classes.PluginPin;
 import kkdev.kksystem.base.constants.SystemConsts;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_CONNECTOR_FILE;
 import kkdev.kksystem.base.interfaces.IKKConnector;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 
@@ -65,8 +68,8 @@ public class PluginManager  {
     }
 
     
-    private PluginInfo GetJarPluginInfo(File FileToCheck) {
-        PluginInfo Ret;
+    private String GetPluginConnectorClass(File FileToCheck) {
+        String Ret=null;
 
         JarFile jarFile = null;
         JarEntry entry = null;
@@ -74,28 +77,36 @@ public class PluginManager  {
         try {
             jarFile = new JarFile(FileToCheck);
             //
-            entry = jarFile.getJarEntry("kkinfo.xml");
+            entry = jarFile.getJarEntry(KK_BASE_PLUGINS_CONNECTOR_FILE);
             if (entry == null) {
-                System.out.println("Plugin info read error (kkinfo.xml not found)");
+                System.out.println("Plugin read error (kkconnector file not found)");
                 return null;
             }
             //
             IS = jarFile.getInputStream(entry);
         } catch (IOException ex) {
-            System.out.println("Plugin info read error (jar reading)");
+            System.out.println("Plugin info read error: " + ex.getMessage());            
+            try {
+                jarFile.close();
+            } catch(Exception Ex) {}
             return null;
         }
-
-        if ( IS == null) {
+        if (IS==null)
+        {
+            System.out.println("Plugin info read error: kkconnector file empty?"); 
             return null;
         }
-
+        //
+       BufferedReader in = new BufferedReader(new InputStreamReader(IS));
+        
         try {
-            XStream xstream = new XStream(new DomDriver());
-            Ret = (PluginInfo) xstream.fromXML(IS);
-        } catch (StreamException Ex) {
-             return null;
+            Ret=in.readLine();
+            in.close();
+        } catch (IOException ex) {
+              System.out.println("Plugin info read error: kkconnector file empty or broken?"); 
+              return null;
         }
+        //
         return Ret;
     }
 
@@ -114,7 +125,6 @@ public class PluginManager  {
 
         for (File loadFile : PluginFiles) {
             boolean Err = false;
-            PluginInfo PluginLoad;
             //Check load only Jar file
             if (!loadFile.getName().endsWith(".jar") | loadFile.isDirectory()) {
                 continue;
@@ -122,32 +132,27 @@ public class PluginManager  {
             System.out.println("--------------------");
             System.out.println("File: " + loadFile.getName());
             
-            PluginInfo Check = GetJarPluginInfo(loadFile);
-            if (Check == null) {
-                System.out.println("Plugin info: not found");
-                System.out.println("Skip");
-                continue;
-            }
-            else
-            {
-                System.out.println("Plugin info: "+Check.PluginName);
-            }
             
-            if (CheckPlugin(Plugins,Check)==false)
+           //
+            try {
+                //
+                String ConnectorClass;
+                IPluginKKConnector PluginConnection;
+                ConnectorClass=GetPluginConnectorClass(loadFile);
+                //
+                URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
+                //
+                PluginConnection= (IPluginKKConnector) CLoader.loadClass(ConnectorClass).newInstance();
+                //
+                if (CheckPlugin(Plugins,PluginConnection.GetPluginInfo())==false)
                 {
                     System.out.println("Config: not in config");
                     System.out.println("Skip");
                     continue;
                 }
-                
-            System.out.println("Config: ok");
-            //
-            try {
-                URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
+                Ret[Counter]=PluginConnection;
                 //
-                Ret[Counter] = (IPluginKKConnector) CLoader.loadClass(Check.ConnectorClass).newInstance();
-                //
-                 System.out.println("Load: ok");
+                System.out.println("Load: ok");
                 //
                 Counter++;
             } catch (MalformedURLException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
