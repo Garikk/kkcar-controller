@@ -41,6 +41,11 @@ public class PluginManager  {
   
     public void InitPlugins(PluginInfo[] PluginsToLoad) {
         ActivePlugins = ConnectPlugins(PluginsToLoad);
+        if (ActivePlugins==null)
+        {
+            return;
+        }
+            
         System.out.println("Init plugin connections:");
         PluginConnectons=new PinConnections(ActivePlugins);
         InitPlugins();
@@ -119,6 +124,12 @@ public class PluginManager  {
         //
         File folder = new File(SystemConsts.KK_BASE_PLUGINPATH);
         File[] PluginFiles = folder.listFiles();
+        //
+        if (PluginFiles==null)
+        {
+            System.out.println("No plugins found...exitting");
+            return null;
+        }
         //
         System.out.println("Plugin files count: " + PluginFiles.length);
         //

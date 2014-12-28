@@ -22,29 +22,7 @@ public class PinConnections implements IKKConnector {
     
     PinConnections(IPluginKKConnector[] Plugins)
     {
-        PinReceive=new HashMap<>();
-        PinTransmit=new HashMap<>();
         
-        for (IPluginKKConnector Pl : Plugins)
-        {
-            PluginInfo PLInfo=Pl.GetPluginInfo();
-            
-            for (String Pin:PLInfo.ReceivePins)
-            {
-                if (!PinReceive.containsKey(Pin))
-                    PinReceive.put(Pin, null);
-                    
-                PinReceive.get(Pin).add(Pl);
-                    
-            }
-            for (String Pin:PLInfo.TransmitPins)
-            {
-                 if (!PinTransmit.containsKey(Pin))
-                    PinTransmit.put(Pin, null);
-                    
-                PinTransmit.get(Pin).add(Pl);
-            }
-        }
     }
     
 
