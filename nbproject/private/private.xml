@@ -4,18 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/PROGRAMMING/KK/KKController/build.xml</file>
-            <file>file:/D:/PROGRAMMING/KK/KKController/src/kkdev/kksystem/controller/main/kk_defaultconfig.java</file>
-            <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/project.properties</file>
-            <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/private/private.properties</file>
-            <file>file:/D:/PROGRAMMING/KK/KKController/src/kkdev/kksystem/controller/pluginmanager/PluginManager.java</file>
             <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/genfiles.properties</file>
             <file>file:/D:/PROGRAMMING/KK/KKController/src/kkdev/kksystem/controller/main/KKController.java</file>
-            <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/private/private.xml</file>
+            <file>file:/D:/PROGRAMMING/KK/KKController/src/kkdev/kksystem/controller/main/kk_defaultconfig.java</file>
             <file>file:/D:/PROGRAMMING/KK/KKController/src/kkdev/kksystem/controller/pluginmanager/PinConnections.java</file>
             <file>file:/D:/PROGRAMMING/KK/KKController/manifest.mf</file>
             <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/build-impl.xml</file>
+            <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/project.properties</file>
             <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/project.xml</file>
-            <file>file:/D:/PROGRAMMING/KK/KKController/nbproject/private/config.properties</file>
+            <file>file:/D:/PROGRAMMING/KK/KKController/src/kkdev/kksystem/controller/main/KKSystemConfig.java</file>
+            <file>file:/D:/PROGRAMMING/KK/KKController/src/kkdev/kksystem/controller/pluginmanager/PluginManager.java</file>
         </group>
     </open-files>
 </project-private>
