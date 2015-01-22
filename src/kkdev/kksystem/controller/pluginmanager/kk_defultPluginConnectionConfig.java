@@ -5,6 +5,7 @@
  */
 package kkdev.kksystem.controller.pluginmanager;
 
+import kkdev.kksystem.base.classes.PluginConnection;
 import kkdev.kksystem.base.constants.PluginConsts;
 
 /**
@@ -14,18 +15,18 @@ import kkdev.kksystem.base.constants.PluginConsts;
 public final class kk_defultPluginConnectionConfig {
     public static PluginConnectionsConfig GetDefaultConnectionsConfig()
     {
-        PluginConnectionsConfig Ret;
+       // PluginConnectionsConfig Ret;
         
-        Ret=new PluginConnectionsConfig();
+       // Ret=new PluginConnectionsConfig();
         
         //
-        Ret.Connections=new PluginConnection[3];
+      //  Ret.Connections=new PluginConnection[3];
         //
-        Ret.Connections[0].ConnectionName="ODB to Text Logger";
-        Ret.Connections[0].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG;
-        Ret.Connections[0].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG_UUID;
+       // Ret.Connections[0].ConnectionName="ODB to Text Logger";
+      //  Ret.Connections[0].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG;
+      //  Ret.Connections[0].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG_UUID;
         
-        return Ret;
+     //   return Ret;
     
     
     }

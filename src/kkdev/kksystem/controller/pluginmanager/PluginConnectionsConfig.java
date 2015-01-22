@@ -5,6 +5,8 @@
  */
 package kkdev.kksystem.controller.pluginmanager;
 
+import kkdev.kksystem.base.classes.PluginConnection;
+
 /**
  *
  * @author blinov_is
