@@ -8,7 +8,7 @@ package kkdev.kksystem.controller.pluginmanager;
 import java.util.HashMap;
 import java.util.List;
 import kkdev.kksystem.base.classes.PluginInfo;
-import kkdev.kksystem.base.classes.PluginPin;
+import kkdev.kksystem.base.classes.PluginMessage;
 import kkdev.kksystem.base.interfaces.IKKConnector;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 
@@ -28,19 +28,19 @@ public class PinConnections implements IKKConnector {
 
     
     @Override
-    public PluginPin ExecutePin(PluginPin PP) {
+    public PluginMessage ExecutePinCommand(PluginMessage PP) {
         return InternalExecutePin(PP);
     }
     //
-    private PluginPin InternalExecutePin(PluginPin PP)
+    private PluginMessage InternalExecutePin(PluginMessage PP)
     {
-        if (!PinReceive.containsKey(PP.PinName))
-            System.out.println("Wrong PIN received");
+       // if (!PinReceive.containsKey(PP.PinName))
+     //       System.out.println("Wrong PIN received");
         
         
-        PinReceive.get(PP.PinName).stream().forEach((Pl) -> {
-            Pl.ExecutePin(PP);
-        });
+     //   PinReceive.get(PP.PinName).stream().forEach((Pl) -> {
+     //       Pl.ExecutePin(PP);
+     //   });
     
         return null;
     }

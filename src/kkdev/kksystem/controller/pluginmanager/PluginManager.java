@@ -22,7 +22,6 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import kkdev.kksystem.base.classes.PluginInfo;
-import kkdev.kksystem.base.classes.PluginPin;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_CONNECTOR_FILE;
 import kkdev.kksystem.base.interfaces.IKKConnector;

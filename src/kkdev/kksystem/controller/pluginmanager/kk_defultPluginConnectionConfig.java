@@ -5,6 +5,7 @@
  */
 package kkdev.kksystem.controller.pluginmanager;
 
+import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import kkdev.kksystem.base.classes.PluginConnection;
 import kkdev.kksystem.base.constants.PluginConsts;
 
@@ -26,7 +27,7 @@ public final class kk_defultPluginConnectionConfig {
       //  Ret.Connections[0].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG;
       //  Ret.Connections[0].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG_UUID;
         
-     //   return Ret;
+        return null;
     
     
     }
