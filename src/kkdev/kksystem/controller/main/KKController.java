@@ -37,7 +37,7 @@ public class KKController {
             //
             PM=new PluginManager();
             //
-            PM.InitPlugins(SManager.SysConf.ConfPlugins);
+            PM.InitPlugins(SManager.SysConfiguration.ConfPlugins);
             //
             System.out.println("System start:");
     }
