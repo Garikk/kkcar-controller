@@ -46,6 +46,8 @@ public class PluginManager  {
         }
             
         System.out.println("Init plugin connections:");
+        System.out.println("Load interconnect configuration:");
+        
         PluginConnectons=new PinConnections(ActivePlugins);
         InitPlugins();
         System.out.println("Test system:");

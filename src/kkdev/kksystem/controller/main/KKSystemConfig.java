@@ -17,6 +17,5 @@ import kkdev.kksystem.base.classes.PluginInfo;
 public class KKSystemConfig implements Serializable {
     public PluginInfo[] ConfPlugins;
    
-    
 }
 

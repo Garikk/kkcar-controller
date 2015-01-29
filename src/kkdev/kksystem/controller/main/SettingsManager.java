@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 
 import kkdev.kksystem.controller.main.kk_defaultconfig;
 
@@ -23,13 +24,14 @@ import kkdev.kksystem.controller.main.kk_defaultconfig;
  */
 public class SettingsManager {
 
-    KKSystemConfig SysConf;
+    KKSystemConfig SysConfiguration;
+    PluginConnectionsConfig[] PluginConfigurations;
 
     public void Init() throws IOException {
         //
         LoadConf();
         //
-        if (SysConf == null) {
+        if (SysConfiguration == null) {
             MakeDefaultConf();
             LoadConf();
         }
@@ -52,14 +54,39 @@ public class SettingsManager {
             }
 
             XStream xstream = new XStream(new DomDriver());
-            SysConf = (KKSystemConfig) xstream.fromXML(fr);
+            SysConfiguration = (KKSystemConfig) xstream.fromXML(fr);
         } catch (StreamException Ex) {
             System.out.println("error");
             return;
         }
 
         System.out.println("Ok");
-
+        //
+        System.out.print("Try load plugins interconnection config.");
+        try {
+                    File[] files=new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS).listFiles();
+                    PluginConfigurations=new PluginConnectionsConfig[files.length];
+                   
+                    FileReader fr;
+                    int cnt=0;
+                    for (File f : files)
+                    {
+                    try {
+                            fr = new FileReader(f.getPath());
+                            XStream xstream = new XStream(new DomDriver());
+                            PluginConfigurations[cnt] = (PluginConnectionsConfig) xstream.fromXML(fr);
+                            cnt++;
+                        } catch (FileNotFoundException ex) {
+                            System.out.println("file not found");
+                            return;
+                        }
+                    }
+                } catch (StreamException Ex) {
+                    System.out.println("error");
+                    return;
+                }
+    
+        
     }
 
     private void MakeDefaultConf() throws FileNotFoundException, IOException {
