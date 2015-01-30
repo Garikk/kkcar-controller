@@ -5,9 +5,6 @@
  */
 package kkdev.kksystem.controller.pluginmanager;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.*;
-import com.thoughtworks.xstream.io.xml.*;
 import java.io.BufferedReader;
 import kkdev.kksystem.controller.main.KKSystemConfig;
 import java.io.File;
@@ -19,12 +16,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_CONNECTOR_FILE;
-import kkdev.kksystem.base.interfaces.IKKConnector;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 
 /**
@@ -38,7 +33,7 @@ public class PluginManager  {
     PinConnections PluginConnectons;
 
   
-    public void InitPlugins(PluginInfo[] PluginsToLoad) {
+    public void InitPlugins(PluginInfo[] PluginsToLoad, PluginConnectionsConfig[] ConnectionsConfiguration) {
         ActivePlugins = ConnectPlugins(PluginsToLoad);
         if (ActivePlugins==null)
         {
@@ -46,18 +41,15 @@ public class PluginManager  {
         }
             
         System.out.println("Init plugin connections:");
-        System.out.println("Load interconnect configuration:");
-        
-        PluginConnectons=new PinConnections(ActivePlugins);
-        InitPlugins();
-        System.out.println("Test system:");
-   }
+
+    }
     //test
-    private void InitPlugins()
+    private void InitPlugins(PluginConnectionsConfig[] Connections)
     {
-        for (IPluginKKConnector PL : ActivePlugins)
+        for (PluginConnectionsConfig Connection : Connections)
         {
-            PL.PluginInit(PluginConnectons);
+            
+        
         }
     }
     private void SelfTest()

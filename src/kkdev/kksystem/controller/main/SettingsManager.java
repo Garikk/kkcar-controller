@@ -36,6 +36,14 @@ public class SettingsManager {
             LoadConf();
         }
         //
+         LoadPluginConnections();
+        //
+        if (PluginConfigurations==null)
+        {
+            System.out.print("Not found plugin connections");    
+            return;
+        }
+        
     }
 
     ///
@@ -60,9 +68,15 @@ public class SettingsManager {
             return;
         }
 
-        System.out.println("Ok");
+        System.out.println("===========================");
         //
-        System.out.print("Try load plugins interconnection config.");
+
+        
+    }
+
+    private void LoadPluginConnections()
+    {
+                System.out.println("Try load plugins connection config.");
         try {
                     File[] files=new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS).listFiles();
                     PluginConfigurations=new PluginConnectionsConfig[files.length];
@@ -75,6 +89,7 @@ public class SettingsManager {
                             fr = new FileReader(f.getPath());
                             XStream xstream = new XStream(new DomDriver());
                             PluginConfigurations[cnt] = (PluginConnectionsConfig) xstream.fromXML(fr);
+                            System.out.println("Loaded: " + PluginConfigurations[cnt].ConfigName);
                             cnt++;
                         } catch (FileNotFoundException ex) {
                             System.out.println("file not found");
@@ -85,10 +100,9 @@ public class SettingsManager {
                     System.out.println("error");
                     return;
                 }
-    
-        
+           System.out.println("Ok");
+           System.out.println("===========================");
     }
-
     private void MakeDefaultConf() throws FileNotFoundException, IOException {
         //
         System.out.println("Creating default conf");

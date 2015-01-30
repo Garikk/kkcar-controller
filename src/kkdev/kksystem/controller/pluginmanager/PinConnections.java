@@ -7,16 +7,15 @@ package kkdev.kksystem.controller.pluginmanager;
 
 import java.util.HashMap;
 import java.util.List;
-import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.classes.PluginMessage;
-import kkdev.kksystem.base.interfaces.IKKConnector;
+import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 
 /**
  *
  * @author blinov_is
  */
-public class PinConnections implements IKKConnector {
+public class PinConnections implements IPluginBaseInterface {
     HashMap<String,List<IPluginKKConnector>> PinTransmit;   //KEY - Pin, VALUE - Plugin
     HashMap<String,List<IPluginKKConnector>> PinReceive;
     
@@ -44,5 +43,6 @@ public class PinConnections implements IKKConnector {
     
         return null;
     }
+
 }
 
