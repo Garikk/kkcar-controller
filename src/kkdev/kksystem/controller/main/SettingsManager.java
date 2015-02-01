@@ -14,9 +14,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import kkdev.kksystem.base.classes.PluginConnectionsConfig;
-
-import kkdev.kksystem.controller.main.kk_defaultconfig;
+import kkdev.kksystem.base.classes.PluginInfo;
 
 /**
  *
@@ -26,7 +27,15 @@ public class SettingsManager {
 
     KKSystemConfig SysConfiguration;
     PluginConnectionsConfig[] PluginConfigurations;
-
+ 
+    public ArrayList<PluginConnectionsConfig> GetPluginConfigurations()
+    {
+        ArrayList<PluginConnectionsConfig> Ret;
+        Ret=new ArrayList<>();
+        Ret.addAll(Arrays.asList(PluginConfigurations));
+        return (Ret);
+    }
+ 
     public void Init() throws IOException {
         //
         LoadConf();
@@ -36,19 +45,18 @@ public class SettingsManager {
             LoadConf();
         }
         //
-         LoadPluginConnections();
+        LoadPluginConnections();
         //
-        if (PluginConfigurations==null)
-        {
-            System.out.print("Not found plugin connections");    
-            return;
+        if (PluginConfigurations == null) {
+            MakeDefaultPluginConf();
+            LoadPluginConnections();
         }
-        
+
     }
 
     ///
     private void LoadConf() {
-        System.out.print("Try load configuration...");
+        System.out.print("Load configuration...");
 
         try {
             String ConfFilePath = SystemConsts.KK_BASE_CONFPATH + "/" + SystemConsts.KK_BASE_SETTINGS_FILE;
@@ -67,42 +75,48 @@ public class SettingsManager {
             System.out.println("error");
             return;
         }
-
+        System.out.println("Ok");
         System.out.println("===========================");
         //
 
-        
     }
 
-    private void LoadPluginConnections()
-    {
-                System.out.println("Try load plugins connection config.");
+    private void LoadPluginConnections() {
+        PluginConnectionsConfig[] Ret;
+        System.out.println("Try load plugins connection config.");
         try {
-                    File[] files=new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS).listFiles();
-                    PluginConfigurations=new PluginConnectionsConfig[files.length];
-                   
-                    FileReader fr;
-                    int cnt=0;
-                    for (File f : files)
-                    {
-                    try {
-                            fr = new FileReader(f.getPath());
-                            XStream xstream = new XStream(new DomDriver());
-                            PluginConfigurations[cnt] = (PluginConnectionsConfig) xstream.fromXML(fr);
-                            System.out.println("Loaded: " + PluginConfigurations[cnt].ConfigName);
-                            cnt++;
-                        } catch (FileNotFoundException ex) {
-                            System.out.println("file not found");
-                            return;
-                        }
-                    }
-                } catch (StreamException Ex) {
-                    System.out.println("error");
+            File[] files = new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS).listFiles();
+            //
+            if (files==null) return;
+            //
+            Ret = new PluginConnectionsConfig[files.length];
+
+            
+            
+            FileReader fr;
+            int cnt = 0;
+            for (File f : files) {
+                try {
+                    fr = new FileReader(f.getPath());
+                    XStream xstream = new XStream(new DomDriver());
+                    Ret[cnt] = (PluginConnectionsConfig)xstream.fromXML(fr);
+                    System.out.println("Loaded: " + Ret[cnt].ConfigName);
+                    cnt++;
+                } catch (Exception ex) {
+                    System.out.println("Error on load plugin connections config");
+                    System.out.println(ex.toString());
                     return;
                 }
-           System.out.println("Ok");
-           System.out.println("===========================");
+            }
+        } catch (StreamException Ex) {
+            System.out.println("error");
+            return;
+        }
+        PluginConfigurations=Ret;
+        System.out.println("Ok");
+        System.out.println("===========================");
     }
+
     private void MakeDefaultConf() throws FileNotFoundException, IOException {
         //
         System.out.println("Creating default conf");
@@ -112,6 +126,7 @@ public class SettingsManager {
         File ConfPath = new File(SystemConsts.KK_BASE_CONFPATH);
         if (!ConfPath.exists()) {
             ConfPath.mkdir();
+
         }
 
         //
@@ -120,6 +135,29 @@ public class SettingsManager {
         // FileOutputStream fileOut = new FileOutputStream();
         FileWriter fw;
         fw = new FileWriter(SystemConsts.KK_BASE_CONFPATH + "/" + SystemConsts.KK_BASE_SETTINGS_FILE);
+
+        xstream.toXML(Defconf, fw);
+
+        fw.close();
+    }
+
+    private void MakeDefaultPluginConf() throws FileNotFoundException, IOException {
+        //
+        System.out.println("Creating default plugin connections config");
+        //
+        PluginConnectionsConfig Defconf = kk_defultPluginConnectionConfig.GetDefaultConnectionsConfig();
+        //
+        File ConfPath = new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS);
+        if (!ConfPath.exists()) {
+            ConfPath.mkdir();
+        }
+
+        //
+        XStream xstream = new XStream(new DomDriver());
+
+        // FileOutputStream fileOut = new FileOutputStream();
+        FileWriter fw;
+        fw = new FileWriter(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS + "/PluginConnections_" + Defconf.ConfigUUID + ".xml");
 
         xstream.toXML(Defconf, fw);
 

@@ -14,8 +14,11 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import kkdev.kksystem.base.classes.PluginConnection;
 import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.constants.SystemConsts;
@@ -26,48 +29,65 @@ import kkdev.kksystem.base.interfaces.IPluginKKConnector;
  *
  * @author blinov_is
  */
-public class PluginManager  {
+public class PluginManager {
 
     KKSystemConfig MainConfiguraion;
-    IPluginKKConnector[] ActivePlugins;
-    PinConnections PluginConnectons;
+    ArrayList<IPluginKKConnector> ActivePlugins;
+    ArrayList<PluginConnection> ActiveConnections;
 
-  
-    public void InitPlugins(PluginInfo[] PluginsToLoad, PluginConnectionsConfig[] ConnectionsConfiguration) {
-        ActivePlugins = ConnectPlugins(PluginsToLoad);
-        if (ActivePlugins==null)
-        {
+    public void InitPlugins(ArrayList<PluginInfo> Plugins, ArrayList<PluginConnectionsConfig> ConnectionsConfiguration) {
+        ArrayList<PluginInfo>  ToLoad;
+        //Prepare config
+        ToLoad = PrepareConnections(ConnectionsConfiguration, Plugins);
+        //Load plugins
+        ActivePlugins = ConnectPlugins(ToLoad);
+        //
+        if (ActivePlugins == null) {
             return;
         }
-            
         System.out.println("Init plugin connections:");
+    }
 
-    }
-    //test
-    private void InitPlugins(PluginConnectionsConfig[] Connections)
-    {
-        for (PluginConnectionsConfig Connection : Connections)
-        {
-            
-        
+    private ArrayList<PluginInfo> PrepareConnections(ArrayList<PluginConnectionsConfig> ConfConfig, ArrayList<PluginInfo> Plugins) {
+        //Create Needed plugins list
+        ArrayList<PluginConnection> ConnectionsLoad;
+        ArrayList<String> PluginUsing;
+        ConnectionsLoad = new ArrayList<>();
+        PluginUsing = new ArrayList<>();
+        //Organize connections to list
+        for (PluginConnectionsConfig PCC : ConfConfig) {
+            ConnectionsLoad.addAll(Arrays.asList(PCC.Connections));
         }
+        //Create active plugins list
+        for (PluginConnection PC : ConnectionsLoad) {
+            if (!PluginUsing.contains(PC.SourcePluginUID)) {
+                PluginUsing.add(PC.SourcePluginUID);
+            }
+            if (!PluginUsing.contains(PC.TargetPluginUID)) {
+                PluginUsing.add(PC.TargetPluginUID);
+            }
+        }
+        //set not active plugins to disabled
+        for (PluginInfo PI : Plugins) {
+            if (PI.Enabled) {
+                PI.Enabled = PluginUsing.contains(PI.PluginUUID);
+            }
+        }
+
+        return Plugins;
     }
-    private void SelfTest()
-    {
-        
-    }
-    
-    private boolean CheckPlugin(PluginInfo Plugins[], PluginInfo CheckPlugin) {
+
+    private boolean CheckPlugin(ArrayList<PluginInfo> Plugins, PluginInfo CheckPlugin) {
         for (PluginInfo Pl : Plugins) {
-           if (Pl.PluginName.equals(CheckPlugin.PluginName))
-                return true;
+            if (Pl.PluginUUID.equals(CheckPlugin.PluginUUID)) {
+                return Pl.Enabled;
+            }
         }
         return false;
     }
 
-    
     private String GetPluginConnectorClass(File FileToCheck) {
-        String Ret=null;
+        String Ret = null;
 
         JarFile jarFile = null;
         JarEntry entry = null;
@@ -83,43 +103,42 @@ public class PluginManager  {
             //
             IS = jarFile.getInputStream(entry);
         } catch (IOException ex) {
-            System.out.println("Plugin info read error: " + ex.getMessage());            
+            System.out.println("Plugin info read error: " + ex.getMessage());
             try {
                 jarFile.close();
-            } catch(Exception Ex) {}
+            } catch (Exception Ex) {
+            }
             return null;
         }
-        if (IS==null)
-        {
-            System.out.println("Plugin info read error: kkconnector file empty?"); 
+        if (IS == null) {
+            System.out.println("Plugin info read error: kkconnector file empty?");
             return null;
         }
         //
-       BufferedReader in = new BufferedReader(new InputStreamReader(IS));
-        
+        BufferedReader in = new BufferedReader(new InputStreamReader(IS));
+
         try {
-            Ret=in.readLine();
+            Ret = in.readLine();
             in.close();
         } catch (IOException ex) {
-              System.out.println("Plugin info read error: kkconnector file empty or broken?"); 
-              return null;
+            System.out.println("Plugin info read error: kkconnector file empty or broken?");
+            return null;
         }
         //
         return Ret;
     }
 
-    private IPluginKKConnector[] ConnectPlugins(PluginInfo Plugins[]) {
-        System.out.println("Required plugins count: " + Plugins.length);
+    private ArrayList<IPluginKKConnector> ConnectPlugins(ArrayList<PluginInfo> Plugins) {
+        System.out.println("Required plugins count: " + Plugins.size());
         //
         int Counter = 0;
-        IPluginKKConnector[] Ret = new IPluginKKConnector[Plugins.length];
+        ArrayList<IPluginKKConnector> Ret = new ArrayList<>();
         //
         //
         File folder = new File(SystemConsts.KK_BASE_PLUGINPATH);
         File[] PluginFiles = folder.listFiles();
         //
-        if (PluginFiles==null)
-        {
+        if (PluginFiles == null) {
             System.out.println("No plugins found...exitting");
             return null;
         }
@@ -135,26 +154,24 @@ public class PluginManager  {
             }
             System.out.println("--------------------");
             System.out.println("File: " + loadFile.getName());
-            
-            
-           //
+
+            //
             try {
                 //
                 String ConnectorClass;
                 IPluginKKConnector PluginConnection;
-                ConnectorClass=GetPluginConnectorClass(loadFile);
+                ConnectorClass = GetPluginConnectorClass(loadFile);
                 //
                 URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
                 //
-                PluginConnection= (IPluginKKConnector) CLoader.loadClass(ConnectorClass).newInstance();
+                PluginConnection = (IPluginKKConnector) CLoader.loadClass(ConnectorClass).newInstance();
                 //
-                if (CheckPlugin(Plugins,PluginConnection.GetPluginInfo())==false)
-                {
-                    System.out.println("Config: not in config");
+                if (CheckPlugin(Plugins, PluginConnection.GetPluginInfo()) == false) {
+                    System.out.println("Config: not in config, disabled or incorrect version");
                     System.out.println("Skip");
                     continue;
                 }
-                Ret[Counter]=PluginConnection;
+                Ret.add(PluginConnection);
                 //
                 System.out.println("Load: ok");
                 //
@@ -162,7 +179,7 @@ public class PluginManager  {
             } catch (MalformedURLException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
                 System.out.println("Load Error: " + loadFile.getName() + " " + e.toString());
             }
-           //
+            //
 
         }
         //
@@ -175,5 +192,4 @@ public class PluginManager  {
         return Ret;
     }
 
-    
 }

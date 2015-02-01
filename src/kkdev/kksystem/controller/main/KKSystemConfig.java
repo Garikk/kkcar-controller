@@ -6,6 +6,8 @@
 package kkdev.kksystem.controller.main;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import kkdev.kksystem.base.classes.PluginInfo;
 
 
@@ -16,6 +18,15 @@ import kkdev.kksystem.base.classes.PluginInfo;
  */
 public class KKSystemConfig implements Serializable {
     public PluginInfo[] ConfPlugins;
+    
+    public ArrayList<PluginInfo> GetConfPlugins()
+    {
+        ArrayList<PluginInfo> Ret;
+        Ret=new ArrayList<>();
+        Ret.addAll(Arrays.asList(ConfPlugins));
+       return (Ret);
+    }
+    
    
 }
 
