@@ -16,6 +16,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import kkdev.kksystem.base.classes.PluginConnection;
@@ -32,9 +33,10 @@ import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 public class PluginManager {
 
     KKSystemConfig MainConfiguraion;
-    ArrayList<IPluginKKConnector> ActivePlugins;
+    HashMap<String,IPluginKKConnector> ActivePlugins;
     ArrayList<PluginConnection> ActiveConnections;
-
+    PluginExecute PlEx;
+    
     public void InitPlugins(ArrayList<PluginInfo> Plugins, ArrayList<PluginConnectionsConfig> ConnectionsConfiguration) {
         ArrayList<PluginInfo>  ToLoad;
         //Prepare config
@@ -45,7 +47,9 @@ public class PluginManager {
         if (ActivePlugins == null) {
             return;
         }
-        System.out.println("Init plugin connections:");
+        //
+        PlEx=new PluginExecute(ActivePlugins,ActiveConnections);
+        PlEx.StartPlugins();
     }
 
     private ArrayList<PluginInfo> PrepareConnections(ArrayList<PluginConnectionsConfig> ConfConfig, ArrayList<PluginInfo> Plugins) {
@@ -128,11 +132,11 @@ public class PluginManager {
         return Ret;
     }
 
-    private ArrayList<IPluginKKConnector> ConnectPlugins(ArrayList<PluginInfo> Plugins) {
+    private HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<PluginInfo> Plugins) {
         System.out.println("Required plugins count: " + Plugins.size());
         //
         int Counter = 0;
-        ArrayList<IPluginKKConnector> Ret = new ArrayList<>();
+        HashMap<String, IPluginKKConnector> Ret = new HashMap<>();
         //
         //
         File folder = new File(SystemConsts.KK_BASE_PLUGINPATH);
@@ -171,7 +175,7 @@ public class PluginManager {
                     System.out.println("Skip");
                     continue;
                 }
-                Ret.add(PluginConnection);
+                Ret.put(PluginConnection.GetPluginInfo().PluginUUID,PluginConnection);
                 //
                 System.out.println("Load: ok");
                 //
