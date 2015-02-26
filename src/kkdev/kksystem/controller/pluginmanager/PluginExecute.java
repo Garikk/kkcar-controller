@@ -70,18 +70,23 @@ public class PluginExecute implements IPluginBaseInterface {
    }
     @Override
     public PluginMessage ExecutePinCommand(PluginMessage PP) {
+        System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName);
         return InternalExecutePin(PP);
     }
     //
     private PluginMessage InternalExecutePin(PluginMessage PP)
     {
-       // if (!PinReceive.containsKey(PP.PinName))
-     //       System.out.println("Wrong PIN received");
+        if (!Pin.containsKey(PP.PinName))
+            System.out.println("Wrong PIN received");
         
         
-     //   PinReceive.get(PP.PinName).stream().forEach((Pl) -> {
-     //       Pl.ExecutePin(PP);
-     //   });
+        //Pin.get(PP.PinName).stream().forEach((Pl) -> {
+//            Pl.ExecutePin(PP);
+//        });
+        HashMap<String,IPluginKKConnector> PlExec=Pin.get(PP.PinName);
+        PlExec.values().stream().forEach((PKK) -> {
+            PKK.ExecutePin(PP);
+        });
     
         return null;
     }

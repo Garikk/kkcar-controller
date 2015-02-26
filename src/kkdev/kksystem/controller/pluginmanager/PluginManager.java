@@ -77,7 +77,9 @@ public class PluginManager {
                 PI.Enabled = PluginUsing.contains(PI.PluginUUID);
             }
         }
-
+        //
+        ActiveConnections=ConnectionsLoad;
+        //
         return Plugins;
     }
 
