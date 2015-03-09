@@ -49,6 +49,7 @@ public class PluginManager {
         }
         //
         PlEx=new PluginExecute(ActivePlugins,ActiveConnections);
+        PlEx.InitPlugins();
         PlEx.StartPlugins();
     }
 

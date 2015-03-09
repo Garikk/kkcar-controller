@@ -51,7 +51,14 @@ public class PluginExecute implements IPluginBaseInterface {
             PinFilter.get(PC.SourcePluginUID).add(PC.TargetPluginUID);
         }
     }
-    
+     public void InitPlugins()
+   {
+       for (IPluginKKConnector CONN: ActivePlugins.values())
+       {
+           CONN.PluginInit(this);
+       }
+   
+   }
    public void StartPlugins()
    {
        for (IPluginKKConnector CONN: ActivePlugins.values())
