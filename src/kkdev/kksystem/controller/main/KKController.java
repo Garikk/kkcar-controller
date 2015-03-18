@@ -13,7 +13,7 @@ import kkdev.kksystem.controller.pluginmanager.PluginManager;
  * @author blinov_is
  */
 public class KKController {
-    static SettingsManager SManager;
+   
     static PluginManager PM;
     /**
      * @param args the command line arguments
@@ -29,15 +29,12 @@ public class KKController {
     private static void InitSettingsManager() throws IOException
     {
             System.out.println("Settings:");
-            SManager=new SettingsManager();
             //
-            SManager.Init();
+            SettingsManager.Init();
             //
             System.out.println("Plugins:");
             //
-            PM=new PluginManager();
-            //
-            PM.InitPlugins(SManager.SysConfiguration.GetConfPlugins(),SManager.GetPluginConfigurations());
+            PluginManager.InitPlugins(SettingsManager.SysConfiguration.GetConfPlugins(),SettingsManager.GetPluginConfigurations());
             //
             System.out.println("System start:");
     }

@@ -23,12 +23,12 @@ import kkdev.kksystem.base.classes.PluginInfo;
  *
  * @author blinov_is
  */
-public class SettingsManager {
+public abstract class SettingsManager {
 
-    KKSystemConfig SysConfiguration;
-    PluginConnectionsConfig[] PluginConfigurations;
+    static KKSystemConfig SysConfiguration;
+    static PluginConnectionsConfig[] PluginConfigurations;
  
-    public ArrayList<PluginConnectionsConfig> GetPluginConfigurations()
+    public static ArrayList<PluginConnectionsConfig> GetPluginConfigurations()
     {
         ArrayList<PluginConnectionsConfig> Ret;
         Ret=new ArrayList<>();
@@ -36,7 +36,7 @@ public class SettingsManager {
         return (Ret);
     }
  
-    public void Init() throws IOException {
+    public static void Init() throws IOException {
         //
         LoadConf();
         //
@@ -55,7 +55,7 @@ public class SettingsManager {
     }
 
     ///
-    private void LoadConf() {
+    private static void LoadConf() {
         System.out.print("Load configuration...");
 
         try {
@@ -81,7 +81,7 @@ public class SettingsManager {
 
     }
 
-    private void LoadPluginConnections() {
+    private static void LoadPluginConnections() {
         PluginConnectionsConfig[] Ret;
         System.out.println("Try load plugins connection config.");
         try {
@@ -117,7 +117,7 @@ public class SettingsManager {
         System.out.println("===========================");
     }
 
-    private void MakeDefaultConf() throws FileNotFoundException, IOException {
+    private static void MakeDefaultConf() throws FileNotFoundException, IOException {
         //
         System.out.println("Creating default conf");
         //
@@ -141,7 +141,7 @@ public class SettingsManager {
         fw.close();
     }
 
-    private void MakeDefaultPluginConf() throws FileNotFoundException, IOException {
+    private static void MakeDefaultPluginConf() throws FileNotFoundException, IOException {
         //
         System.out.println("Creating default plugin connections config");
         //

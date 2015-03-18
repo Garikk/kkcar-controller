@@ -30,14 +30,14 @@ import kkdev.kksystem.base.interfaces.IPluginKKConnector;
  *
  * @author blinov_is
  */
-public class PluginManager {
+public abstract class PluginManager {
 
-    KKSystemConfig MainConfiguraion;
-    HashMap<String,IPluginKKConnector> ActivePlugins;
-    ArrayList<PluginConnection> ActiveConnections;
-    PluginExecute PlEx;
+    static KKSystemConfig MainConfiguraion;
+    static HashMap<String,IPluginKKConnector> ActivePlugins;
+    static ArrayList<PluginConnection> ActiveConnections;
+    static PluginExecute PlEx;
     
-    public void InitPlugins(ArrayList<PluginInfo> Plugins, ArrayList<PluginConnectionsConfig> ConnectionsConfiguration) {
+    public static void InitPlugins(ArrayList<PluginInfo> Plugins, ArrayList<PluginConnectionsConfig> ConnectionsConfiguration) {
         ArrayList<PluginInfo>  ToLoad;
         //Prepare config
         ToLoad = PrepareConnections(ConnectionsConfiguration, Plugins);
@@ -53,7 +53,7 @@ public class PluginManager {
         PlEx.StartPlugins();
     }
 
-    private ArrayList<PluginInfo> PrepareConnections(ArrayList<PluginConnectionsConfig> ConfConfig, ArrayList<PluginInfo> Plugins) {
+    private static ArrayList<PluginInfo> PrepareConnections(ArrayList<PluginConnectionsConfig> ConfConfig, ArrayList<PluginInfo> Plugins) {
         //Create Needed plugins list
         ArrayList<PluginConnection> ConnectionsLoad;
         ArrayList<String> PluginUsing;
@@ -84,7 +84,7 @@ public class PluginManager {
         return Plugins;
     }
 
-    private boolean CheckPlugin(ArrayList<PluginInfo> Plugins, PluginInfo CheckPlugin) {
+    private static boolean CheckPlugin(ArrayList<PluginInfo> Plugins, PluginInfo CheckPlugin) {
         for (PluginInfo Pl : Plugins) {
             if (Pl.PluginUUID.equals(CheckPlugin.PluginUUID)) {
                 return Pl.Enabled;
@@ -93,7 +93,7 @@ public class PluginManager {
         return false;
     }
 
-    private String GetPluginConnectorClass(File FileToCheck) {
+    private static String GetPluginConnectorClass(File FileToCheck) {
         String Ret = null;
 
         JarFile jarFile = null;
@@ -135,7 +135,7 @@ public class PluginManager {
         return Ret;
     }
 
-    private HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<PluginInfo> Plugins) {
+    private static HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<PluginInfo> Plugins) {
         System.out.println("Required plugins count: " + Plugins.size());
         //
         int Counter = 0;
