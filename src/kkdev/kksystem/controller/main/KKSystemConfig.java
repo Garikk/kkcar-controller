@@ -5,18 +5,15 @@
  */
 package kkdev.kksystem.controller.main;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import kkdev.kksystem.base.classes.PluginInfo;
-
-
 
 /**
  *
  * @author blinov_is
  */
-public class KKSystemConfig implements Serializable {
+public class KKSystemConfig  {
     public PluginInfo[] ConfPlugins;
     
     public ArrayList<PluginInfo> GetConfPlugins()
