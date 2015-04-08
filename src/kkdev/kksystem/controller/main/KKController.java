@@ -28,15 +28,19 @@ public class KKController {
     
     private static void InitSettingsManager() throws IOException
     {
+            System.out.println("================");
             System.out.println("Settings:");
             //
             SettingsManager.Init();
             //
+            System.out.println("================");
             System.out.println("Plugins:");
             //
             PluginManager.InitPlugins(SettingsManager.SysConfiguration.GetConfPlugins(),SettingsManager.GetPluginConfigurations());
-            //
+            //            
+            System.out.println("================");
             System.out.println("System start:");
+            PluginManager.StartPlugins();
     }
     
 }

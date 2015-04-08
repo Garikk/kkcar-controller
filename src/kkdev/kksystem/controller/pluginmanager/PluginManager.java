@@ -50,9 +50,13 @@ public abstract class PluginManager {
         //
         PlEx=new PluginExecute(ActivePlugins,ActiveConnections);
         PlEx.InitPlugins();
-        PlEx.StartPlugins();
+
     }
 
+    public static void StartPlugins()
+    {
+                PlEx.StartPlugins();
+    }
     private static ArrayList<PluginInfo> PrepareConnections(ArrayList<PluginConnectionsConfig> ConfConfig, ArrayList<PluginInfo> Plugins) {
         //Create Needed plugins list
         ArrayList<PluginConnection> ConnectionsLoad;
