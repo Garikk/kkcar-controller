@@ -1,4 +1,4 @@
-package kkdev.kksystem.controller.main;
+package kkdev.kksystem.kkcontroller.main;
 
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.constants.PluginConsts;

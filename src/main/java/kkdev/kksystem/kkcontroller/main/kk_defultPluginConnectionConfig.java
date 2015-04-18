@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kkdev.kksystem.controller.main;
+package kkdev.kksystem.kkcontroller.main;
 
 import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import kkdev.kksystem.base.classes.PluginConnection;

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kkdev.kksystem.controller.main;
+package kkdev.kksystem.kkcontroller.main;
 
 import java.io.IOException;
-import kkdev.kksystem.controller.pluginmanager.PluginManager;
+import kkdev.kksystem.kkcontroller.pluginmanager.PluginManager;
 
 /**
  *

@@ -1,4 +1,0 @@
-kkcar-controller
-================
-
-Main program
