@@ -16,8 +16,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import kkdev.kksystem.base.classes.PluginConnectionsConfig;
-import kkdev.kksystem.base.classes.PluginInfo;
 
 /**
  *
@@ -71,6 +72,14 @@ public abstract class SettingsManager {
 
             XStream xstream = new XStream(new DomDriver());
             SysConfiguration = (KKSystemConfig) xstream.fromXML(fr);
+              String current;
+            try {
+                current = new java.io.File( "." ).getCanonicalPath();
+                System.out.println(current);
+            } catch (IOException ex) {
+                Logger.getLogger(SettingsManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        //System.out.println("Current dir:"+current);
         } catch (StreamException Ex) {
             System.out.println("error");
             return;

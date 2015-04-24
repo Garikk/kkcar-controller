@@ -151,7 +151,7 @@ public abstract class PluginManager {
         //
         if (PluginFiles == null) {
             System.out.println("No plugins found...exitting");
-            return null;
+            System.exit(0);
         }
         //
         System.out.println("Plugin files count: " + PluginFiles.length);
