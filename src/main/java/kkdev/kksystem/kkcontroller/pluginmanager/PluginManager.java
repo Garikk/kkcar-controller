@@ -66,24 +66,22 @@ public abstract class PluginManager {
         ConnectionsLoad = new ArrayList<>();
         PluginUsing = new ArrayList<>();
         //Organize connections to list
-        for (PluginConnectionsConfig PCC : ConfConfig) {
+        ConfConfig.stream().forEach((PCC) -> {
             ConnectionsLoad.addAll(Arrays.asList(PCC.Connections));
-        }
+        });
         //Create active plugins list
-        for (PluginConnection PC : ConnectionsLoad) {
+        ConnectionsLoad.stream().map((PC) -> {
             if (!PluginUsing.contains(PC.SourcePluginUID)) {
                 PluginUsing.add(PC.SourcePluginUID);
             }
-            if (!PluginUsing.contains(PC.TargetPluginUID)) {
-                PluginUsing.add(PC.TargetPluginUID);
-            }
-        }
+            return PC;
+        }).filter((PC) -> (!PluginUsing.contains(PC.TargetPluginUID))).forEach((PC) -> {
+            PluginUsing.add(PC.TargetPluginUID);
+        });
         //set not active plugins to disabled
-        for (PluginInfo PI : Plugins) {
-            if (PI.Enabled) {
-                PI.Enabled = PluginUsing.contains(PI.PluginUUID);
-            }
-        }
+        Plugins.stream().filter((PI) -> (PI.Enabled)).forEach((PI) -> {
+            PI.Enabled = PluginUsing.contains(PI.PluginUUID);
+        });
         //
         ActiveConnections=ConnectionsLoad;
         //

@@ -9,16 +9,14 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.io.File;
-import kkdev.kksystem.base.constants.SystemConsts;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import kkdev.kksystem.base.classes.PluginConnectionsConfig;
+import kkdev.kksystem.base.constants.SystemConsts;
 
 /**
  *
@@ -28,15 +26,14 @@ public abstract class SettingsManager {
 
     static KKSystemConfig SysConfiguration;
     static PluginConnectionsConfig[] PluginConfigurations;
- 
-    public static ArrayList<PluginConnectionsConfig> GetPluginConfigurations()
-    {
+
+    public static ArrayList<PluginConnectionsConfig> GetPluginConfigurations() {
         ArrayList<PluginConnectionsConfig> Ret;
-        Ret=new ArrayList<>();
+        Ret = new ArrayList<>();
         Ret.addAll(Arrays.asList(PluginConfigurations));
         return (Ret);
     }
- 
+
     public static void Init() throws IOException {
         //
         LoadConf();
@@ -51,6 +48,12 @@ public abstract class SettingsManager {
         if (PluginConfigurations == null) {
             MakeDefaultPluginConf();
             LoadPluginConnections();
+        }
+        //
+        if (PluginConfigurations==null || SysConfiguration==null)
+        {
+                   System.out.print("Load error"); 
+                   System.exit(0);
         }
 
     }
@@ -72,14 +75,8 @@ public abstract class SettingsManager {
 
             XStream xstream = new XStream(new DomDriver());
             SysConfiguration = (KKSystemConfig) xstream.fromXML(fr);
-              String current;
-            try {
-                current = new java.io.File( "." ).getCanonicalPath();
-                System.out.println(current);
-            } catch (IOException ex) {
-                Logger.getLogger(SettingsManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        //System.out.println("Current dir:"+current);
+            String current;
+
         } catch (StreamException Ex) {
             System.out.println("error");
             return;
@@ -96,19 +93,19 @@ public abstract class SettingsManager {
         try {
             File[] files = new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS).listFiles();
             //
-            if (files==null) return;
+            if (files == null) {
+                return;
+            }
             //
             Ret = new PluginConnectionsConfig[files.length];
 
-            
-            
             FileReader fr;
             int cnt = 0;
             for (File f : files) {
                 try {
                     fr = new FileReader(f.getPath());
                     XStream xstream = new XStream(new DomDriver());
-                    Ret[cnt] = (PluginConnectionsConfig)xstream.fromXML(fr);
+                    Ret[cnt] = (PluginConnectionsConfig) xstream.fromXML(fr);
                     System.out.println("Loaded: " + Ret[cnt].ConfigName);
                     cnt++;
                 } catch (Exception ex) {
@@ -121,7 +118,7 @@ public abstract class SettingsManager {
             System.out.println("error");
             return;
         }
-        PluginConfigurations=Ret;
+        PluginConfigurations = Ret;
         System.out.println("Ok");
         System.out.println("===========================");
     }

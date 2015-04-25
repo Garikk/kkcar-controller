@@ -19,11 +19,10 @@ public final class kk_defaultconfig {
 
     public static KKSystemConfig GetDefaultSystemConfig() {
         KKSystemConfig Ret = new KKSystemConfig();
-        Ret.ConfPlugins = new PluginInfo[4];
+        Ret.ConfPlugins = new PluginInfo[3];
         Ret.ConfPlugins[0] = GetODBPlugin();
-        Ret.ConfPlugins[1] = GetTextLogPlugin();
-        Ret.ConfPlugins[2] = GetLEDDisplayPlugin();
-        Ret.ConfPlugins[3] = GetDataDisplayPluginInfo();
+        Ret.ConfPlugins[1] = GetLEDDisplayPlugin();
+        Ret.ConfPlugins[2] = GetDataDisplayPluginInfo();
         return Ret;
     }
 
@@ -40,19 +39,7 @@ public final class kk_defaultconfig {
 
     }
 
-    private static PluginInfo GetTextLogPlugin() {
-        PluginInfo Ret = new PluginInfo();
-        Ret.PluginUUID = PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG_UUID;
-        Ret.PluginName = PluginConsts.KK_PLUGIN_BASE_PLUGIN_TEXTLOG;
-        Ret.PluginDescription = "Basic Text logger plugin";
-        Ret.PluginType = PluginConsts.KK_PLUGIN_TYPE.PLUGIN_OUTPUT;
-        Ret.ConnectorClass = "kkdev.kksystem.plugins.textlog.KKPlugin";
-        Ret.PluginVersion = 1;
-        Ret.Enabled = true;
-        return Ret;
-
-    }
-
+    
     private static PluginInfo GetLEDDisplayPlugin() {
         PluginInfo Ret = new PluginInfo();
         Ret.PluginUUID = PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
