@@ -19,11 +19,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import kkdev.kksystem.base.classes.PluginConnection;
 import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import kkdev.kksystem.base.classes.PluginInfo;
 import kkdev.kksystem.base.constants.SystemConsts;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_CONNECTOR_FILE;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 
 /**
@@ -57,6 +58,7 @@ public abstract class PluginManager {
     {
                 PlEx.StartPlugins();
     }
+    
     private static ArrayList<PluginInfo> PrepareConnections(ArrayList<PluginConnectionsConfig> ConfConfig, ArrayList<PluginInfo> Plugins) {
         //Create Needed plugins list
         ArrayList<PluginConnection> ConnectionsLoad;
@@ -106,33 +108,21 @@ public abstract class PluginManager {
         try {
             jarFile = new JarFile(FileToCheck);
             //
-            entry = jarFile.getJarEntry(KK_BASE_PLUGINS_CONNECTOR_FILE);
-            if (entry == null) {
+            Manifest MF=jarFile.getManifest();
+            Ret=MF.getMainAttributes().getValue(KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR);
+            //
+            if (Ret==null) {
                 System.out.println("Plugin read error (kkconnector file not found)");
                 return null;
             }
             //
-            IS = jarFile.getInputStream(entry);
+            jarFile.close();
         } catch (IOException ex) {
             System.out.println("Plugin info read error: " + ex.getMessage());
             try {
                 jarFile.close();
             } catch (Exception Ex) {
             }
-            return null;
-        }
-        if (IS == null) {
-            System.out.println("Plugin info read error: kkconnector file empty?");
-            return null;
-        }
-        //
-        BufferedReader in = new BufferedReader(new InputStreamReader(IS));
-
-        try {
-            Ret = in.readLine();
-            in.close();
-        } catch (IOException ex) {
-            System.out.println("Plugin info read error: kkconnector file empty or broken?");
             return null;
         }
         //
