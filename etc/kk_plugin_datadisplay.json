@@ -1,1 +1,0 @@
-{"Pages":[{"PageName":"MAIN","ActivateOnLoad":false},{"PageName":"DETAIL","ActivateOnLoad":false},{"PageName":"WAIT","ActivateOnLoad":true}],"Processors":[{"TargetPages":["MAIN","DETAIL","WAIT"],"ProcessorType":"PROC_ELM327_BASIC_ODB2"}]}
