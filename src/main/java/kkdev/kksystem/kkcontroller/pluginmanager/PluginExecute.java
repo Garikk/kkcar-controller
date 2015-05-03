@@ -7,7 +7,6 @@ package kkdev.kksystem.kkcontroller.pluginmanager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import kkdev.kksystem.base.classes.PluginConnection;
 import kkdev.kksystem.base.classes.PluginMessage;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
@@ -25,31 +24,34 @@ public class PluginExecute implements IPluginBaseInterface {
     PluginExecute(HashMap<String,IPluginKKConnector> Plugins, ArrayList<PluginConnection> Connections)
     {
         ActivePlugins=Plugins;
-        Pin=new HashMap<String,HashMap<String,IPluginKKConnector>>();
-        PinFilter =new HashMap<String,ArrayList<String>>();
+        Pin=new HashMap<>();
+        PinFilter =new HashMap<>();
         
-        for (PluginConnection PC:Connections)
-        {
+        Connections.stream().map((PC) -> {
             for (String PCPin : PC.PinName)
             {
                 if (!Pin.containsKey(PCPin))
                 {
-                    Pin.put(PCPin, new HashMap<String,IPluginKKConnector>());
+                    Pin.put(PCPin, new HashMap<>());
                 }
                 //
                 if (!Pin.get(PCPin).containsKey(PC.TargetPluginUID))
                 {
-                   Pin.get(PCPin).put(PC.TargetPluginUID,ActivePlugins.get(PC.TargetPluginUID));
+                    Pin.get(PCPin).put(PC.TargetPluginUID,ActivePlugins.get(PC.TargetPluginUID));
                 }
                 //
             }
+            return PC;
+        }).map((PC) -> {
             // Fill filter array
             if (!PinFilter.containsKey(PC.SourcePluginUID))
-                {
-                    PinFilter.put(PC.SourcePluginUID, new ArrayList<>());
-                }
+            {
+                PinFilter.put(PC.SourcePluginUID, new ArrayList<>());
+            }
+            return PC;
+        }).forEach((PC) -> {
             PinFilter.get(PC.SourcePluginUID).add(PC.TargetPluginUID);
-        }
+        });
     }
      public void InitPlugins()
    {
@@ -77,7 +79,7 @@ public class PluginExecute implements IPluginBaseInterface {
    }
     @Override
     public PluginMessage ExecutePinCommand(PluginMessage PP) {
-        System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName);
+        System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " " + PP.SenderUID);
         return InternalExecutePin(PP);
     }
     //

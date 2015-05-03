@@ -32,8 +32,8 @@ public final class kk_defultPluginConnectionConfig {
         Ret.Connections[0].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
         Ret.Connections[0].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
         Ret.Connections[0].PinName=new String[2];
-        Ret.Connections[0].PinName[0]=PluginConsts.KK_PLUGIN_BASE_PIN_ODB2_DATA;
-        Ret.Connections[0].PinName[1]=PluginConsts.KK_PLUGIN_BASE_PIN_ODB2_RAW;
+        Ret.Connections[0].PinName[0]=PluginConsts.KK_PLUGIN_BASE_ODB2_DATA;
+        Ret.Connections[0].PinName[1]=PluginConsts.KK_PLUGIN_BASE_ODB2_RAW;
         //DataProcessor->ODB
         Ret.Connections[1]=new PluginConnection();
         Ret.Connections[1].ConnectionName="Data Display processor to ODB";
@@ -42,7 +42,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret.Connections[1].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_ODB2;
         Ret.Connections[1].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
         Ret.Connections[1].PinName=new String[1];
-        Ret.Connections[1].PinName[0]=PluginConsts.KK_PLUGIN_BASE_PIN_ODB2_COMMAND;
+        Ret.Connections[1].PinName[0]=PluginConsts.KK_PLUGIN_BASE_ODB2_COMMAND;
         //DataProcessor->LED
         Ret.Connections[2]=new PluginConnection();
         Ret.Connections[2].ConnectionName="Data Display processor to LED";
