@@ -91,10 +91,9 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
+                             <mainClass>kkdev.kksystem.kkcontroller.main.KKController</mainClass>
+                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
-                        <manifestEntries>
-                            <classpathPrefix>lib/</classpathPrefix>
-                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>

@@ -24,7 +24,6 @@ import kkdev.kksystem.base.constants.SystemConsts;
  */
 public abstract class SettingsManager {
 
-    static KKSystemConfig SysConfiguration;
     static PluginConnectionsConfig[] PluginConfigurations;
 
     public static ArrayList<PluginConnectionsConfig> GetPluginConfigurations() {
@@ -36,13 +35,6 @@ public abstract class SettingsManager {
 
     public static void Init() throws IOException {
         //
-        LoadConf();
-        //
-        if (SysConfiguration == null) {
-            MakeDefaultConf();
-            LoadConf();
-        }
-        //
         LoadPluginConnections();
         //
         if (PluginConfigurations == null) {
@@ -50,7 +42,7 @@ public abstract class SettingsManager {
             LoadPluginConnections();
         }
         //
-        if (PluginConfigurations==null || SysConfiguration==null)
+        if (PluginConfigurations==null )
         {
                    System.out.print("Load error"); 
                    System.exit(0);
@@ -58,35 +50,7 @@ public abstract class SettingsManager {
 
     }
 
-    ///
-    private static void LoadConf() {
-        System.out.print("Load configuration...");
-
-        try {
-            String ConfFilePath = SystemConsts.KK_BASE_CONFPATH + "/" + SystemConsts.KK_BASE_SETTINGS_FILE;
-            FileReader fr;
-
-            try {
-                fr = new FileReader(ConfFilePath);
-            } catch (FileNotFoundException ex) {
-                System.out.println("file not found");
-                return;
-            }
-
-            XStream xstream = new XStream(new DomDriver());
-            SysConfiguration = (KKSystemConfig) xstream.fromXML(fr);
-            String current;
-
-        } catch (StreamException Ex) {
-            System.out.println("error");
-            return;
-        }
-        System.out.println("Ok");
-        System.out.println("===========================");
-        //
-
-    }
-
+  
     private static void LoadPluginConnections() {
         PluginConnectionsConfig[] Ret;
         System.out.println("Try load plugins connection config.");
@@ -121,30 +85,6 @@ public abstract class SettingsManager {
         PluginConfigurations = Ret;
         System.out.println("Ok");
         System.out.println("===========================");
-    }
-
-    private static void MakeDefaultConf() throws FileNotFoundException, IOException {
-        //
-        System.out.println("Creating default conf");
-        //
-        KKSystemConfig Defconf = kk_defaultconfig.GetDefaultSystemConfig();
-        //
-        File ConfPath = new File(SystemConsts.KK_BASE_CONFPATH);
-        if (!ConfPath.exists()) {
-            ConfPath.mkdir();
-
-        }
-
-        //
-        XStream xstream = new XStream(new DomDriver());
-
-        // FileOutputStream fileOut = new FileOutputStream();
-        FileWriter fw;
-        fw = new FileWriter(SystemConsts.KK_BASE_CONFPATH + "/" + SystemConsts.KK_BASE_SETTINGS_FILE);
-
-        xstream.toXML(Defconf, fw);
-
-        fw.close();
     }
 
     private static void MakeDefaultPluginConf() throws FileNotFoundException, IOException {

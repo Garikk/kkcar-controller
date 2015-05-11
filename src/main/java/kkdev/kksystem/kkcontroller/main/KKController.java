@@ -36,7 +36,7 @@ public class KKController {
             System.out.println("================");
             System.out.println("Plugins:");
             //
-            PluginManager.InitPlugins(SettingsManager.SysConfiguration.GetConfPlugins(),SettingsManager.GetPluginConfigurations());
+            PluginManager.InitPlugins(SettingsManager.GetPluginConfigurations());
             //
             //
             System.out.println("================");
