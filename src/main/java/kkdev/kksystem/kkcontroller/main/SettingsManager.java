@@ -5,6 +5,7 @@
  */
 package kkdev.kksystem.kkcontroller.main;
 
+import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -15,7 +16,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import kkdev.kksystem.base.constants.SystemConsts;
 
 /**
@@ -33,6 +33,13 @@ public abstract class SettingsManager {
         return (Ret);
     }
 
+    //TODO CHANGE THIS!!!!
+    public static String GetSystemDisplayUID()
+    {
+        return PluginConfigurations[0].SystemDisplay_UID;
+    
+    }
+    
     public static void Init() throws IOException {
         //
         LoadPluginConnections();
@@ -93,15 +100,22 @@ public abstract class SettingsManager {
         //
         PluginConnectionsConfig Defconf = kk_defultPluginConnectionConfig.GetDefaultConnectionsConfig();
         //
+        File MainConfPath = new File(SystemConsts.KK_BASE_CONFPATH);
+        if (!MainConfPath.exists()) {
+            MainConfPath.mkdir();
+            
+        }
         File ConfPath = new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS);
         if (!ConfPath.exists()) {
             ConfPath.mkdir();
+            
         }
 
         //
         XStream xstream = new XStream(new DomDriver());
 
         // FileOutputStream fileOut = new FileOutputStream();
+       
         FileWriter fw;
         fw = new FileWriter(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS + "/PluginConnections_" + Defconf.ConfigUUID + ".xml");
 

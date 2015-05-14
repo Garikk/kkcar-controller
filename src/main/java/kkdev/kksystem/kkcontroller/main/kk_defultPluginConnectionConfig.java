@@ -22,6 +22,8 @@ public final class kk_defultPluginConnectionConfig {
         Ret.ConfigName="Default ODB Viewer configuration";
         Ret.ConfigUUID="0fcac003-638a-4927-9bee-9f82b677f6e1";
         //
+        Ret.SystemDisplay_UID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        //
         Ret.Connections=new PluginConnection[4];
         //
         // ODB->DataProcessor

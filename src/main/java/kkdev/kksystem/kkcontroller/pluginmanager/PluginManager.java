@@ -28,7 +28,7 @@ import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 public abstract class PluginManager {
 
     static HashMap<String, IPluginKKConnector> ActivePlugins;
-    static PluginExecute PlEx;
+    public static PluginExecute PlEx;
 
     public static void InitPlugins(ArrayList<PluginConnectionsConfig> ConnectionsConfiguration) {
         ArrayList<String> ToLoad;

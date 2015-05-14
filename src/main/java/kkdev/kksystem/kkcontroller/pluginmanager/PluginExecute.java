@@ -106,5 +106,9 @@ public class PluginExecute implements IPluginBaseInterface {
         return null;
     }
 
+    public PluginMessage ExecuteDirectCommand(String TargetUUID,PluginMessage PP)
+    {
+        return ActivePlugins.get(TargetUUID).ExecutePin(PP);
+    }
 }
 
