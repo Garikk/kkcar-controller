@@ -6,10 +6,14 @@
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
 import kkdev.kksystem.base.classes.PluginMessage;
+import kkdev.kksystem.base.classes.base.PinBaseCommand;
+import kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE;
 import kkdev.kksystem.base.classes.display.DisplayConstants;
 import kkdev.kksystem.base.classes.display.PinLedCommand;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_LED_COMMAND;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MENU_UID;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.kkcontroller.main.SettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginManager;
 
@@ -55,6 +59,18 @@ public abstract class SystemMenu {
         
     }
     
+    public static void ChangeCurrentFeature(String FeatureUID)
+    {
+        BASE_SendPluginMessageCommand(FeatureUID);
+    
+    }
+    
+    //
+    //
+    //
+    //
+    //
+    
     public static void DISPLAY_SendPluginMessageCommand(DisplayConstants.KK_DISPLAY_COMMAND Command, String[] DataStr, int[] DataInt, boolean[] DataBool) {
         PluginMessage Msg = new PluginMessage();
         Msg.PinName = KK_PLUGIN_BASE_LED_COMMAND;
@@ -65,11 +81,24 @@ public abstract class SystemMenu {
         PData.INT = DataInt;
         PData.STRING = DataStr;
         
-        PData.FeatureUID=KK_BASE_FEATURES_SYSTEM_MENU_UID;
+        PData.FeatureUID=KK_BASE_FEATURES_SYSTEM_UID;
 
         Msg.PinData = PData;
         //
         PluginManager.PlEx.ExecuteDirectCommand(SettingsManager.GetSystemDisplayUID(), Msg);
+        //
+    }
+     public static void BASE_SendPluginMessageCommand(String FeatureUID) {
+        PluginMessage Msg = new PluginMessage();
+        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+        //
+        PinBaseCommand PData = new PinBaseCommand();
+        PData.BaseCommand=BASE_COMMAND_TYPE.CHANGE_FEATURE;
+        PData.FeatureUID=FeatureUID;
+        //
+        Msg.PinData = PData;
+        //
+        PluginManager.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
         //
     }
 }

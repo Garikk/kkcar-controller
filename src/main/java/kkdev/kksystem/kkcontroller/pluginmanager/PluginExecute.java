@@ -10,6 +10,7 @@ import java.util.HashMap;
 import kkdev.kksystem.base.classes.PluginConnection;
 import kkdev.kksystem.base.classes.PluginConnectionsConfig;
 import kkdev.kksystem.base.classes.PluginMessage;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import kkdev.kksystem.kkcontroller.main.SettingsManager;
@@ -35,13 +36,13 @@ public class PluginExecute implements IPluginBaseInterface {
             for (PluginConnection PC:PCC.Connections)
             {
                 for (String PIN:PC.PinName)
-                    RegisterPINTarget(PC.SourcePluginUID,PC.TargetPluginUID,PIN,Plugins.get(PC.TargetPluginUID));
+                    RegisterPINTarget(PC.SourcePluginUID,PC.TargetPluginUID,PIN);
             }
         }
         
     }
     
-    private void RegisterPINTarget(String SenderPluginUUID, String TargetPluginPIN,String PIN, IPluginKKConnector PluginConnector)
+    private void RegisterPINTarget(String SenderPluginUUID, String TargetPluginUID,String PIN)
     {
         //
         if (!Pin.containsKey(SenderPluginUUID))
@@ -50,10 +51,10 @@ public class PluginExecute implements IPluginBaseInterface {
         if (!Pin.get(SenderPluginUUID).containsKey(PIN))
             Pin.get(SenderPluginUUID).put(PIN, new ArrayList<>());
         //
-        Pin.get(SenderPluginUUID).get(PIN).add(PluginConnector);
+        Pin.get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
             
         //
-          System.out.println("[DEBUG][PLUGIN INTERCON][REG] " + SenderPluginUUID + " " + TargetPluginPIN + " " + PIN);
+          System.out.println("[DEBUG][PLUGIN INTERCON][REG] " + SenderPluginUUID + " " + TargetPluginUID + " " + PIN);
     }
     
      public  void InitPlugins()
@@ -81,7 +82,6 @@ public class PluginExecute implements IPluginBaseInterface {
    }
     @Override
     public  PluginMessage ExecutePinCommand(PluginMessage PP) {
-        System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " " + PP.SenderUID);
         return InternalExecutePin(PP);
     }
     //
@@ -93,13 +93,10 @@ public class PluginExecute implements IPluginBaseInterface {
         if (!Pin.get(PP.SenderUID).containsKey(PP.PinName))
             System.out.println("Wrong PIN received (Not found Pin)");
         
-        
-       // Pin.get(PP.SenderUID).get(PP.PinName).stream().forEach((PKK) -> {
-       //     PKK.ExecutePin(PP);
-       // });
         ArrayList<IPluginKKConnector> Exec=Pin.get(PP.SenderUID).get(PP.PinName);
         for (IPluginKKConnector PKK:Exec)
         {
+          System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " >> " + PKK.GetPluginInfo().PluginName);
           PKK.ExecutePin(PP);
         }
     
@@ -108,7 +105,19 @@ public class PluginExecute implements IPluginBaseInterface {
 
     public PluginMessage ExecuteDirectCommand(String TargetUUID,PluginMessage PP)
     {
-        return ActivePlugins.get(TargetUUID).ExecutePin(PP);
+        if (!TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID))
+        {
+            System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " >> " + ActivePlugins.get(TargetUUID).GetPluginInfo().PluginName);
+            return ActivePlugins.get(TargetUUID).ExecutePin(PP);
+        }
+        else
+            for (IPluginKKConnector PKK:ActivePlugins.values())
+            {
+                System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " >> " + PKK.GetPluginInfo().PluginName);
+                return PKK.ExecutePin(PP);
+            }
+        //
+        return null;
     }
 }
 
