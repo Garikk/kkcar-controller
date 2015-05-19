@@ -7,9 +7,9 @@ package kkdev.kksystem.kkcontroller.pluginmanager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import kkdev.kksystem.base.classes.PluginConnection;
-import kkdev.kksystem.base.classes.PluginConnectionsConfig;
-import kkdev.kksystem.base.classes.PluginMessage;
+import kkdev.kksystem.base.classes.plugins.PluginConnection;
+import kkdev.kksystem.base.classes.plugins.PluginConnectionsConfig;
+import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
@@ -54,7 +54,7 @@ public class PluginExecute implements IPluginBaseInterface {
         Pin.get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
             
         //
-          System.out.println("[DEBUG][PLUGIN INTERCON][REG] " + SenderPluginUUID + " " + TargetPluginUID + " " + PIN);
+          System.out.println("[DEBUG][PLUGIN INTERCON][REG] " + ActivePlugins.get(SenderPluginUUID) + " " + ActivePlugins.get(TargetPluginUID) + " " + PIN);
     }
     
      public  void InitPlugins()
@@ -96,7 +96,7 @@ public class PluginExecute implements IPluginBaseInterface {
         ArrayList<IPluginKKConnector> Exec=Pin.get(PP.SenderUID).get(PP.PinName);
         for (IPluginKKConnector PKK:Exec)
         {
-          System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " >> " + PKK.GetPluginInfo().PluginName);
+          System.out.println("[DEBUG][INTERCON] " + PP.PinName + " >> " + PKK.GetPluginInfo().PluginName);
           PKK.ExecutePin(PP);
         }
     

@@ -5,7 +5,7 @@
  */
 package kkdev.kksystem.kkcontroller.main;
 
-import kkdev.kksystem.base.classes.PluginConnectionsConfig;
+import kkdev.kksystem.base.classes.plugins.PluginConnectionsConfig;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;

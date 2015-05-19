@@ -5,8 +5,8 @@
  */
 package kkdev.kksystem.kkcontroller.main;
 
-import kkdev.kksystem.base.classes.PluginConnectionsConfig;
-import kkdev.kksystem.base.classes.PluginConnection;
+import kkdev.kksystem.base.classes.plugins.PluginConnectionsConfig;
+import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.constants.PluginConsts;
 
 /**
