@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
-import kkdev.kksystem.base.classes.plugins.PluginConnectionsConfig;
+import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
@@ -25,12 +25,12 @@ import kkdev.kksystem.base.interfaces.IPluginKKConnector;
  *
  * @author blinov_is
  */
-public abstract class PluginManager {
+public abstract class PluginLoader {
 
     static HashMap<String, IPluginKKConnector> ActivePlugins;
     public static PluginExecute PlEx;
 
-    public static void InitPlugins(ArrayList<PluginConnectionsConfig> ConnectionsConfiguration) {
+    public static void InitPlugins(ArrayList<FeatureConfiguration> ConnectionsConfiguration) {
         ArrayList<String> ToLoad;
         //Prepare config
         ToLoad = CreateLoadPluginsList(ConnectionsConfiguration);
@@ -50,7 +50,7 @@ public abstract class PluginManager {
         PlEx.StartPlugins();
     }
 
-    private static ArrayList<String> CreateLoadPluginsList(ArrayList<PluginConnectionsConfig> ConfConfig) {
+    private static ArrayList<String> CreateLoadPluginsList(ArrayList<FeatureConfiguration> ConfConfig) {
 
         ArrayList<String> Ret;
         Ret = new ArrayList<>();

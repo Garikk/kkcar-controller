@@ -8,7 +8,7 @@ package kkdev.kksystem.kkcontroller.main;
 import java.io.IOException;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
-import kkdev.kksystem.kkcontroller.pluginmanager.PluginManager;
+import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 
 /**
  *
@@ -16,7 +16,7 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginManager;
  */
 public class KKController {
    
-    static PluginManager PM;
+    static PluginLoader PM;
     /**
      * @param args the command line arguments
      */
@@ -38,7 +38,7 @@ public class KKController {
             System.out.println("================");
             System.out.println("Plugins:");
             //
-            PluginManager.InitPlugins(SettingsManager.GetPluginConfigurations());
+            PluginLoader.InitPlugins(SettingsManager.GetPluginConfigurations());
             //
             System.out.println("================");
             //
@@ -47,7 +47,7 @@ public class KKController {
             //
             System.out.println("================");
             System.out.println("System start:");
-            PluginManager.StartPlugins();
+            PluginLoader.StartPlugins();
             //
             // Init kkcontroller display
             SystemMenu.InitDisplay();

@@ -9,18 +9,19 @@ import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.classes.base.PinBaseCommand;
 import kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE;
 import kkdev.kksystem.base.classes.display.DisplayConstants;
+import static kkdev.kksystem.base.classes.display.DisplayConstants.KK_DISPLAY_COMMAND.DISPLAY_KKSYS_PAGE_ACTIVATE;
 import kkdev.kksystem.base.classes.display.DisplayConstants.KK_DISPLAY_DATA;
 import kkdev.kksystem.base.classes.display.PinLedCommand;
 import kkdev.kksystem.base.classes.display.PinLedData;
+import kkdev.kksystem.base.classes.plugins.simple.PluginManagerLCD;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_LED_COMMAND;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_LED_DATA;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
 import kkdev.kksystem.base.constants.SystemConsts;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_ODB_DIAG_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.kkcontroller.main.SettingsManager;
-import kkdev.kksystem.kkcontroller.pluginmanager.PluginManager;
+import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 
 /**
  *
@@ -39,8 +40,14 @@ public abstract class SystemMenu {
     static String[] MenuItems;
     static String[] MenuItemsSYS;
     
+    static PluginManagerLCD LCDDisplay;
+    
     public static void InitDisplay()
     {
+        //
+        LCDDisplay=new PluginManagerLCD();
+        
+        LCDDisplay.BaseConnector=PluginLoader.PlEx;
         //
         MenuItems=new String[4];
         MenuItemsSYS=new String[4];
@@ -63,12 +70,9 @@ public abstract class SystemMenu {
         
         //
         //Init pages
-        DISPLAY_SendPluginMessageCommand(DisplayConstants.KK_DISPLAY_COMMAND.DISPLAY_KKSYS_PAGE_INIT,null, Data_S, null, null);
+        LCDDisplay._DISPLAY_SendPluginMessageCommandDirect(SettingsManager.GetSystemDisplayUID(),KK_BASE_FEATURES_SYSTEM_UID,DisplayConstants.KK_DISPLAY_COMMAND.DISPLAY_KKSYS_PAGE_INIT,null,Data_S, null, null);
         // Set page to active
-        Data_S = new String[1];
-        Data_S[0] = PAGE_1;
-        //
-        DISPLAY_SendPluginMessageCommand(DisplayConstants.KK_DISPLAY_COMMAND.DISPLAY_KKSYS_PAGE_ACTIVATE,PAGE_1, null, null, null);
+        LCDDisplay._DISPLAY_SendPluginMessageCommandDirect(SettingsManager.GetSystemDisplayUID(), KK_BASE_FEATURES_SYSTEM_UID, DISPLAY_KKSYS_PAGE_ACTIVATE, PAGE_1, null,null, null);
         
     }
     public static void ShowMenu()
@@ -87,7 +91,7 @@ public abstract class SystemMenu {
     
     public static void ChangeCurrentFeature(String FeatureUID)
     {
-        BASE_SendPluginMessageCommand(FeatureUID);
+       PluginLoader.PlEx.ChangeFeature(FeatureUID);
     
     }
     //
@@ -102,10 +106,11 @@ public abstract class SystemMenu {
         PData.OnFrame_DataKeys=FrameKeys;
         PData.OnFrame_DataValues=FrameValues;
         //
-        DISPLAY_SendPluginMessageData(PData);
+       // DISPLAY_SendPluginMessageData(PData);
+        LCDDisplay._DISPLAY_SendPluginMessageDataDirect(SettingsManager.GetSystemDisplayUID(),KK_BASE_FEATURES_SYSTEM_UID,PData);
         //
     }
-    
+    /*
     public static void DISPLAY_SendPluginMessageCommand(DisplayConstants.KK_DISPLAY_COMMAND Command, String PageID,String[] DataStr, int[] DataInt, boolean[] DataBool) {
         PluginMessage Msg = new PluginMessage();
         Msg.PinName = KK_PLUGIN_BASE_LED_COMMAND;
@@ -121,7 +126,7 @@ public abstract class SystemMenu {
 
         Msg.PinData = PData;
         //
-        PluginManager.PlEx.ExecuteDirectCommand(SettingsManager.GetSystemDisplayUID(), Msg);
+        PluginLoader.PlEx.ExecuteDirectCommand(SettingsManager.GetSystemDisplayUID(), Msg);
         //
     }
         public static void DISPLAY_SendPluginMessageData(PinLedData PData) {
@@ -131,19 +136,7 @@ public abstract class SystemMenu {
         PData.FeatureUID=KK_BASE_FEATURES_SYSTEM_UID;
         Msg.PinData = PData;
         //
-        PluginManager.PlEx.ExecuteDirectCommand(SettingsManager.GetSystemDisplayUID(), Msg);
+        PluginLoader.PlEx.ExecuteDirectCommand(SettingsManager.GetSystemDisplayUID(), Msg);
     }
-     public static void BASE_SendPluginMessageCommand(String FeatureUID) {
-        PluginMessage Msg = new PluginMessage();
-        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
-        //
-        PinBaseCommand PData = new PinBaseCommand();
-        PData.BaseCommand=BASE_COMMAND_TYPE.CHANGE_FEATURE;
-        PData.FeatureUID=FeatureUID;
-        //
-        Msg.PinData = PData;
-        //
-        PluginManager.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
-        //
-    }
+   */
 }

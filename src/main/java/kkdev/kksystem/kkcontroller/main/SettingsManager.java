@@ -5,7 +5,7 @@
  */
 package kkdev.kksystem.kkcontroller.main;
 
-import kkdev.kksystem.base.classes.plugins.PluginConnectionsConfig;
+import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import kkdev.kksystem.base.constants.SystemConsts;
 
 /**
@@ -23,11 +24,12 @@ import kkdev.kksystem.base.constants.SystemConsts;
  * @author blinov_is
  */
 public abstract class SettingsManager {
+    
+    static ControllerConfiguration MainConfiguration;
+    static FeatureConfiguration[] PluginConfigurations;
 
-    static PluginConnectionsConfig[] PluginConfigurations;
-
-    public static ArrayList<PluginConnectionsConfig> GetPluginConfigurations() {
-        ArrayList<PluginConnectionsConfig> Ret;
+    public static ArrayList<FeatureConfiguration> GetPluginConfigurations() {
+        ArrayList<FeatureConfiguration> Ret;
         Ret = new ArrayList<>();
         Ret.addAll(Arrays.asList(PluginConfigurations));
         return (Ret);
@@ -36,7 +38,7 @@ public abstract class SettingsManager {
     //TODO CHANGE THIS!!!!
     public static String GetSystemDisplayUID()
     {
-        return PluginConfigurations[0].SystemDisplay_UID;
+        return MainConfiguration.SystemDisplay_UID;
     
     }
     
@@ -59,16 +61,16 @@ public abstract class SettingsManager {
 
   
     private static void LoadPluginConnections() {
-        PluginConnectionsConfig[] Ret;
+        FeatureConfiguration[] Ret;
         System.out.println("Try load plugins connection config.");
         try {
-            File[] files = new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS).listFiles();
+            File[] files = new File(SystemConsts.KK_BASE_CONFPATH).listFiles();
             //
             if (files == null) {
                 return;
             }
             //
-            Ret = new PluginConnectionsConfig[files.length];
+            Ret = new FeatureConfiguration[files.length];
 
             FileReader fr;
             int cnt = 0;
@@ -76,8 +78,8 @@ public abstract class SettingsManager {
                 try {
                     fr = new FileReader(f.getPath());
                     XStream xstream = new XStream(new DomDriver());
-                    Ret[cnt] = (PluginConnectionsConfig) xstream.fromXML(fr);
-                    System.out.println("Loaded: " + Ret[cnt].ConfigName);
+                    Ret[cnt] = (FeatureConfiguration) xstream.fromXML(fr);
+                    System.out.println("Loaded: " + Ret[cnt].FeatureName);
                     cnt++;
                 } catch (Exception ex) {
                     System.out.println("Error on load plugin connections config");
@@ -95,17 +97,21 @@ public abstract class SettingsManager {
     }
 
     private static void MakeDefaultPluginConf() throws FileNotFoundException, IOException {
+        ControllerConfiguration DefConfig;
+        DefConfig=new ControllerConfiguration();
         //
         System.out.println("Creating default plugin connections config");
         //
-        PluginConnectionsConfig Defconf = kk_defultPluginConnectionConfig.GetDefaultConnectionsConfig();
+        FeatureConfiguration[] DefConfFeatures = kk_defultPluginConnectionConfig.GetDefaultFeature();
+        //
+        DefConfig.Features=DefConfFeatures;
         //
         File MainConfPath = new File(SystemConsts.KK_BASE_CONFPATH);
         if (!MainConfPath.exists()) {
             MainConfPath.mkdir();
             
         }
-        File ConfPath = new File(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS);
+        File ConfPath = new File(SystemConsts.KK_BASE_CONFPATH);
         if (!ConfPath.exists()) {
             ConfPath.mkdir();
             
@@ -117,9 +123,9 @@ public abstract class SettingsManager {
         // FileOutputStream fileOut = new FileOutputStream();
        
         FileWriter fw;
-        fw = new FileWriter(SystemConsts.KK_BASE_CONFPATH_CONNECTIONS + "/PluginConnections_" + Defconf.ConfigUUID + ".xml");
+        fw = new FileWriter(SystemConsts.KK_BASE_CONFPATH + "/"+SystemConsts.KK_BASE_SETTINGS_FILE);
 
-        xstream.toXML(Defconf, fw);
+        xstream.toXML(DefConfig, fw);
 
         fw.close();
     }

@@ -7,9 +7,12 @@ package kkdev.kksystem.kkcontroller.pluginmanager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import kkdev.kksystem.base.classes.base.PinBaseCommand;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
-import kkdev.kksystem.base.classes.plugins.PluginConnectionsConfig;
+import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
+import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
@@ -29,9 +32,9 @@ public class PluginExecute implements IPluginBaseInterface {
         //
         Pin=new HashMap();
         //
-        ArrayList<PluginConnectionsConfig> ConnConfig=SettingsManager.GetPluginConfigurations();
+        ArrayList<FeatureConfiguration> ConnConfig=SettingsManager.GetPluginConfigurations();
         //
-        for (PluginConnectionsConfig PCC:ConnConfig)
+        for (FeatureConfiguration PCC:ConnConfig)
         {
             for (PluginConnection PC:PCC.Connections)
             {
@@ -78,13 +81,30 @@ public class PluginExecute implements IPluginBaseInterface {
        ActivePlugins.values().stream().forEach((CONN) -> {
            CONN.PluginStop();
         });
-   
    }
+
+   //Change active system feature
+   public void ChangeFeature(String FeatureID)
+   {
+        PluginMessage Msg = new PluginMessage();
+        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+        //
+        PinBaseCommand PData = new PinBaseCommand();
+        PData.BaseCommand=PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
+        PData.FeatureUID=FeatureID;
+        //
+        Msg.PinData = PData;
+        //
+        ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
+        //
+   }
+   
     @Override
     public  PluginMessage ExecutePinCommand(PluginMessage PP) {
         return InternalExecutePin(PP);
     }
     //
+    
     private  PluginMessage InternalExecutePin(PluginMessage PP)
     {
         if (!Pin.containsKey(PP.SenderUID))
@@ -102,9 +122,18 @@ public class PluginExecute implements IPluginBaseInterface {
     
         return null;
     }
-
+    
+    @Override
+    public PluginMessage _ExecutePinCommandDirect(String PluginUUID, PluginMessage PP) {
+       return ExecuteDirectCommand(PluginUUID,PP);
+    }
+    
     public PluginMessage ExecuteDirectCommand(String TargetUUID,PluginMessage PP)
     {
+        if (TargetUUID.equals("")){
+            TargetUUID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        }
+        
         if (!TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID))
         {
             System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " >> " + ActivePlugins.get(TargetUUID).GetPluginInfo().PluginName);
@@ -119,5 +148,6 @@ public class PluginExecute implements IPluginBaseInterface {
         //
         return null;
     }
-}
 
+   
+}
