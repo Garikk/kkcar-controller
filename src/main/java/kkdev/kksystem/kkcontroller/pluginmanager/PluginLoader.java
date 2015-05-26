@@ -20,6 +20,7 @@ import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
+import kkdev.kksystem.kkcontroller.main.SettingsManager;
 
 /**
  *
@@ -30,10 +31,10 @@ public abstract class PluginLoader {
     static HashMap<String, IPluginKKConnector> ActivePlugins;
     public static PluginExecute PlEx;
 
-    public static void InitPlugins(ArrayList<FeatureConfiguration> ConnectionsConfiguration) {
+    public static void InitPlugins() {
         ArrayList<String> ToLoad;
         //Prepare config
-        ToLoad = CreateLoadPluginsList(ConnectionsConfiguration);
+        ToLoad = CreateLoadPluginsList();
         //Load plugins
         ActivePlugins = ConnectPlugins(ToLoad);
         //
@@ -50,22 +51,23 @@ public abstract class PluginLoader {
         PlEx.StartPlugins();
     }
 
-    private static ArrayList<String> CreateLoadPluginsList(ArrayList<FeatureConfiguration> ConfConfig) {
-
+    private static ArrayList<String> CreateLoadPluginsList() {
         ArrayList<String> Ret;
         Ret = new ArrayList<>();
-        //
-        ConfConfig.stream().forEach((PC) -> {
-            for (PluginConnection PCC : PC.Connections) {
-                if (!Ret.contains(PCC.SourcePluginUID)) {
-                    Ret.add(PCC.SourcePluginUID);
-                }
-                if (!Ret.contains(PCC.TargetPluginUID)) {
-                    Ret.add(PCC.TargetPluginUID);
+        
+        for (FeatureConfiguration FT : SettingsManager.MainConfiguration.Features) {
+            if (FT.Connections != null) {
+                for (PluginConnection PCC : FT.Connections) {
+                    if (!Ret.contains(PCC.SourcePluginUID)) {
+                        Ret.add(PCC.SourcePluginUID);
+                    }
+                    if (!Ret.contains(PCC.TargetPluginUID)) {
+                        Ret.add(PCC.TargetPluginUID);
+                    }
                 }
             }
-        });
-        //
+            //
+        }
         return Ret;
     }
 

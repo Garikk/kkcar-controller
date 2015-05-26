@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
 import kkdev.kksystem.base.constants.SystemConsts;
 
 /**
@@ -25,15 +26,15 @@ import kkdev.kksystem.base.constants.SystemConsts;
  */
 public abstract class SettingsManager {
     
-    static ControllerConfiguration MainConfiguration;
-    static FeatureConfiguration[] PluginConfigurations;
+    public static ControllerConfiguration MainConfiguration;
+    //static FeatureConfiguration[] PluginConfigurations;
 
-    public static ArrayList<FeatureConfiguration> GetPluginConfigurations() {
-        ArrayList<FeatureConfiguration> Ret;
-        Ret = new ArrayList<>();
-        Ret.addAll(Arrays.asList(PluginConfigurations));
-        return (Ret);
-    }
+  //  public static ArrayList<FeatureConfiguration> GetPluginConfigurations() {
+//        ArrayList<FeatureConfiguration> Ret;
+//        Ret = new ArrayList<>();
+//        Ret.addAll(Arrays.asList(PluginConfigurations));
+//        return (Ret);
+//    }
 
     //TODO CHANGE THIS!!!!
     public static String GetSystemDisplayUID()
@@ -46,12 +47,12 @@ public abstract class SettingsManager {
         //
         LoadPluginConnections();
         //
-        if (PluginConfigurations == null) {
+        if (MainConfiguration == null) {
             MakeDefaultPluginConf();
             LoadPluginConnections();
         }
         //
-        if (PluginConfigurations==null )
+        if (MainConfiguration==null )
         {
                    System.out.print("Load error"); 
                    System.exit(0);
@@ -61,37 +62,30 @@ public abstract class SettingsManager {
 
   
     private static void LoadPluginConnections() {
-        FeatureConfiguration[] Ret;
+        ControllerConfiguration Ret;
         System.out.println("Try load plugins connection config.");
         try {
-            File[] files = new File(SystemConsts.KK_BASE_CONFPATH).listFiles();
+            File files = new File(SystemConsts.KK_BASE_CONFPATH + "//"+SystemConsts.KK_BASE_SETTINGS_FILE);
             //
-            if (files == null) {
-                return;
-            }
             //
-            Ret = new FeatureConfiguration[files.length];
-
             FileReader fr;
             int cnt = 0;
-            for (File f : files) {
                 try {
-                    fr = new FileReader(f.getPath());
+                    fr = new FileReader(files.getPath());
                     XStream xstream = new XStream(new DomDriver());
-                    Ret[cnt] = (FeatureConfiguration) xstream.fromXML(fr);
-                    System.out.println("Loaded: " + Ret[cnt].FeatureName);
-                    cnt++;
+                    Ret=(ControllerConfiguration)xstream.fromXML(fr);
+
                 } catch (Exception ex) {
                     System.out.println("Error on load plugin connections config");
                     System.out.println(ex.toString());
                     return;
                 }
-            }
+
         } catch (StreamException Ex) {
             System.out.println("error");
             return;
         }
-        PluginConfigurations = Ret;
+        MainConfiguration = Ret;
         System.out.println("Ok");
         System.out.println("===========================");
     }
@@ -104,6 +98,7 @@ public abstract class SettingsManager {
         //
         FeatureConfiguration[] DefConfFeatures = kk_defultPluginConnectionConfig.GetDefaultFeature();
         //
+        DefConfig.SystemDisplay_UID=KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
         DefConfig.Features=DefConfFeatures;
         //
         File MainConfPath = new File(SystemConsts.KK_BASE_CONFPATH);
