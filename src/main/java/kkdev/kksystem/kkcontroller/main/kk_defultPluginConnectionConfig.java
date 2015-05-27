@@ -46,10 +46,6 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_SETTINGS].FeatureUUID=SystemConsts.KK_BASE_FEATURES_SYSTEM_SETTINGS_UID;
         Ret[FEATURE_SETTINGS].IsSystemFeature=true;
         
-        
-        
-        
-        
         //
         Ret[FEATURE_ODB]=new FeatureConfiguration();
         Ret[FEATURE_ODB].FeatureName="ODB Diag Monitor";

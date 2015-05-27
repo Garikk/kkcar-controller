@@ -7,6 +7,7 @@ package kkdev.kksystem.kkcontroller.main;
 
 import java.io.IOException;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
+import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 
@@ -43,14 +44,15 @@ public class KKController {
             System.out.println("================");
             //
             System.out.println("Active feature: System menu");
-            SystemMenu.ChangeCurrentFeature(KK_BASE_FEATURES_SYSTEM_UID);
+            SystemMenu.InitSystemMenu(PM.PlEx);
+          //  MenuMaker.ChangeCurrentFeature(KK_BASE_FEATURES_SYSTEM_UID);
             //
             System.out.println("================");
             System.out.println("System start:");
             PluginLoader.StartPlugins();
             //
             // Init kkcontroller display
-            SystemMenu.InitDisplay();
+            //MenuMaker.InitDisplay();
     }
     
 }
