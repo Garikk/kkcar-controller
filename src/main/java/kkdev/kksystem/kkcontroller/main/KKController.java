@@ -50,6 +50,7 @@ public class KKController {
             System.out.println("================");
             System.out.println("System start:");
             PluginLoader.StartPlugins();
+            SystemMenu.ShowMenu();
             //
             // Init kkcontroller display
             //MenuMaker.InitDisplay();

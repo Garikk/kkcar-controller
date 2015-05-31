@@ -33,7 +33,7 @@ public abstract class SystemMenu  {
         for (FeatureConfiguration FT:SettingsManager.MainConfiguration.Features)
         {
             ForMenuItems[f][0]=FT.FeatureName;
-            ForMenuItems[f][1]=FT.FeatureUUID;
+            ForMenuItems[f][1]="FS " + FT.FeatureUUID;
             f++;
         }
         SysMenu.AddMenuItems(ForMenuItems);
