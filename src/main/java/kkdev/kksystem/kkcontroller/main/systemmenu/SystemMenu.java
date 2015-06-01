@@ -5,11 +5,9 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
-import com.sun.org.apache.xalan.internal.utils.FeatureManager.Feature;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker.IMenuMakerItemSelected;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
-import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerBase;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.kkcontroller.main.SettingsManager;
@@ -26,7 +24,7 @@ public abstract class SystemMenu  {
         IMenuMakerItemSelected MenuCallBack=(String ItemID) -> {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         };
-        SysMenu=new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, BaseConnector,MenuCallBack);
+        SysMenu=new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, BaseConnector,MenuCallBack,SettingsManager.MainConfiguration.SystemDisplay_UID);
         //
         String[][] ForMenuItems=new String[SettingsManager.MainConfiguration.Features.length][2];
         int f=0;
