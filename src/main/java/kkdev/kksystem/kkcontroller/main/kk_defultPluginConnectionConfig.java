@@ -51,7 +51,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].FeatureName="ODB Diag Monitor";
         Ret[FEATURE_ODB].FeatureUUID=SystemConsts.KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature=false;
-        Ret[FEATURE_ODB].Connections=new PluginConnection[4];
+        Ret[FEATURE_ODB].Connections=new PluginConnection[5];
         //
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0]=new PluginConnection();
@@ -92,6 +92,18 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[3].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
         Ret[FEATURE_ODB].Connections[3].PinName=new String[1];
         Ret[FEATURE_ODB].Connections[3].PinName[0]=PluginConsts.KK_PLUGIN_BASE_LED_DATA;
+        //
+          //LED->Data Processor
+        Ret[FEATURE_ODB].Connections[4]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[4]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[4].ConnectionName="Controls to DataProcessor";
+        Ret[FEATURE_ODB].Connections[4].SourcePluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID;
+        Ret[FEATURE_ODB].Connections[4].SourcePluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID_UUID;
+        Ret[FEATURE_ODB].Connections[4].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
+        Ret[FEATURE_ODB].Connections[4].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
+        Ret[FEATURE_ODB].Connections[4].PinName=new String[1];
+        Ret[FEATURE_ODB].Connections[4].PinName[0]=PluginConsts.KK_PLUGIN_BASE_HID_DATA;
+        
         return Ret;
         
            

@@ -74,6 +74,13 @@
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
+                                <resource>
+                                    <directory>../plugin.controls/target</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
                             </resources>              
                             <nonFilteredFileExtensions>
                                 <nonFilteredFileExtension>jar</nonFilteredFileExtension>
