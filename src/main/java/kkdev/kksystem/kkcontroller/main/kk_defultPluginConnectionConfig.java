@@ -102,7 +102,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[4].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
         Ret[FEATURE_ODB].Connections[4].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
         Ret[FEATURE_ODB].Connections[4].PinName=new String[1];
-        Ret[FEATURE_ODB].Connections[4].PinName[0]=PluginConsts.KK_PLUGIN_BASE_HID_DATA;
+        Ret[FEATURE_ODB].Connections[4].PinName[0]=PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
         
         return Ret;
         
