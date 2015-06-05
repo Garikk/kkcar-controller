@@ -5,9 +5,14 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
+import kkdev.kksystem.base.classes.controls.PinControlData;
+import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_LONGPRESS;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker.IMenuMakerItemSelected;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
+import kkdev.kksystem.base.classes.plugins.PluginMessage;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_COMMAND;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.kkcontroller.main.SettingsManager;
@@ -18,6 +23,7 @@ import kkdev.kksystem.kkcontroller.main.SettingsManager;
  */
 public abstract class SystemMenu  {
     private static MenuMaker SysMenu;
+    
     
     public static void InitSystemMenu(IPluginBaseInterface BaseConnector)
     {
@@ -41,6 +47,44 @@ public abstract class SystemMenu  {
     public static void ShowMenu()
     {
         SysMenu.ShowMenu();
+    
+    }
+
+  
+    public static void ProcessCommands(PluginMessage PP)
+    {
+        switch (PP.PinName)
+        {
+            case (KK_PLUGIN_BASE_CONTROL_COMMAND):
+                ProcessMenuManager(PP);
+                break;
+        
+        }
+    }
+    
+    private static void ProcessMenuManager(PluginMessage PP)
+    {
+        PinControlData PD=(PinControlData) PP.PinData;
+        //
+        switch (PD.DataType)
+        {
+            case CONTROL_LONGPRESS:
+                if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID))
+                {
+                    if (PD.ControlID.equals(PinControlData.DEF_BTN_BACK))
+                    {
+                        ButtonsManager(PP,true);
+                    }
+                }
+                break;
+            case CONTROL_TRIGGERED:
+                ButtonsManager(PP,false);
+                break;
+        }
+    }
+    private static void ButtonsManager(PluginMessage PP, boolean GlobalCommand)
+    {
+        
     
     }
 }

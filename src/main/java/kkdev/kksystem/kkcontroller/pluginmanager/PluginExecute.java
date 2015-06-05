@@ -13,9 +13,12 @@ import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import kkdev.kksystem.kkcontroller.main.SettingsManager;
+import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 
 /**
  *
@@ -109,6 +112,8 @@ public class PluginExecute implements IPluginBaseInterface {
     
     private  PluginMessage InternalExecutePin(PluginMessage PP)
     {
+        SystemBasePINReceiver(PP);
+                
          if (!Pin.containsKey(PP.FeatureID))
             System.out.println("Wrong PIN received (not found feature)");
         if (!Pin.get(PP.FeatureID).containsKey(PP.SenderUID))
@@ -117,14 +122,37 @@ public class PluginExecute implements IPluginBaseInterface {
         if (!Pin.get(PP.FeatureID).get(PP.SenderUID).containsKey(PP.PinName))
             System.out.println("Wrong PIN received (Not found Pin)");
         
-        ArrayList<IPluginKKConnector> Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
+        
+        ArrayList<IPluginKKConnector> Exec=null;
+        //
+        if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID))
+        {
+           for (String Ftr:Pin.keySet())
+           {
+               Exec=Pin.get(Ftr).get(PP.SenderUID).get(PP.PinName);
+               InternalExecutePin_Exec(Exec,PP);
+           }
+        }
+        else
+        {
+            Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
+            InternalExecutePin_Exec(Exec,PP);
+        }    
+        
+        if (Exec==null)
+            return null;
+        
+    
+    
+        return null;
+    }
+    private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
+    {
         for (IPluginKKConnector PKK:Exec)
         {
           System.out.println("[DEBUG][INTERCON] " + PP.PinName + " >> " + PKK.GetPluginInfo().PluginName);
           PKK.ExecutePin(PP);
         }
-    
-        return null;
     }
     
     @Override
@@ -137,6 +165,8 @@ public class PluginExecute implements IPluginBaseInterface {
         if (TargetUUID.equals("")){
             TargetUUID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         }
+        
+        SystemBasePINReceiver(PP);
         
         if (!TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID))
         {
@@ -153,5 +183,23 @@ public class PluginExecute implements IPluginBaseInterface {
         return null;
     }
 
+    //
+    //
+    //
+    //
+    //
+    private void SystemBasePINReceiver(PluginMessage PP) {
+        switch (PP.FeatureID) {
+            case (KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID):
+                SystemMenu.ProcessCommands(PP);
+                break;
+            case (KK_BASE_FEATURES_SYSTEM_UID):
+                SystemMenu.ProcessCommands(PP);
+                break;
+        }
+
+    }
+    
+    
    
 }
