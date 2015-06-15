@@ -6,6 +6,7 @@
 package kkdev.kksystem.kkcontroller.main;
 
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
@@ -18,14 +19,26 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 public class KKController {
    
     static PluginLoader PM;
+    static boolean Shutdown=false;
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("KK System INIT Begin");
         //
         InitSettingsManager();
         //
+        int i=0;
+        while (!Shutdown)
+        {
+            i++;
+            sleep(1000);
+            if (i==55)
+                Shutdown=true;
+            
+        }
+        System.out.println("Stop");
+        System.exit(0);
     }
     
     
@@ -52,8 +65,7 @@ public class KKController {
             PluginLoader.StartPlugins();
             SystemMenu.ShowMenu();
             //
-            // Init kkcontroller display
-            //MenuMaker.InitDisplay();
+         
     }
     
 }

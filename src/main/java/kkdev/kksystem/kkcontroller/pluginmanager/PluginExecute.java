@@ -40,7 +40,8 @@ public class PluginExecute implements IPluginBaseInterface {
                 for (PluginConnection PC : Feature.Connections) {
                     for (String PIN : PC.PinName) {
                         RegisterPINTarget(Feature.FeatureUUID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
-                    }
+                        RegisterPINTarget(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
+                     }
                 }
             }
         }
@@ -49,6 +50,7 @@ public class PluginExecute implements IPluginBaseInterface {
 
     private void RegisterPINTarget(String FeatureID, String SenderPluginUUID, String TargetPluginUID,String PIN)
     {
+        
         //
         if (!Pin.containsKey(FeatureID))
             Pin.put(FeatureID,new HashMap());
@@ -125,19 +127,9 @@ public class PluginExecute implements IPluginBaseInterface {
         
         ArrayList<IPluginKKConnector> Exec=null;
         //
-        if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID))
-        {
-           for (String Ftr:Pin.keySet())
-           {
-               Exec=Pin.get(Ftr).get(PP.SenderUID).get(PP.PinName);
-               InternalExecutePin_Exec(Exec,PP);
-           }
-        }
-        else
-        {
-            Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
-            InternalExecutePin_Exec(Exec,PP);
-        }    
+        Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
+        //System.out.println("[DEBUG][INTERCON] FTR: " + PP.FeatureID + " SNDR: " +PP.SenderUID +" >> "+ PP.PinName);
+        InternalExecutePin_Exec(Exec,PP);
         
         if (Exec==null)
             return null;
@@ -150,7 +142,6 @@ public class PluginExecute implements IPluginBaseInterface {
     {
         for (IPluginKKConnector PKK:Exec)
         {
-          System.out.println("[DEBUG][INTERCON] " + PP.PinName + " >> " + PKK.GetPluginInfo().PluginName);
           PKK.ExecutePin(PP);
         }
     }
@@ -168,18 +159,17 @@ public class PluginExecute implements IPluginBaseInterface {
         
         SystemBasePINReceiver(PP);
         
-        if (!TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID))
+        if (TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID) & TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID))
         {
-            System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " >> " + ActivePlugins.get(TargetUUID).GetPluginInfo().PluginName);
-            return ActivePlugins.get(TargetUUID).ExecutePin(PP);
-        }
-        else
             for (IPluginKKConnector PKK:ActivePlugins.values())
             {
-                System.out.println("[DEBUG][PLUGIN INTERCON] " + PP.PinName + " >> " + PKK.GetPluginInfo().PluginName);
                 return PKK.ExecutePin(PP);
             }
-        //
+        }
+        else
+        {
+            return ActivePlugins.get(TargetUUID).ExecutePin(PP);
+        }
         return null;
     }
 

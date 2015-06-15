@@ -11,7 +11,7 @@ import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker.IMenuMakerItemSelected;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_COMMAND;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
@@ -55,7 +55,7 @@ public abstract class SystemMenu  {
     {
         switch (PP.PinName)
         {
-            case (KK_PLUGIN_BASE_CONTROL_COMMAND):
+            case (KK_PLUGIN_BASE_CONTROL_DATA):
                 ProcessMenuManager(PP);
                 break;
         
@@ -73,18 +73,30 @@ public abstract class SystemMenu  {
                 {
                     if (PD.ControlID.equals(PinControlData.DEF_BTN_BACK))
                     {
-                        ButtonsManager(PP,true);
+                        ButtonsManager(PD,true);
                     }
                 }
                 break;
             case CONTROL_TRIGGERED:
-                ButtonsManager(PP,false);
+                ButtonsManager(PD,false);
                 break;
         }
     }
-    private static void ButtonsManager(PluginMessage PP, boolean GlobalCommand)
-    {
-        
-    
+
+    private static void ButtonsManager(PinControlData PD, boolean GlobalCommand) {
+        switch (PD.ControlID) {
+            case PinControlData.DEF_BTN_UP:
+                SysMenu.MenuSelectUp();
+                break;
+            case PinControlData.DEF_BTN_DOWN:
+                SysMenu.MenuSelectDown();
+                break;
+            case PinControlData.DEF_BTN_ENTER:
+                break;
+            case PinControlData.DEF_BTN_BACK:
+                break;
+
+        }
+
     }
 }
