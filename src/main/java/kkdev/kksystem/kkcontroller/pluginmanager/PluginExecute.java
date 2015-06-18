@@ -99,7 +99,8 @@ public class PluginExecute implements IPluginBaseInterface {
         PinBaseCommand PData = new PinBaseCommand();
         PData.BaseCommand=PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
         //
-        Msg.FeatureID=FeatureID;
+        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        PData.ChangeFeatureID=FeatureID;
         Msg.PinData = PData;
         //
         ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
@@ -159,18 +160,18 @@ public class PluginExecute implements IPluginBaseInterface {
         
         SystemBasePINReceiver(PP);
         
-        if (TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID) & TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID))
+        if (TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID) | TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID))
         {
             for (IPluginKKConnector PKK:ActivePlugins.values())
             {
-                return PKK.ExecutePin(PP);
+                PKK.ExecutePin(PP);
             }
+            return null;
         }
         else
         {
             return ActivePlugins.get(TargetUUID).ExecutePin(PP);
         }
-        return null;
     }
 
     //

@@ -56,9 +56,8 @@ public class KKController {
             //
             System.out.println("================");
             //
-            System.out.println("Active feature: System menu");
             SystemMenu.InitSystemMenu(PM.PlEx);
-          //  MenuMaker.ChangeCurrentFeature(KK_BASE_FEATURES_SYSTEM_UID);
+           PluginLoader.PlEx.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
             //
             System.out.println("================");
             System.out.println("System start:");
