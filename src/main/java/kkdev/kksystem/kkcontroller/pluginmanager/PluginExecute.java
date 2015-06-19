@@ -11,6 +11,7 @@ import kkdev.kksystem.base.classes.base.PinBaseCommand;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
+import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
@@ -62,9 +63,7 @@ public class PluginExecute implements IPluginBaseInterface {
             Pin.get(FeatureID).get(SenderPluginUUID).put(PIN, new ArrayList<>());
         //
         Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
-            
         //
-          System.out.println("[DEBUG][PLUGIN INTERCON][REG] " + ActivePlugins.get(SenderPluginUUID) + " " + ActivePlugins.get(TargetPluginUID) + " " + PIN);
     }
     
      public  void InitPlugins()
@@ -116,7 +115,10 @@ public class PluginExecute implements IPluginBaseInterface {
     private  PluginMessage InternalExecutePin(PluginMessage PP)
     {
         SystemBasePINReceiver(PP);
-                
+        //
+         if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_UID))
+             return null;
+         
          if (!Pin.containsKey(PP.FeatureID))
             System.out.println("Wrong PIN received (not found feature)");
         if (!Pin.get(PP.FeatureID).containsKey(PP.SenderUID))
@@ -129,14 +131,9 @@ public class PluginExecute implements IPluginBaseInterface {
         ArrayList<IPluginKKConnector> Exec=null;
         //
         Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
-        //System.out.println("[DEBUG][INTERCON] FTR: " + PP.FeatureID + " SNDR: " +PP.SenderUID +" >> "+ PP.PinName);
+
         InternalExecutePin_Exec(Exec,PP);
         
-        if (Exec==null)
-            return null;
-        
-    
-    
         return null;
     }
     private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
