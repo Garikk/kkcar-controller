@@ -48,7 +48,7 @@ public final class kk_defultPluginConnectionConfig {
         
         //
         Ret[FEATURE_ODB]=new FeatureConfiguration();
-        Ret[FEATURE_ODB].FeatureName="ODB Diag Monitor";
+        Ret[FEATURE_ODB].FeatureName="ODB Diag Displ";
         Ret[FEATURE_ODB].FeatureUUID=SystemConsts.KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature=false;
         Ret[FEATURE_ODB].Connections=new PluginConnection[5];

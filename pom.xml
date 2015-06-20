@@ -75,7 +75,7 @@
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../plugin.controls/target</directory>
+                                    <directory>../kkcar-plugin-controls/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
