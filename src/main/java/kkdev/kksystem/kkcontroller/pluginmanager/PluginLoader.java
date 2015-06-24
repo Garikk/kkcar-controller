@@ -147,7 +147,7 @@ public abstract class PluginLoader {
                 System.out.println("Load: ok");
                 //
                 Counter++;
-            } catch (MalformedURLException | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+            } catch (MalformedURLException | InstantiationException | ClassNotFoundException |NullPointerException | IllegalAccessException e) {
                 System.out.println("Load Error: " + loadFile.getName() + " " + e.toString());
             }
             //

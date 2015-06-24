@@ -44,6 +44,50 @@
                 <version>2.7</version>
                 <executions>
                     <execution>
+                        <id>copy-resources-2</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/lib</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>../plugin.datadisplay/target/lib</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>../plugin.lcddisplay/target/lib</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>../plugin.odb2/target/lib</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>../kkcar-plugin-controls/target/lib</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                            </resources>              
+                            <nonFilteredFileExtensions>
+                                <nonFilteredFileExtension>jar</nonFilteredFileExtension>
+                            </nonFilteredFileExtensions>
+                        </configuration>            
+                    </execution>
+                                        <execution>
                         <id>copy-resources</id>
                         <!-- here the phase you need -->
                         <phase>validate</phase>

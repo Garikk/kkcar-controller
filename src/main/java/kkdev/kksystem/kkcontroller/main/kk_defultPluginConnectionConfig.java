@@ -84,7 +84,6 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[2].PinName[1]=PluginConsts.KK_PLUGIN_BASE_LED_DATA;
          //LED->Data Processor
         Ret[FEATURE_ODB].Connections[3]=new PluginConnection();
-        Ret[FEATURE_ODB].Connections[3]=new PluginConnection();
         Ret[FEATURE_ODB].Connections[3].ConnectionName="LED to DataProcessor";
         Ret[FEATURE_ODB].Connections[3].SourcePluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
         Ret[FEATURE_ODB].Connections[3].SourcePluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
@@ -93,8 +92,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[3].PinName=new String[1];
         Ret[FEATURE_ODB].Connections[3].PinName[0]=PluginConsts.KK_PLUGIN_BASE_LED_DATA;
         //
-          //LED->Data Processor
-        Ret[FEATURE_ODB].Connections[4]=new PluginConnection();
+          //Controls->Data Processor
         Ret[FEATURE_ODB].Connections[4]=new PluginConnection();
         Ret[FEATURE_ODB].Connections[4].ConnectionName="Controls to DataProcessor";
         Ret[FEATURE_ODB].Connections[4].SourcePluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID;
@@ -103,7 +101,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[4].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
         Ret[FEATURE_ODB].Connections[4].PinName=new String[1];
         Ret[FEATURE_ODB].Connections[4].PinName[0]=PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
-        
+      
         return Ret;
         
            
