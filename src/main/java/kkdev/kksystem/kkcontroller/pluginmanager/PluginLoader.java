@@ -20,7 +20,7 @@ import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
-import kkdev.kksystem.kkcontroller.main.SettingsManager;
+import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 
 /**
  *
@@ -55,7 +55,7 @@ public abstract class PluginLoader {
         ArrayList<String> Ret;
         Ret = new ArrayList<>();
         
-        for (FeatureConfiguration FT : SettingsManager.MainConfiguration.Features) {
+        for (FeatureConfiguration FT : ControllerSettingsManager.MainConfiguration.Features) {
             if (FT.Connections != null) {
                 for (PluginConnection PCC : FT.Connections) {
                     if (!Ret.contains(PCC.SourcePluginUID)) {

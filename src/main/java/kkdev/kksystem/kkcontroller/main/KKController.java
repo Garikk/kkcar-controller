@@ -47,7 +47,7 @@ public class KKController {
             System.out.println("================");
             System.out.println("Settings:");
             //
-            SettingsManager.Init();
+            ControllerSettingsManager.Init();
             //
             System.out.println("================");
             System.out.println("Plugins:");

@@ -11,14 +11,13 @@ import kkdev.kksystem.base.classes.base.PinBaseCommand;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
-import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
-import kkdev.kksystem.kkcontroller.main.SettingsManager;
+import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 
 /**
@@ -36,7 +35,7 @@ public class PluginExecute implements IPluginBaseInterface {
         //
         Pin = new HashMap();
         //
-        for (FeatureConfiguration Feature : SettingsManager.MainConfiguration.Features) {
+        for (FeatureConfiguration Feature : ControllerSettingsManager.MainConfiguration.Features) {
             if (Feature.Connections != null) {
                 for (PluginConnection PC : Feature.Connections) {
                     for (String PIN : PC.PinName) {

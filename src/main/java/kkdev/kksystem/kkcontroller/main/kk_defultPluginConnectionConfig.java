@@ -5,6 +5,8 @@
  */
 package kkdev.kksystem.kkcontroller.main;
 
+import kkdev.kksystem.base.classes.display.menumaker.MKMenuItem;
+import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.constants.PluginConsts;
@@ -18,24 +20,11 @@ public final class kk_defultPluginConnectionConfig {
     static int FEATURE_ODB=0;
     static int FEATURE_VERSION=1;
     static int FEATURE_SETTINGS=2;
-    static int FEATURE_REBOOT=3;
-    static int FEATURE_POWEROFF=4;
     
     public static FeatureConfiguration[] GetDefaultFeature()
     {
-        FeatureConfiguration[] Ret=new FeatureConfiguration[5];
+        FeatureConfiguration[] Ret=new FeatureConfiguration[3];
 
-        Ret[FEATURE_REBOOT]=new FeatureConfiguration();
-        Ret[FEATURE_REBOOT].FeatureName="Reboot";
-        Ret[FEATURE_REBOOT].FeatureUUID=SystemConsts.KK_BASE_FEATURES_SYSTEM_REBOOT_UID;
-        Ret[FEATURE_REBOOT].IsSystemFeature=true;
-        
-        Ret[FEATURE_POWEROFF]=new FeatureConfiguration();
-        Ret[FEATURE_POWEROFF].FeatureName="Power off";
-        Ret[FEATURE_POWEROFF].FeatureUUID=SystemConsts.KK_BASE_FEATURES_SYSTEM_POWEROFF_UID;
-        Ret[FEATURE_POWEROFF].IsSystemFeature=true;
-
-        
         Ret[FEATURE_VERSION]=new FeatureConfiguration();
         Ret[FEATURE_VERSION].FeatureName="Version info";
         Ret[FEATURE_VERSION].FeatureUUID=SystemConsts.KK_BASE_FEATURES_SYSTEM_VERSIONINFO_UID;
@@ -106,4 +95,81 @@ public final class kk_defultPluginConnectionConfig {
         
            
     }
+    
+    public static MKMenuItem[] GetDefaultSystemMenuItems()
+    {
+        //We create only system items, feature items creating in SystemMenu module from non-system features
+        MKMenuItem[] Ret;
+        
+        //
+        // Settings 
+        //  -test setting1
+        //  -test setting2
+        //  -test setting3
+        //  -test submenu
+        //  --test setting1
+        //  --test setting2
+        // Board tools
+        //  -SysInfo        
+        //  -reboot
+        //  -poweroff
+        // KK Info
+        //  -Plugins
+        //  -Version
+        Ret=new MKMenuItem[3]; // 3 main items (see above)
+        
+        Ret[0]=new MKMenuItem();
+        Ret[0].DisplayName="Settings";
+        Ret[0].ItemCommand=MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].SubItems=new MKMenuItem[4];
+        Ret[0].SubItems[0]=new MKMenuItem();
+        Ret[0].SubItems[0].DisplayName="Test Prm11";
+        Ret[0].SubItems[0].ItemCommand="";
+        Ret[0].SubItems[1]=new MKMenuItem();
+        Ret[0].SubItems[1].DisplayName="Test Prm12";
+        Ret[0].SubItems[1].ItemCommand="";
+        Ret[0].SubItems[2]=new MKMenuItem();
+        Ret[0].SubItems[2].DisplayName="Test Prm13";
+        Ret[0].SubItems[2].ItemCommand="";
+        Ret[0].SubItems[3]=new MKMenuItem();
+        Ret[0].SubItems[3].DisplayName="test submenu";
+        Ret[0].SubItems[3].ItemCommand=MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].SubItems[3].SubItems=new MKMenuItem[2];
+        Ret[0].SubItems[3].SubItems[0]=new MKMenuItem();
+        Ret[0].SubItems[3].SubItems[0].DisplayName="Test Prm21";
+        Ret[0].SubItems[3].SubItems[0].ItemCommand="";
+        Ret[0].SubItems[3].SubItems[1]=new MKMenuItem();
+        Ret[0].SubItems[3].SubItems[1].DisplayName="Test Prm22";
+        Ret[0].SubItems[3].SubItems[1].ItemCommand="";
+        Ret[1]=new MKMenuItem();
+        Ret[1].DisplayName="Board tools";
+        Ret[1].ItemCommand=MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[1].SubItems=new MKMenuItem[3];
+        Ret[1].SubItems[0]=new MKMenuItem();
+        Ret[1].SubItems[0].DisplayName="System Info";
+        Ret[1].SubItems[0].ItemCommand="";
+        Ret[1].SubItems[1]=new MKMenuItem();
+        Ret[1].SubItems[1].DisplayName="Reboot";
+        Ret[1].SubItems[1].ItemCommand="";
+        Ret[1].SubItems[2]=new MKMenuItem();
+        Ret[1].SubItems[2].DisplayName="Power Off";
+        Ret[1].SubItems[2].ItemCommand="";
+        Ret[2]=new MKMenuItem();
+        Ret[2].DisplayName="KK Info";
+        Ret[2].ItemCommand=MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[2].SubItems=new MKMenuItem[2];
+        Ret[2].SubItems[0]=new MKMenuItem();
+        Ret[2].SubItems[0].DisplayName="Plugins";
+        Ret[2].SubItems[0].ItemCommand="";
+        Ret[2].SubItems[1]=new MKMenuItem();
+        Ret[2].SubItems[1].DisplayName="Version";
+        Ret[2].SubItems[1].ItemCommand="";
+
+        
+                
+        return Ret;
+    }
+    
+    
+    
 }

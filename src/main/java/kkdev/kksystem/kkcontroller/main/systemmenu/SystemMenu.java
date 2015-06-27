@@ -5,8 +5,11 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
+import java.util.ArrayList;
+import java.util.List;
 import kkdev.kksystem.base.classes.controls.PinControlData;
 import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_LONGPRESS;
+import kkdev.kksystem.base.classes.display.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.menumaker.MenuMaker.IMenuMakerItemSelected;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
@@ -15,7 +18,7 @@ import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
-import kkdev.kksystem.kkcontroller.main.SettingsManager;
+import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 
 /**
@@ -33,16 +36,33 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, BaseConnector, MenuCallBack, SettingsManager.MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, BaseConnector, MenuCallBack, ControllerSettingsManager.MainConfiguration.SystemDisplay_UID);
         //
-        String[][] ForMenuItems = new String[SettingsManager.MainConfiguration.Features.length][2];
-        int f = 0;
-        for (FeatureConfiguration FT : SettingsManager.MainConfiguration.Features) {
-            ForMenuItems[f][0] = FT.FeatureName;
-            ForMenuItems[f][1] = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID;
-            f++;
+      //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
+        List<MKMenuItem> FeatureItems=new ArrayList<>();
+        for (FeatureConfiguration FT : ControllerSettingsManager.MainConfiguration.Features) {
+            if (FT.IsSystemFeature)
+                continue;
+            
+            MKMenuItem MI=new MKMenuItem();
+            MI.DisplayName=FT.FeatureName;
+            MI.ItemCommand=MNU_CMD_CHANGE_FEATURE+ " " +FT.FeatureUUID;
+            FeatureItems.add(MI);
         }
-        SysMenu.AddMenuItems(ForMenuItems);
+        for (MKMenuItem MI:ControllerSettingsManager.MainConfiguration.SystemMenuItems)
+        {
+            FeatureItems.add(MI);
+        }
+        MKMenuItem[] MT=new MKMenuItem[FeatureItems.size()];
+        int i=0;
+        for (MKMenuItem M:FeatureItems)
+        {
+            MT[i]=M;
+            i++;
+        }
+        
+        
+         SysMenu.AddMenuItems(MT);
         //
     }
 
@@ -104,6 +124,7 @@ public abstract class SystemMenu {
                 SysMenu.MenuExec();
                 break;
             case PinControlData.DEF_BTN_BACK:
+                 SysMenu.MenuSelectBack();
                 break;
 
         }
