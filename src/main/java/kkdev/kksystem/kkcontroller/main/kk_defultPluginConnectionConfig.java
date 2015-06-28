@@ -11,6 +11,7 @@ import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.constants.PluginConsts;
 import kkdev.kksystem.base.constants.SystemConsts;
+import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 
 /**
  *
@@ -147,23 +148,23 @@ public final class kk_defultPluginConnectionConfig {
         Ret[1].SubItems=new MKMenuItem[3];
         Ret[1].SubItems[0]=new MKMenuItem();
         Ret[1].SubItems[0].DisplayName="System Info";
-        Ret[1].SubItems[0].ItemCommand="";
+        Ret[1].SubItems[0].ItemCommand=SystemMenu.MNU_CMD_SYSMENU_PFX+" "+SystemMenu.MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + SystemMenu.MNU_CMD_BRD_TOOLS_BOARDINFO;
         Ret[1].SubItems[1]=new MKMenuItem();
         Ret[1].SubItems[1].DisplayName="Reboot";
-        Ret[1].SubItems[1].ItemCommand="";
+        Ret[1].SubItems[1].ItemCommand=SystemMenu.MNU_CMD_SYSMENU_PFX+" "+SystemMenu.MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + SystemMenu.MNU_CMD_BRD_TOOLS_REBOOT;
         Ret[1].SubItems[2]=new MKMenuItem();
         Ret[1].SubItems[2].DisplayName="Power Off";
-        Ret[1].SubItems[2].ItemCommand="";
+        Ret[1].SubItems[2].ItemCommand=SystemMenu.MNU_CMD_SYSMENU_PFX+" "+SystemMenu.MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + SystemMenu.MNU_CMD_BRD_TOOLS_POWEROFF;
         Ret[2]=new MKMenuItem();
         Ret[2].DisplayName="KK Info";
         Ret[2].ItemCommand=MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
         Ret[2].SubItems=new MKMenuItem[2];
         Ret[2].SubItems[0]=new MKMenuItem();
         Ret[2].SubItems[0].DisplayName="Plugins";
-        Ret[2].SubItems[0].ItemCommand="";
+        Ret[2].SubItems[0].ItemCommand=SystemMenu.MNU_CMD_SYSMENU_PFX+" "+SystemMenu.MNU_CMD_SYSMENU_PFX_INFO + " " + SystemMenu.MNU_CMD_BRD_INFO_PLUGINS;
         Ret[2].SubItems[1]=new MKMenuItem();
         Ret[2].SubItems[1].DisplayName="Version";
-        Ret[2].SubItems[1].ItemCommand="";
+        Ret[2].SubItems[1].ItemCommand=SystemMenu.MNU_CMD_SYSMENU_PFX+" "+SystemMenu.MNU_CMD_SYSMENU_PFX_INFO + " " + SystemMenu.MNU_CMD_BRD_INFO_VERSION;
 
         
                 

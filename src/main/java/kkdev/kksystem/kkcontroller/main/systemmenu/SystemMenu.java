@@ -28,9 +28,16 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 public abstract class SystemMenu {
 
     private static MenuMaker SysMenu;
-    private static final String MNU_CMD_CHANGE_FEATURE = "CHFTR";
-    private static final String MNU_CMD_REBOOT = "REBOOT";
-    private static final String MNU_CMD_POWEROFF = "POWEROFF";
+    public  static final String MNU_CMD_CHANGE_FEATURE = "CHFTR";
+    public static final String MNU_CMD_SYSMENU_PFX = "KKSYSCMD";
+    public static final String MNU_CMD_SYSMENU_PFX_BRDTOOLS = "TOOLS";
+    public static final String MNU_CMD_SYSMENU_PFX_INFO = "INFO";
+    
+    public static final String MNU_CMD_BRD_TOOLS_REBOOT = "REBOOT";
+    public static final String MNU_CMD_BRD_TOOLS_POWEROFF = "POWEROFF";
+    public static final String MNU_CMD_BRD_TOOLS_BOARDINFO = "BOARDINFO";
+    public static final String MNU_CMD_BRD_INFO_PLUGINS = "PLUGINS";
+    public static final String MNU_CMD_BRD_INFO_VERSION = "VERSION";
 
     public static void InitSystemMenu(IPluginBaseInterface BaseConnector) {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
@@ -78,9 +85,8 @@ public abstract class SystemMenu {
             case MNU_CMD_CHANGE_FEATURE:
                 PluginLoader.PlEx.ChangeFeature(CMD[1]);
                 break;
-            case MNU_CMD_POWEROFF:
-                break;
-            case MNU_CMD_REBOOT:
+            case MNU_CMD_SYSMENU_PFX:
+                MenuOperations.ExecSysMenuOperation(CMD);
                 break;
         }
 
