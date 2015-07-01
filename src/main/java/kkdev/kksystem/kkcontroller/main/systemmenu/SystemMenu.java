@@ -43,7 +43,7 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, BaseConnector, MenuCallBack, ControllerSettingsManager.MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID,null, BaseConnector, MenuCallBack, ControllerSettingsManager.MainConfiguration.SystemDisplay_UID);
         //
       //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems=new ArrayList<>();
