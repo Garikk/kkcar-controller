@@ -5,8 +5,8 @@
  */
 package kkdev.kksystem.kkcontroller.main;
 
-import kkdev.kksystem.base.classes.display.menumaker.MKMenuItem;
-import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
+import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
+import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.constants.PluginConsts;

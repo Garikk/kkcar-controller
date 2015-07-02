@@ -8,7 +8,7 @@ package kkdev.kksystem.kkcontroller.main;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
-import kkdev.kksystem.base.classes.display.menumaker.MenuMaker;
+import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 
