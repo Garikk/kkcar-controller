@@ -28,11 +28,11 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 public abstract class SystemMenu {
 
     private static MenuMaker SysMenu;
-    public  static final String MNU_CMD_CHANGE_FEATURE = "CHFTR";
+    public static final String MNU_CMD_CHANGE_FEATURE = "CHFTR";
     public static final String MNU_CMD_SYSMENU_PFX = "KKSYSCMD";
     public static final String MNU_CMD_SYSMENU_PFX_BRDTOOLS = "TOOLS";
     public static final String MNU_CMD_SYSMENU_PFX_INFO = "INFO";
-    
+
     public static final String MNU_CMD_BRD_TOOLS_REBOOT = "REBOOT";
     public static final String MNU_CMD_BRD_TOOLS_POWEROFF = "POWEROFF";
     public static final String MNU_CMD_BRD_TOOLS_BOARDINFO = "BOARDINFO";
@@ -43,33 +43,30 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID,null, BaseConnector, MenuCallBack, ControllerSettingsManager.MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, null, BaseConnector, MenuCallBack, ControllerSettingsManager.MainConfiguration.SystemDisplay_UID);
         //
-      //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
-        List<MKMenuItem> FeatureItems=new ArrayList<>();
+        //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
+        List<MKMenuItem> FeatureItems = new ArrayList<>();
         for (FeatureConfiguration FT : ControllerSettingsManager.MainConfiguration.Features) {
-            if (FT.IsSystemFeature)
+            if (FT.IsSystemFeature) {
                 continue;
-            
-            MKMenuItem MI=new MKMenuItem();
-            MI.DisplayName=FT.FeatureName;
-            MI.ItemCommand=MNU_CMD_CHANGE_FEATURE+ " " +FT.FeatureUUID;
+            }
+
+            MKMenuItem MI = new MKMenuItem();
+            MI.DisplayName = FT.FeatureName;
+            MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID;
             FeatureItems.add(MI);
         }
-        for (MKMenuItem MI:ControllerSettingsManager.MainConfiguration.SystemMenuItems)
-        {
+        for (MKMenuItem MI : ControllerSettingsManager.MainConfiguration.SystemMenuItems) {
             FeatureItems.add(MI);
         }
-        MKMenuItem[] MT=new MKMenuItem[FeatureItems.size()];
-        int i=0;
-        for (MKMenuItem M:FeatureItems)
-        {
-            MT[i]=M;
+        MKMenuItem[] MT = new MKMenuItem[FeatureItems.size()];
+        int i = 0;
+        for (MKMenuItem M : FeatureItems) {
+            MT[i] = M;
             i++;
         }
-        
-        
-         SysMenu.AddMenuItems(MT);
+        SysMenu.AddMenuItems(MT);
         //
     }
 
@@ -130,7 +127,7 @@ public abstract class SystemMenu {
                 SysMenu.MenuExec();
                 break;
             case PinControlData.DEF_BTN_BACK:
-                 SysMenu.MenuSelectBack();
+                SysMenu.MenuSelectBack();
                 break;
 
         }
