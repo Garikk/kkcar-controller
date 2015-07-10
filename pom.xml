@@ -49,21 +49,21 @@
                             <outputDirectory>${basedir}/target/lib</outputDirectory>
                             <resources>          
                                 <resource>
-                                    <directory>../plugin.datadisplay/target/lib</directory>
+                                    <directory>../kkcar-plugin-datadisplay/target/lib</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../plugin.lcddisplay/target/lib</directory>
+                                    <directory>../kkcar-plugin-lcddisplay/target/lib</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../plugin.odb2/target/lib</directory>
+                                    <directory>../kkcar-plugin-odb2/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
@@ -77,13 +77,20 @@
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
+                                <resource>
+                                    <directory>../kkcar-plugin-bluetooth/target/lib</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
                             </resources>              
                             <nonFilteredFileExtensions>
                                 <nonFilteredFileExtension>jar</nonFilteredFileExtension>
                             </nonFilteredFileExtensions>
                         </configuration>            
                     </execution>
-                                        <execution>
+                        <execution>
                         <id>copy-resources</id>
                         <!-- here the phase you need -->
                         <phase>validate</phase>
@@ -94,21 +101,21 @@
                             <outputDirectory>${basedir}/target/plugins</outputDirectory>
                             <resources>          
                                 <resource>
-                                    <directory>../plugin.datadisplay/target</directory>
+                                    <directory>../kkcar-plugin-datadisplay/target</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../plugin.lcddisplay/target</directory>
+                                    <directory>../kkcar-plugin-lcddisplay/target</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../plugin.odb2/target</directory>
+                                    <directory>../kkcar-plugin-odb2/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
@@ -116,6 +123,13 @@
                                 </resource>
                                 <resource>
                                     <directory>../kkcar-plugin-controls/target</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                                 <resource>
+                                    <directory>../kkcar-plugin-bluetooth/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>

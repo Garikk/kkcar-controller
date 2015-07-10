@@ -8,6 +8,7 @@ package kkdev.kksystem.kkcontroller.main.systemmenu;
 import java.util.ArrayList;
 import java.util.List;
 import kkdev.kksystem.base.classes.controls.PinControlData;
+import kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA;
 import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_LONGPRESS;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
@@ -28,6 +29,7 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 public abstract class SystemMenu {
 
     private static MenuMaker SysMenu;
+       
     public static final String MNU_CMD_CHANGE_FEATURE = "CHFTR";
     public static final String MNU_CMD_SYSMENU_PFX = "KKSYSCMD";
     public static final String MNU_CMD_SYSMENU_PFX_BRDTOOLS = "TOOLS";
@@ -38,6 +40,8 @@ public abstract class SystemMenu {
     public static final String MNU_CMD_BRD_TOOLS_BOARDINFO = "BOARDINFO";
     public static final String MNU_CMD_BRD_INFO_PLUGINS = "PLUGINS";
     public static final String MNU_CMD_BRD_INFO_VERSION = "VERSION";
+    
+
 
     public static void InitSystemMenu(IPluginBaseInterface BaseConnector) {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
@@ -101,6 +105,8 @@ public abstract class SystemMenu {
     private static void ProcessMenuManager(PluginMessage PP) {
         PinControlData PD = (PinControlData) PP.PinData;
         //
+
+                
         switch (PD.DataType) {
             case CONTROL_LONGPRESS:
                 if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID)) {
@@ -127,7 +133,11 @@ public abstract class SystemMenu {
                 SysMenu.MenuExec();
                 break;
             case PinControlData.DEF_BTN_BACK:
-                SysMenu.MenuSelectBack();
+                if (PD.DataType == KK_CONTROL_DATA.CONTROL_TRIGGERED) {
+                    SysMenu.MenuSelectBack();
+                } else if (PD.DataType == KK_CONTROL_DATA.CONTROL_LONGPRESS) {
+                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID);
+                }
                 break;
 
         }
