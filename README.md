@@ -26,3 +26,9 @@ kkcar-controller (данный репозиторий)
 
 [kkcar-plugin-webdatasync] (https://github.com/Garikk/kkcar-plugin-webdatasync)
   Плагин связи с сайтом KKCar webmaster, пока не функционален
+
+[kkar-androidapp](https://github.com/Garikk/kkcar-androidapp)
+  Приложение для Android для управления KKCar
+
+[kkcar-plugin-bluetooth] (https://github.com/Garikk/kkcar-plugin-bluetooth)
+  Плагин связи bluetooth, для соединение с приложением android
