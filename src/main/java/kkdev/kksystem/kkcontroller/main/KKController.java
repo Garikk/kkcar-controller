@@ -8,9 +8,9 @@ package kkdev.kksystem.kkcontroller.main;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
-import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
 
 /**
  *
@@ -48,6 +48,7 @@ public class KKController {
             System.out.println("Settings:");
             //
             ControllerSettingsManager.Init();
+            SystemUpdater.GetConfigFromWeb();
             //
             System.out.println("================");
             System.out.println("Plugins:");
