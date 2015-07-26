@@ -36,7 +36,7 @@ public abstract class PluginLoader {
         //Prepare config
         ToLoad = CreateLoadPluginsList();
         //Load plugins
-        ActivePlugins = ConnectPlugins(ToLoad);
+        ActivePlugins = ConnectPlugins(ToLoad,false);
         //
         if (ActivePlugins == null) {
             return;
@@ -100,8 +100,7 @@ public abstract class PluginLoader {
         return Ret;
     }
 
-    private static HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<String> Plugins) {
-        System.out.println("Required plugins count: " + Plugins.size());
+    public static HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<String> Plugins, boolean ConnectAllPlugins) {
         //
         int Counter = 0;
         HashMap<String, IPluginKKConnector> Ret = new HashMap<>();
@@ -138,7 +137,7 @@ public abstract class PluginLoader {
                 //
                 PluginConnection = (IPluginKKConnector) CLoader.loadClass(ConnectorClass).newInstance();
                 //
-                if (!Plugins.contains(PluginConnection.GetPluginInfo().PluginUUID)) {
+                if ((!Plugins.contains(PluginConnection.GetPluginInfo().PluginUUID) & (!ConnectAllPlugins))) {
                     System.out.println("Config: not in config. skip");
                     continue;
                 }

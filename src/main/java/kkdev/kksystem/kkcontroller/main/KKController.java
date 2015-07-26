@@ -48,7 +48,7 @@ public class KKController {
             System.out.println("Settings:");
             //
             ControllerSettingsManager.Init();
-            SystemUpdater.GetConfigFromWeb();
+            SystemUpdater.CheckUpdate();
             //
             System.out.println("================");
             System.out.println("Plugins:");

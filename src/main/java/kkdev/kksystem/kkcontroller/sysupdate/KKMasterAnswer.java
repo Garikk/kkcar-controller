@@ -10,13 +10,10 @@ package kkdev.kksystem.kkcontroller.sysupdate;
  * @author sayma_000
  */
 public class KKMasterAnswer {
-    public static enum KKM_ANS_States
-    {
-        ANS_CONF_OK,
-        ANS_ERR
-    }
+    public int KKM_ANS_State_OK=0;
+    public int KKM_ANS_State_ERR=1;
     
-    public KKM_ANS_States AnswerState;
+    public int AnswerState;
     public int Version;
     public String JsonData;
     
