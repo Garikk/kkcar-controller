@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
+import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
+import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
@@ -32,7 +34,7 @@ import org.apache.http.message.BasicNameValuePair;
 public abstract class SystemUpdater {
 
     final static String ___TEST_KKCAR_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
-    final static String WEBMASTER_URL = "http://supergarikk.dlinkddns.com/";
+    final static String WEBMASTER_URL = "http://localhost/";
     final static String WEBMASTER_URL_SERVICE = "kkcontroller/request";
 
     final static String WEBMASTER_REQUEST_ACT = "action";
@@ -46,19 +48,25 @@ public abstract class SystemUpdater {
 
     public static void CheckUpdate() {
 
-        boolean ForcePluginUpdate=false;
+        boolean NeedReload=false;
         ControllerConfiguration UpdatedConfig;
         //Check configuration
         wm_answer_configuration_info ConfInfo = GetConfigInfoFromWeb();
-        
+        //
         if (!ControllerSettingsManager.MainConfiguration.ConfigurationUID.equals(ConfInfo.confuuid) | !ControllerSettingsManager.MainConfiguration.ConfigurationStamp.equals(ConfInfo.confstamp))
         {
-            ForcePluginUpdate=true;
+            System.out.println("Loading new Config");
+            NeedReload=true;
             UpdatedConfig = GetConfigDataFromWeb();
         }
+        else
+        {
+            UpdatedConfig=ControllerSettingsManager.MainConfiguration;
+        }
         ///
-            
-
+        
+        
+        
     }
 
     private static List<NameValuePair> GetConfigurationInfoRequest() {

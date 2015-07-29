@@ -12,6 +12,8 @@ import kkdev.kksystem.base.classes.plugins.simple.SettingsManager;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID_UUID;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
 import kkdev.kksystem.base.constants.SystemConsts;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_SETTINGS_FILE;
 
 /**
@@ -74,8 +76,8 @@ public abstract class ControllerSettingsManager {
 
         DefConfig.Features=DefConfFeatures;
         DefConfig.SystemMenuItems=kk_defultPluginConnectionConfig.GetDefaultSystemMenuItems();
-        DefConfig.ConfigurationStamp="201f7df6-bedc-4942-b295-bd98249e5513";
-        DefConfig.ConfigurationUID="88f220f5-a666-4537-a5bc-96aeb620d9fd";
+        DefConfig.ConfigurationStamp=KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
+        DefConfig.ConfigurationUID=KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
         
                 
         //
