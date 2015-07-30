@@ -69,7 +69,7 @@ public class PluginExecute implements IPluginBaseInterface {
    {
        for (IPluginKKConnector CONN: ActivePlugins.values())
        {
-           CONN.PluginInit(this);
+           CONN.PluginInit(this,ControllerSettingsManager.MainConfiguration.ConfigurationUID);
        }
    
    }

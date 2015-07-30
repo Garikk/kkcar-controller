@@ -9,7 +9,7 @@ package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
  *
  * @author sayma_000
  */
-public class wm_answer_plugins_info {
+public class WM_Answer_Configuration_Data {
     public String kkcaruuid;
-    public wm_answer_plugins_info_plugin_data[] plugins;
+    public WM_Configuration_Data[] configurations;
 }

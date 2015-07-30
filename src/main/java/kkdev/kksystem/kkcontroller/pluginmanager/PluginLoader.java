@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
@@ -34,9 +35,10 @@ public abstract class PluginLoader {
     public static void InitPlugins() {
         ArrayList<String> ToLoad;
         //Prepare config
-        ToLoad = CreateLoadPluginsList();
+        ToLoad = GetRequiredPlugins(ControllerSettingsManager.MainConfiguration.Features);
         //Load plugins
-        ActivePlugins = ConnectPlugins(ToLoad,false);
+        if (ActivePlugins==null)
+            ActivePlugins = ConnectPlugins(ToLoad,false);
         //
         if (ActivePlugins == null) {
             return;
@@ -47,15 +49,24 @@ public abstract class PluginLoader {
 
     }
 
+    public static void PreInitAllPlugins()
+    {
+        ConnectPlugins(null,true);
+    }
+    public static Set<String> GetPluginUIDs()
+    {
+        return ActivePlugins.keySet();
+    }
+    
     public static void StartPlugins() {
         PlEx.StartPlugins();
     }
 
-    private static ArrayList<String> CreateLoadPluginsList() {
+    public static ArrayList<String> GetRequiredPlugins(FeatureConfiguration[] Features) {
         ArrayList<String> Ret;
         Ret = new ArrayList<>();
         
-        for (FeatureConfiguration FT : ControllerSettingsManager.MainConfiguration.Features) {
+        for (FeatureConfiguration FT : Features) {
             if (FT.Connections != null) {
                 for (PluginConnection PCC : FT.Connections) {
                     if (!Ret.contains(PCC.SourcePluginUID)) {
@@ -137,7 +148,7 @@ public abstract class PluginLoader {
                 //
                 PluginConnection = (IPluginKKConnector) CLoader.loadClass(ConnectorClass).newInstance();
                 //
-                if ((!Plugins.contains(PluginConnection.GetPluginInfo().PluginUUID) & (!ConnectAllPlugins))) {
+                if ( (!ConnectAllPlugins) && (!Plugins.contains(PluginConnection.GetPluginInfo().PluginUUID)) ) {
                     System.out.println("Config: not in config. skip");
                     continue;
                 }

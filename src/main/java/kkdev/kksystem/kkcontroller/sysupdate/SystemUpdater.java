@@ -5,20 +5,18 @@
  */
 package kkdev.kksystem.kkcontroller.sysupdate;
 
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.wm_answer_configuration_info;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
-import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
-import kkdev.kksystem.base.classes.plugins.PluginConnection;
-import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetRequiredPlugins;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -46,26 +44,50 @@ public abstract class SystemUpdater {
     final static String WEBMASTER_REQUEST_GET_PLUGINS_DATA = "6";          //get extended plugins info (with file names)
     final static String WEBMASTER_REQUEST_CTRLR_DATA_KKPIN = "10";               //KKSystem PIN
 
-    public static void CheckUpdate() {
+    public static boolean CheckUpdate() {
 
         boolean NeedReload=false;
         ControllerConfiguration UpdatedConfig;
         //Check configuration
-        wm_answer_configuration_info ConfInfo = GetConfigInfoFromWeb();
+        WM_Answer_Configuration_Info ConfInfo = GetConfigInfoFromWeb();
         //
         if (!ControllerSettingsManager.MainConfiguration.ConfigurationUID.equals(ConfInfo.confuuid) | !ControllerSettingsManager.MainConfiguration.ConfigurationStamp.equals(ConfInfo.confstamp))
         {
             System.out.println("Loading new Config");
             NeedReload=true;
-            UpdatedConfig = GetConfigDataFromWeb();
+            UpdatedConfig = GetUpdatedConfigurations();
         }
         else
         {
             UpdatedConfig=ControllerSettingsManager.MainConfiguration;
         }
-        ///
+        //
+        //Check plugins
+        //
+        //Pre init
+        //
+        PluginLoader.PreInitAllPlugins();
+        //
+        //Get Available plugins list
+        //
+        Set<String> AvailPlugins = PluginLoader.GetPluginUIDs();
+        //
+        // Get Required plugins
+        //
+        List<String> ReqPlugins=GetRequiredPlugins(UpdatedConfig.Features);
+        //
+        for (String RP:AvailPlugins)
+        {
+            if (ReqPlugins.contains(RP))
+                ReqPlugins.remove(RP);
+        }
+        //
+        if (ReqPlugins.size()>0)
+        {
+        //    GetPluginsFromWeb(ReqPlugins);
+        }
         
-        
+        return NeedReload;
         
     }
 
@@ -89,7 +111,7 @@ public abstract class SystemUpdater {
         return nameValuePairs;
     }
 
-    public static wm_answer_configuration_info GetConfigInfoFromWeb() {
+    public static WM_Answer_Configuration_Info GetConfigInfoFromWeb() {
         ControllerConfiguration Ret = null;
         KKMasterAnswer Ans;
         Gson gson = new Gson();
@@ -105,18 +127,17 @@ public abstract class SystemUpdater {
             Ans = gson.fromJson(rd, KKMasterAnswer.class);
 
             if (Ans.AnswerState == 0) {
-                return gson.fromJson(Ans.JsonData, wm_answer_configuration_info.class);
+                return gson.fromJson(Ans.JsonData, WM_Answer_Configuration_Info.class);
             } else {
                 return null;
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public static ControllerConfiguration GetConfigDataFromWeb() {
+    public static ControllerConfiguration GetUpdatedConfigurations() {
         ControllerConfiguration Ret = null;
         KKMasterAnswer Ans;
         Gson gson = new Gson();
@@ -141,5 +162,10 @@ public abstract class SystemUpdater {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    private static void GetPluginsFromWeb(List<String> RequiredPlugins)
+    {
+    
     }
 }
