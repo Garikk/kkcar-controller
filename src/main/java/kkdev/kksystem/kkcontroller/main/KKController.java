@@ -17,7 +17,8 @@ import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
  * @author blinov_is
  */
 public class KKController {
-   
+    public static String CONTROLLER_VERSION="0.9.test";
+    
     static PluginLoader PM;
     static boolean Shutdown=false;
     /**
@@ -26,7 +27,7 @@ public class KKController {
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("KK System INIT Begin");
         //
-        InitSettingsManager();
+        InitSystem();
         //
         int i=0;
         while (!Shutdown)
@@ -42,13 +43,13 @@ public class KKController {
     }
     
     
-    private static void InitSettingsManager() throws IOException
+    private static void InitSystem() throws IOException
     {
             System.out.println("================");
             System.out.println("Settings:");
             //
             ControllerSettingsManager.Init();
-            SystemUpdater.CheckUpdate();
+            SystemUpdater.CheckUpdate(CONTROLLER_VERSION);
             //
             System.out.println("================");
             System.out.println("Plugins:");

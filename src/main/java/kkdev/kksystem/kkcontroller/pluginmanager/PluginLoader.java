@@ -51,7 +51,7 @@ public abstract class PluginLoader {
 
     public static void PreInitAllPlugins()
     {
-        ConnectPlugins(null,true);
+        ActivePlugins=ConnectPlugins(null,true);
     }
     public static Set<String> GetPluginUIDs()
     {
@@ -111,7 +111,7 @@ public abstract class PluginLoader {
         return Ret;
     }
 
-    public static HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<String> Plugins, boolean ConnectAllPlugins) {
+    private static HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<String> Plugins, boolean ConnectAllPlugins) {
         //
         int Counter = 0;
         HashMap<String, IPluginKKConnector> Ret = new HashMap<>();

@@ -9,9 +9,12 @@ package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
  *
  * @author sayma_000
  */
-public class WM_Answer_Configuration_Info {
-    public String kkcaruuid;
-    public String confuuid;
-    public String confstamp;
-            
+public class KKMasterAnswer {
+    public int KKM_ANS_State_OK=0;
+    public int KKM_ANS_State_ERR=1;
+    
+    public int AnswerState;
+    public int Version;
+    public String JsonData;
+    
 }

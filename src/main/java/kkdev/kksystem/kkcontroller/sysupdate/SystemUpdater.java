@@ -5,8 +5,10 @@
  */
 package kkdev.kksystem.kkcontroller.sysupdate;
 
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.KKMasterAnswer;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
 import com.google.gson.Gson;
+import com.sun.glass.ui.Application;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_WDJOB_FILE;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_VERSION;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetRequiredPlugins;
@@ -44,10 +48,12 @@ public abstract class SystemUpdater {
     final static String WEBMASTER_REQUEST_GET_PLUGINS_DATA = "6";          //get extended plugins info (with file names)
     final static String WEBMASTER_REQUEST_CTRLR_DATA_KKPIN = "10";               //KKSystem PIN
 
-    public static boolean CheckUpdate() {
+    public static boolean CheckUpdate(String KKControllerVersion) {
 
         boolean NeedReload=false;
         ControllerConfiguration UpdatedConfig;
+        WatchdogJob UpdateJob=new WatchdogJob();
+        
         //Check configuration
         WM_Answer_Configuration_Info ConfInfo = GetConfigInfoFromWeb();
         //
@@ -61,6 +67,7 @@ public abstract class SystemUpdater {
         {
             UpdatedConfig=ControllerSettingsManager.MainConfiguration;
         }
+        
         //
         //Check plugins
         //
@@ -76,18 +83,38 @@ public abstract class SystemUpdater {
         //
         List<String> ReqPlugins=GetRequiredPlugins(UpdatedConfig.Features);
         //
-        for (String RP:AvailPlugins)
-        {
-            if (ReqPlugins.contains(RP))
-                ReqPlugins.remove(RP);
-        }
+        AvailPlugins.stream().filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
+            ReqPlugins.remove(RP);
+        });
         //
         if (ReqPlugins.size()>0)
         {
-        //    GetPluginsFromWeb(ReqPlugins);
+            ReqPlugins.stream().forEach((AP) -> {
+                UpdateJob.AddModule(AP, false);
+            });
+        }
+        /////
+        // Check update kkcontroller jar
+        ////
+        if (!KKControllerVersion.equals(ConfInfo.kkcontroller_version))
+        {
+            UpdateJob.AddModule("kkcontroller", true);
+        }
+          /////
+        // Check update base jar
+        ////
+        if (!KK_BASE_VERSION.equals(ConfInfo.base_version))
+        {
+            UpdateJob.AddModule("base", true);
+        }
+        //
+        if (UpdateJob.GetJobsCount()>0)
+        {
+            UpdateJob.SaveWatchdogJob(KK_BASE_UPDATE_WDJOB_FILE);
         }
         
-        return NeedReload;
+        
+        return (UpdateJob.GetJobsCount()>0);
         
     }
 
@@ -168,4 +195,5 @@ public abstract class SystemUpdater {
     {
     
     }
+
 }

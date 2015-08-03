@@ -7,14 +7,18 @@ package kkdev.kksystem.kkcontroller.sysupdate;
 
 /**
  *
- * @author sayma_000
+ * @author blinov_is
  */
-public class KKMasterAnswer {
-    public int KKM_ANS_State_OK=0;
-    public int KKM_ANS_State_ERR=1;
+public class UpdateModule {
+   public enum ModuleType
+   {
+       Plugin,
+       Controller
+   }
     
-    public int AnswerState;
-    public int Version;
-    public String JsonData;
-    
+    public String UUID;
+   public String Version;
+   public String URL;
+   public ModuleType Type;
+   
 }
