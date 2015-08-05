@@ -5,10 +5,8 @@
  */
 package kkdev.kksystem.kkcontroller.sysupdate;
 
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.KKMasterAnswer;
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer;
 import com.google.gson.Gson;
-import com.sun.glass.ui.Application;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,6 +19,8 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_VERSION;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetRequiredPlugins;
+import kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -52,7 +52,7 @@ public abstract class SystemUpdater {
 
         boolean NeedReload=false;
         ControllerConfiguration UpdatedConfig;
-        WatchdogJob UpdateJob=new WatchdogJob();
+        DownloaderJob UpdateJob=new DownloaderJob();
         
         //Check configuration
         WM_Answer_Configuration_Info ConfInfo = GetConfigInfoFromWeb();
@@ -110,7 +110,7 @@ public abstract class SystemUpdater {
         //
         if (UpdateJob.GetJobsCount()>0)
         {
-            UpdateJob.SaveWatchdogJob(KK_BASE_UPDATE_WDJOB_FILE);
+           Downloader.DownloadBinFiles(UpdateJob);
         }
         
         
@@ -140,7 +140,7 @@ public abstract class SystemUpdater {
 
     public static WM_Answer_Configuration_Info GetConfigInfoFromWeb() {
         ControllerConfiguration Ret = null;
-        KKMasterAnswer Ans;
+        WM_Answer Ans;
         Gson gson = new Gson();
 
         try {
@@ -151,7 +151,7 @@ public abstract class SystemUpdater {
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            Ans = gson.fromJson(rd, KKMasterAnswer.class);
+            Ans = gson.fromJson(rd, WM_Answer.class);
 
             if (Ans.AnswerState == 0) {
                 return gson.fromJson(Ans.JsonData, WM_Answer_Configuration_Info.class);
@@ -166,7 +166,7 @@ public abstract class SystemUpdater {
 
     public static ControllerConfiguration GetUpdatedConfigurations() {
         ControllerConfiguration Ret = null;
-        KKMasterAnswer Ans;
+        WM_Answer Ans;
         Gson gson = new Gson();
 
         try {
@@ -177,7 +177,7 @@ public abstract class SystemUpdater {
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            Ans = gson.fromJson(rd, KKMasterAnswer.class);
+            Ans = gson.fromJson(rd, WM_Answer.class);
 
             if (Ans.AnswerState == 0) {
                 return gson.fromJson(Ans.JsonData, ControllerConfiguration.class);

@@ -49,7 +49,12 @@ public class KKController {
             System.out.println("Settings:");
             //
             ControllerSettingsManager.Init();
-            SystemUpdater.CheckUpdate(CONTROLLER_VERSION);
+            //
+            //Check updates, if "true" - have bin updates, watchdog will update and start app
+            //
+            if (SystemUpdater.CheckUpdate(CONTROLLER_VERSION))
+                System.exit(0);
+            
             //
             System.out.println("================");
             System.out.println("Plugins:");

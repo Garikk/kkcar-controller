@@ -19,11 +19,11 @@ import kkdev.kksystem.base.constants.SystemConsts;
  *
  * @author blinov_is
  */
-public class WatchdogJob {
+public class DownloaderJob {
 
     public Set<UpdateModule> RequiredModules;
 
-    public WatchdogJob() {
+    public DownloaderJob() {
         RequiredModules = new HashSet<>();
     }
 
@@ -58,13 +58,13 @@ public class WatchdogJob {
         } catch (IOException ex) {
         }
     }
-     public static WatchdogJob LoadWatchdogJob(String Jobfile) {
+     public static DownloaderJob LoadWatchdogJob(String Jobfile) {
         try {
             Gson gson = new Gson();
             BufferedReader br = new BufferedReader(
                     new FileReader(Jobfile));
             //
-            WatchdogJob Ret = gson.fromJson(br, WatchdogJob.class);
+            DownloaderJob Ret = gson.fromJson(br, DownloaderJob.class);
             //
             br.close();
             //
