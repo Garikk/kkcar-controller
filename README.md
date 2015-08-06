@@ -11,6 +11,9 @@
 
 kkcar-controller (данный репозиторий)
   Основная программа проекта, связывающая плагины также обеспечивает работы системного меню
+  
+[kkcar-controller-wd] (https://github.com/Garikk/kkcar-controller-wd)
+  Мониторилка состояния сервиса, а также сервис обновления бинарных файлов
 
 [kkcar-plugin-datadisplay] (https://github.com/Garikk/kkcar-plugin-datadisplay)
   Плагин обработки ODB2 данных для дальшейшего вывода на экран или в отчёт
