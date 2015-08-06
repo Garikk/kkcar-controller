@@ -5,43 +5,101 @@
  */
 package kkdev.kksystem.kkcontroller.sysupdate.downloader;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_BASE;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_EXTCONF;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_PLUGINS;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_WDJOB_FILE;
 import kkdev.kksystem.kkcontroller.sysupdate.DownloaderJob;
+import kkdev.kksystem.kkcontroller.sysupdate.UpdateModule;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
  *
  * @author blinov_is
  */
 public abstract class Downloader {
-    public static void DownloadBinFiles(DownloaderJob Job)
-    {
-      System.out.println("KK System Watchdog");
-        //
-        //
-        File WDJob = new java.io.File(KK_BASE_UPDATE_WDJOB_FILE);   
-        //
-        if (!WDJob.exists())
-            return;
-        //
-        File TempPath = new java.io.File(KK_BASE_UPDATE_TEMP);   
-        //
-        if (!TempPath.exists())
-            TempPath.mkdir();
-        //
-        TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_PLUGINS);   
-        //
-        if (!TempPath.exists())
-            TempPath.mkdir();
 
+    public static void DownloadFiles(DownloaderJob Job) {
+        System.out.println("KK System Watchdog");
         //
-        TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_BASE);   
+        // Create updater folders
         //
-        if (!TempPath.exists())
+        File TempPath = new java.io.File(KK_BASE_UPDATE_TEMP);
+        //
+        if (!TempPath.exists()) {
             TempPath.mkdir();
+        }
         //
+        TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_PLUGINS);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
+        TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_BASE);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
+        TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_EXTCONF);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
+        Job.RequiredModules.stream().forEach((Module) -> {
+            DownloadFile(Module.Type, Module.UUID);
+        });
+
+    }
+
+    private static String GetFileURI(UpdateModule.ModuleType ModType, String ID)
+    {
+    return null;
+    }
+    
+    private static void DownloadFile(String URL) {
+        
+        HttpClient client = HttpClientBuilder.create().build();
+           
+        BufferedOutputStream bos = null;
+        try {
+            HttpGet httpget = new HttpGet(url);
+            HttpResponse response = client.execute(httpget);
+            HttpEntity entity = response.getEntity();
+            
+            
+            
+            BufferedInputStream bis = new BufferedInputStream(entity.getContent());
+            String filePath ="";
+            bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+            int inByte;
+            while((inByte = bis.read()) != -1) bos.write(inByte);
+            bis.close();
+            bos.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                bos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

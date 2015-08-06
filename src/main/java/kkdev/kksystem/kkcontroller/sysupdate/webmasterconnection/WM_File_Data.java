@@ -5,11 +5,14 @@
  */
 package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
 
+import kkdev.kksystem.kkcontroller.sysupdate.UpdateModule.ModuleType;
+
 /**
  *
  * @author blinov_is
  */
-public class WM_Configuration_Data {
-    public String uid;
-    public String config_data;
+public class WM_File_Data {
+    public String fileurl;
+    public String filename;
+    public ModuleType FileType;
 }

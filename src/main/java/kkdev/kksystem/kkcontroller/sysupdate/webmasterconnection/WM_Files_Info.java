@@ -9,7 +9,6 @@ package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
  *
  * @author blinov_is
  */
-public class WM_Configuration_Data {
-    public String uid;
-    public String config_data;
+public class WM_Files_Info {
+    public WM_File_Data[] Files;
 }

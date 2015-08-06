@@ -19,8 +19,10 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_VERSION;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetRequiredPlugins;
+import kkdev.kksystem.kkcontroller.sysupdate.UpdateModule.ModuleType;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Files_Info;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -41,12 +43,15 @@ public abstract class SystemUpdater {
 
     final static String WEBMASTER_REQUEST_ACT = "action";
     final static String WEBMASTER_REQUEST_MYUUID = "myid";
+    final static String WEBMASTER_REQUEST_JSON_OBJ = "json_object";
 
     final static String WEBMASTER_REQUEST_GET_MYCONF_INFO = "1";           //get ctrlr configuration, ID, stamp
     final static String WEBMASTER_REQUEST_GET_MYCONF_DATA = "2";           //get ctrlr configuration
     final static String WEBMASTER_REQUEST_GET_PLUGINS_INFO = "5";          //get plugins id, version and config stamp
     final static String WEBMASTER_REQUEST_GET_PLUGINS_DATA = "6";          //get extended plugins info (with file names)
-    final static String WEBMASTER_REQUEST_CTRLR_DATA_KKPIN = "10";               //KKSystem PIN
+    final static String WEBMASTER_REQUEST_GET_FILES_INFO_BIN = "10";          //get extended plugins info (with file names)
+    final static String WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF = "11";          //get extended plugins info (with file names)
+    final static String WEBMASTER_REQUEST_CTRLR_DATA_KKPIN = "50";               //KKSystem PIN
 
     public static boolean CheckUpdate(String KKControllerVersion) {
 
@@ -81,16 +86,29 @@ public abstract class SystemUpdater {
         //
         // Get Required plugins
         //
-        List<String> ReqPlugins=GetRequiredPlugins(UpdatedConfig.Features);
+        List<String> ReqPlugins=PluginLoader.GetRequiredPlugins(UpdatedConfig.Features);
+        //
+        // If config changed, add external config files to donwload job
+        //
+        if (NeedReload) 
+        {
+            for (String IPP:AvailPlugins)
+            {
+                UpdateJob.AddModule(IPP, ModuleType.PluginConf);
+            }
+        }
+        //
+        // Remove existed plugins from requierments list
         //
         AvailPlugins.stream().filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
             ReqPlugins.remove(RP);
         });
-        //
+
+        // Add required plugins to download job
         if (ReqPlugins.size()>0)
         {
             ReqPlugins.stream().forEach((AP) -> {
-                UpdateJob.AddModule(AP, false);
+                UpdateJob.AddModule(AP, ModuleType.Plugin);
             });
         }
         /////
@@ -98,19 +116,19 @@ public abstract class SystemUpdater {
         ////
         if (!KKControllerVersion.equals(ConfInfo.kkcontroller_version))
         {
-            UpdateJob.AddModule("kkcontroller", true);
+            UpdateJob.AddModule("kkcontroller", ModuleType.Controller);
         }
           /////
         // Check update base jar
         ////
         if (!KK_BASE_VERSION.equals(ConfInfo.base_version))
         {
-            UpdateJob.AddModule("base", true);
+            UpdateJob.AddModule("base", ModuleType.Controller);
         }
         //
         if (UpdateJob.GetJobsCount()>0)
         {
-           Downloader.DownloadBinFiles(UpdateJob);
+           Downloader.DownloadFiles(UpdateJob);
         }
         
         
@@ -134,6 +152,19 @@ public abstract class SystemUpdater {
                 WEBMASTER_REQUEST_GET_MYCONF_DATA));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
+
+        return nameValuePairs;
+    }
+    
+    private static List<NameValuePair> GetFilesInfoRequest(String JSONRequest) {
+        List<NameValuePair> nameValuePairs = new ArrayList<>(1);
+        nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
+                WEBMASTER_REQUEST_GET_FILES_INFO));
+        nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
+                ___TEST_KKCAR_UUID_));
+         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_JSON_OBJ,
+                JSONRequest));
+        
 
         return nameValuePairs;
     }
@@ -191,9 +222,32 @@ public abstract class SystemUpdater {
         return null;
     }
     
-    private static void GetPluginsFromWeb(List<String> RequiredPlugins)
+    public static WM_Files_Info GetFilesInfo(Set<UpdateModule> Modules)
     {
-    
+       ControllerConfiguration Ret = null;
+        WM_Answer Ans;
+        Gson gson = new Gson();
+
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
+
+            post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequest(gson.toJson(Modules))));
+
+            HttpResponse response = client.execute(post);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            Ans = gson.fromJson(rd, WM_Answer.class);
+
+            if (Ans.AnswerState == 0) {
+                return gson.fromJson(Ans.JsonData, WM_Files_Info.class);
+            } else {
+                return null;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

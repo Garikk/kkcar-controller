@@ -13,10 +13,11 @@ public class UpdateModule {
    public enum ModuleType
    {
        Plugin,
-       Controller
+       Controller,
+       PluginConf
    }
     
-    public String UUID;
+   public String UUID;
    public String Version;
    public String URL;
    public ModuleType Type;

@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import kkdev.kksystem.base.constants.SystemConsts;
+import kkdev.kksystem.kkcontroller.sysupdate.UpdateModule.ModuleType;
 
 /**
  *
@@ -22,28 +22,35 @@ import kkdev.kksystem.base.constants.SystemConsts;
 public class DownloaderJob {
 
     public Set<UpdateModule> RequiredModules;
+    public Set<UpdateModule> RequiredExtConf;
 
     public DownloaderJob() {
         RequiredModules = new HashSet<>();
+        RequiredExtConf = new HashSet<>();
     }
 
-    public void AddModule(String UUID, boolean IsPlugin) {
+    public void AddModule(String UUID, UpdateModule.ModuleType MType) {
         UpdateModule UM = new UpdateModule();
         UM.UUID = UUID;
-        if (!IsPlugin) {
-            UM.Type = UpdateModule.ModuleType.Plugin;
-        } else {
-            UM.Type = UpdateModule.ModuleType.Controller;
-        }
+        UM.Type = MType;
         //
-        RequiredModules.add(UM);
+        if (MType!=ModuleType.PluginConf)
+            RequiredModules.add(UM);
+        else 
+            RequiredExtConf.add(UM);
         //
     }
 
     public int GetJobsCount() {
-        return RequiredModules.size();
+        return RequiredModules.size()+RequiredExtConf.size();
     }
 
+    public void FillFilesURLs()
+    {
+       // SystemUpdater.
+    
+    }
+    
     public void SaveWatchdogJob(String Jobfile) {
         Gson gson = new Gson();
 
