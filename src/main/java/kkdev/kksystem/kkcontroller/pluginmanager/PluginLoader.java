@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -33,7 +34,7 @@ public abstract class PluginLoader {
     public static PluginExecute PlEx;
 
     public static void InitPlugins() {
-        ArrayList<String> ToLoad;
+        Set<String> ToLoad;
         //Prepare config
         ToLoad = GetRequiredPlugins(ControllerSettingsManager.MainConfiguration.Features);
         //Load plugins
@@ -62,9 +63,9 @@ public abstract class PluginLoader {
         PlEx.StartPlugins();
     }
 
-    public static ArrayList<String> GetRequiredPlugins(FeatureConfiguration[] Features) {
-        ArrayList<String> Ret;
-        Ret = new ArrayList<>();
+    public static Set<String> GetRequiredPlugins(FeatureConfiguration[] Features) {
+        Set<String> Ret;
+        Ret = new HashSet<>();
         
         for (FeatureConfiguration FT : Features) {
             if (FT.Connections != null) {
@@ -111,7 +112,7 @@ public abstract class PluginLoader {
         return Ret;
     }
 
-    private static HashMap<String, IPluginKKConnector> ConnectPlugins(ArrayList<String> Plugins, boolean ConnectAllPlugins) {
+    private static HashMap<String, IPluginKKConnector> ConnectPlugins(Set<String> Plugins, boolean ConnectAllPlugins) {
         //
         int Counter = 0;
         HashMap<String, IPluginKKConnector> Ret = new HashMap<>();

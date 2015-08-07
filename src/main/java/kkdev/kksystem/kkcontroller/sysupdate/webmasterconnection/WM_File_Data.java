@@ -5,8 +5,6 @@
  */
 package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
 
-import kkdev.kksystem.kkcontroller.sysupdate.UpdateModule.ModuleType;
-
 /**
  *
  * @author blinov_is
@@ -14,5 +12,4 @@ import kkdev.kksystem.kkcontroller.sysupdate.UpdateModule.ModuleType;
 public class WM_File_Data {
     public String fileurl;
     public String filename;
-    public ModuleType FileType;
 }
