@@ -11,5 +11,6 @@ package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
  */
 public class WM_Configuration_Data {
     public String uid;
-    public String config_data;
+    public String data;
+    public int configurationtype;
 }

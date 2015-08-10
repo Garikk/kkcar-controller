@@ -10,19 +10,22 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_BASE;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_CONF;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_EXTCONF;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_PLUGINS;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_WDJOB_FILE;
 import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_File_Data;
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Files_Info;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -58,6 +61,12 @@ public abstract class Downloader {
             TempPath.mkdir();
         }
         //
+         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_CONF);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_EXTCONF);
         //
         if (!TempPath.exists()) {
@@ -65,16 +74,20 @@ public abstract class Downloader {
         }
         //
         //
-        WM_Files_Info BinFilesToDownload = SystemUpdater.GetPluginFilesInfo(ReqPlugins);
-        WM_Files_Info ConfFilesToDownload = SystemUpdater.GetExternalConfigurationsInfo(ConfigUID);
+        WM_File_Data[] BinFilesToDownload = SystemUpdater.GetPluginFilesInfo(ReqPlugins);
+        WM_File_Data[] ConfFilesToDownload = SystemUpdater.GetExternalConfigurationsInfo(ConfigUID);
 
-        for (WM_File_Data F : BinFilesToDownload.Files) {
-            DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.fileurl, F.filename);
-        }
-        for (WM_File_Data F : ConfFilesToDownload.Files) {
-            DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.fileurl, F.filename);
+        if (BinFilesToDownload != null) {
+            for (WM_File_Data F : BinFilesToDownload) {
+             //   DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.file);
+            }
         }
 
+        if (ConfFilesToDownload != null) {
+            for (WM_File_Data F : ConfFilesToDownload) {
+             //   DownloadFile(KK_BASE_UPDATE_TEMP_EXTCONF, F.url, F.file);
+            }
+        }
     }
 
     private static void DownloadFile(String Dir, String URL, String TargetName) {
@@ -106,6 +119,18 @@ public abstract class Downloader {
             } catch (IOException ex) {
                 Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    public static void SaveConfigFiles(WM_Configuration_Data ConfFile) {
+        FileWriter fw;
+        try {
+            fw = new FileWriter(KK_BASE_UPDATE_TEMP_CONF + "/" + ConfFile.uid + ".json");
+            fw.write(ConfFile.data);
+            fw.flush();
+            fw.close();
+        } catch (IOException ex) {
+
         }
     }
 }

@@ -17,8 +17,10 @@ import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Data;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Files_Info;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
+import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_File_Data;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -42,7 +44,6 @@ public abstract class SystemUpdater {
     final static String WEBMASTER_REQUEST_CONFUUID = "confuid";
     final static String WEBMASTER_REQUEST_JSON_OBJ = "json_object";
     final static String WEBMASTER_REQUEST_REQFILESBIN = "reqfilesbin";
-   
 
     final static String WEBMASTER_REQUEST_GET_MYCONF_INFO = "1";           //get ctrlr configuration, ID, stamp
     final static String WEBMASTER_REQUEST_GET_MYCONF_DATA = "2";           //get ctrlr configuration
@@ -54,23 +55,31 @@ public abstract class SystemUpdater {
 
     public static boolean CheckUpdate(String KKControllerVersion) {
 
-        boolean NeedReload=false;
-        ControllerConfiguration UpdatedConfig;
-        
+        boolean NeedReload = false;
+        ControllerConfiguration UpdatedConfig = null;
+        WM_Answer_Configuration_Data NewConfigurations = null;
+
         //Check configuration
-        WM_Answer_Configuration_Info ConfInfo = GetConfigInfoFromWeb();
+        WM_Answer_Configuration_Info[] ConfInfo = GetConfigInfoFromWeb();
         //
-        if (!ControllerSettingsManager.MainConfiguration.ConfigurationUID.equals(ConfInfo.confuuid) | !ControllerSettingsManager.MainConfiguration.ConfigurationStamp.equals(ConfInfo.confstamp))
-        {
+        if (ConfInfo[0] != null && (!ControllerSettingsManager.MainConfiguration.ConfigurationUID.equals(ConfInfo[0].confuuid) | !ControllerSettingsManager.MainConfiguration.ConfigurationStamp.equals(ConfInfo[0].confstamp))) {
             System.out.println("Loading new Config");
-            NeedReload=true;
-            UpdatedConfig = GetUpdatedConfigurations();
+            NeedReload = true;
+            NewConfigurations = GetUpdatedConfigurations();
+        } else {
+            UpdatedConfig = ControllerSettingsManager.MainConfiguration;
         }
-        else
-        {
-            UpdatedConfig=ControllerSettingsManager.MainConfiguration;
+        //
+        if (NewConfigurations != null) {
+            for (WM_Configuration_Data DT : NewConfigurations.configurations) {
+                Downloader.SaveConfigFiles(DT);
+                if (DT.configurationtype == 1) {
+                    Gson gson = new Gson();
+                    UpdatedConfig = gson.fromJson(DT.data, ControllerConfiguration.class);
+                }
+            }
         }
-        
+
         //
         //Check plugins
         //
@@ -84,20 +93,21 @@ public abstract class SystemUpdater {
         //
         // Get Required plugins
         //
-        Set<String> ReqPlugins=PluginLoader.GetRequiredPlugins(UpdatedConfig.Features);
-         //
+        Set<String> ReqPlugins = PluginLoader.GetRequiredPlugins(UpdatedConfig.Features);
+        //
         // Remove existed plugins from requierments list
         //
-        AvailPlugins.stream().filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
-            ReqPlugins.remove(RP);
-        });
 
+        AvailPlugins.stream()
+                .filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
+                    ReqPlugins.remove(RP);
+                }
+                );
 
-        Downloader.DownloadFiles(UpdatedConfig.ConfigurationUID,ReqPlugins);
+        Downloader.DownloadFiles(UpdatedConfig.ConfigurationUID, ReqPlugins);
 
-        
         return NeedReload;
-        
+
     }
 
     private static List<NameValuePair> GetConfigurationInfoRequest() {
@@ -119,32 +129,32 @@ public abstract class SystemUpdater {
 
         return nameValuePairs;
     }
-    
+
     private static List<NameValuePair> GetFilesInfoRequestBin(String ReqFiles) {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_GET_FILES_INFO_BIN));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
-         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_REQFILESBIN,
+        nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_REQFILESBIN,
                 ReqFiles));
-        
 
         return nameValuePairs;
     }
- private static List<NameValuePair> GetFilesInfoRequestExtConf(String MainConf) {
+
+    private static List<NameValuePair> GetFilesInfoRequestExtConf(String MainConf) {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
-         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_CONFUUID,
+        nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_CONFUUID,
                 MainConf));
-        
 
         return nameValuePairs;
     }
-    public static WM_Answer_Configuration_Info GetConfigInfoFromWeb() {
+
+    public static WM_Answer_Configuration_Info[] GetConfigInfoFromWeb() {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
@@ -157,20 +167,23 @@ public abstract class SystemUpdater {
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            Ans = gson.fromJson(rd, WM_Answer.class);
+            Ans
+                    = gson.fromJson(rd, WM_Answer.class
+                    );
 
-            if (Ans.AnswerState == 0) {
-                return gson.fromJson(Ans.JsonData, WM_Answer_Configuration_Info.class);
-            } else {
-                return null;
-            }
+            // if (Ans!=null || Ans[0].AnswerState == 0) {
+            return gson.fromJson(Ans.JsonData, WM_Answer_Configuration_Info[].class
+            );
+            //  } else {
+            //       return null;
+            //   }
 
         } catch (IOException e) {
             return null;
         }
     }
 
-    public static ControllerConfiguration GetUpdatedConfigurations() {
+    public static WM_Answer_Configuration_Data GetUpdatedConfigurations() {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
@@ -186,7 +199,8 @@ public abstract class SystemUpdater {
             Ans = gson.fromJson(rd, WM_Answer.class);
 
             if (Ans.AnswerState == 0) {
-                return gson.fromJson(Ans.JsonData, ControllerConfiguration.class);
+                WM_Answer_Configuration_Data RC = gson.fromJson(Ans.JsonData, WM_Answer_Configuration_Data.class);
+                return RC;
             } else {
                 return null;
             }
@@ -196,10 +210,12 @@ public abstract class SystemUpdater {
         }
         return null;
     }
-    
-    public static WM_Files_Info GetPluginFilesInfo(Set<String> Plugins)
-    {
-       ControllerConfiguration Ret = null;
+
+    public static WM_File_Data[] GetPluginFilesInfo(Set<String> Plugins) {
+        if (Plugins.size()==0)
+            return null;
+        
+        ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
 
@@ -207,14 +223,14 @@ public abstract class SystemUpdater {
             HttpClient client = HttpClientBuilder.create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
-            post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequestBin(String.join(",",Plugins))));
+            post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequestBin(String.join(",", Plugins))));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             Ans = gson.fromJson(rd, WM_Answer.class);
 
-            if (Ans.AnswerState == 0) {
-                return gson.fromJson(Ans.JsonData, WM_Files_Info.class);
+            if (Ans.AnswerState== 0) {
+                return gson.fromJson(Ans.JsonData, WM_File_Data[].class);
             } else {
                 return null;
             }
@@ -224,9 +240,9 @@ public abstract class SystemUpdater {
         }
         return null;
     }
-  public static WM_Files_Info GetExternalConfigurationsInfo(String MainConf)
-    {
-       ControllerConfiguration Ret = null;
+
+    public static WM_File_Data[] GetExternalConfigurationsInfo(String MainConf) {
+        ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
 
@@ -241,7 +257,7 @@ public abstract class SystemUpdater {
             Ans = gson.fromJson(rd, WM_Answer.class);
 
             if (Ans.AnswerState == 0) {
-                return gson.fromJson(Ans.JsonData, WM_Files_Info.class);
+                return gson.fromJson(Ans.JsonData, WM_File_Data[].class);
             } else {
                 return null;
             }

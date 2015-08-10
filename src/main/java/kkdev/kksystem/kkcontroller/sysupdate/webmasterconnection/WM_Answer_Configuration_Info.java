@@ -11,10 +11,8 @@ package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
  */
 public class WM_Answer_Configuration_Info {
     public String kkcaruuid;
-    public String confuuid;
+    public String confuuid; 
     public String confstamp;
     public String kkcontroller_version;
     public String base_version;
-    
-            
  }
