@@ -42,10 +42,10 @@ public abstract class ControllerSettingsManager {
         String ConfFileUID=GetLastConfUID();
         
         if (ConfFileUID!=null)
-            Settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX + ConfFileUID+".json", ControllerConfiguration.class);
+            Settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +ConfFileUID+"_"+ ConfFileUID+".json", ControllerConfiguration.class);
         else //config not found
         {
-            Settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX + KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+".json", ControllerConfiguration.class);
+            Settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+"_"+ KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+".json", ControllerConfiguration.class);
             SaveLastConfUID(KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID);
         }
         //
@@ -78,7 +78,7 @@ public abstract class ControllerSettingsManager {
         }
         return null;
     }
-     private static String SaveLastConfUID(String UID) {
+     public  static String SaveLastConfUID(String UID) {
 
         try (BufferedWriter br = new BufferedWriter(new FileWriter(SystemConsts.KK_BASE_CONFPATH + "//" + SystemConsts.KK_BASE_SETTINGS_LASTCONF_FILE))) {
           br.write(UID);

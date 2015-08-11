@@ -50,7 +50,7 @@ public class KKController {
             //
             ControllerSettingsManager.Init();
             //
-            //Check updates, if "true" - have bin updates, watchdog will update and start app
+            //Check updates, if "true" - have updates, watchdog make update and start app
             //
             if (SystemUpdater.CheckUpdate(CONTROLLER_VERSION))
                 System.exit(0);

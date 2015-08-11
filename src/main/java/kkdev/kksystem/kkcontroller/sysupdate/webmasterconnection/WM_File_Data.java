@@ -10,6 +10,6 @@ package kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection;
  * @author blinov_is
  */
 public class WM_File_Data {
-    public String file;
+    public String name;
     public String url;
 }

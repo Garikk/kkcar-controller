@@ -12,17 +12,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import kkdev.kksystem.base.constants.SystemConsts;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_BASE;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_CONF;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_EXTCONF;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_TEMP_PLUGINS;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UPDATE_WDJOB_FILE;
+import static kkdev.kksystem.base.constants.SystemConsts.*;
 import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_File_Data;
@@ -79,13 +72,13 @@ public abstract class Downloader {
 
         if (BinFilesToDownload != null) {
             for (WM_File_Data F : BinFilesToDownload) {
-             //   DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.file);
+             //   DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
             }
         }
 
         if (ConfFilesToDownload != null) {
             for (WM_File_Data F : ConfFilesToDownload) {
-             //   DownloadFile(KK_BASE_UPDATE_TEMP_EXTCONF, F.url, F.file);
+                DownloadFile(KK_BASE_UPDATE_TEMP_EXTCONF, F.url, F.name);
             }
         }
     }
@@ -122,10 +115,14 @@ public abstract class Downloader {
         }
     }
 
-    public static void SaveConfigFiles(WM_Configuration_Data ConfFile) {
+    public static void SaveConfigFiles(String GlobalConfUID,WM_Configuration_Data ConfFile) {
         FileWriter fw;
+        String Prefix="";
+        if (ConfFile.configurationtype==1)
+            Prefix="kksys_";
+        
         try {
-            fw = new FileWriter(KK_BASE_UPDATE_TEMP_CONF + "/" + ConfFile.uid + ".json");
+            fw = new FileWriter(KK_BASE_UPDATE_TEMP_CONF + "/" +Prefix+ GlobalConfUID + "_"+ ConfFile.uid + ".json");
             fw.write(ConfFile.data);
             fw.flush();
             fw.close();

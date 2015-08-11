@@ -70,14 +70,22 @@ public abstract class SystemUpdater {
             UpdatedConfig = ControllerSettingsManager.MainConfiguration;
         }
         //
+
         if (NewConfigurations != null) {
+            String MainConfUID = "";
             for (WM_Configuration_Data DT : NewConfigurations.configurations) {
-                Downloader.SaveConfigFiles(DT);
                 if (DT.configurationtype == 1) {
                     Gson gson = new Gson();
                     UpdatedConfig = gson.fromJson(DT.data, ControllerConfiguration.class);
+                    MainConfUID = UpdatedConfig.ConfigurationUID;
                 }
             }
+            for (WM_Configuration_Data DT : NewConfigurations.configurations) {
+                Downloader.SaveConfigFiles(MainConfUID, DT);
+            }
+            //
+            ControllerSettingsManager.SaveLastConfUID(MainConfUID);
+            //
         }
 
         //
@@ -98,11 +106,9 @@ public abstract class SystemUpdater {
         // Remove existed plugins from requierments list
         //
 
-        AvailPlugins.stream()
-                .filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
-                    ReqPlugins.remove(RP);
-                }
-                );
+        AvailPlugins.stream().filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
+            ReqPlugins.remove(RP);
+        });
 
         Downloader.DownloadFiles(UpdatedConfig.ConfigurationUID, ReqPlugins);
 
@@ -196,9 +202,12 @@ public abstract class SystemUpdater {
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            Ans = gson.fromJson(rd, WM_Answer.class);
+            Ans
+                    = gson.fromJson(rd, WM_Answer.class
+                    );
 
-            if (Ans.AnswerState == 0) {
+            if (Ans.AnswerState
+                    == 0) {
                 WM_Answer_Configuration_Data RC = gson.fromJson(Ans.JsonData, WM_Answer_Configuration_Data.class);
                 return RC;
             } else {
@@ -212,9 +221,10 @@ public abstract class SystemUpdater {
     }
 
     public static WM_File_Data[] GetPluginFilesInfo(Set<String> Plugins) {
-        if (Plugins.size()==0)
+        if (Plugins.size() == 0) {
             return null;
-        
+        }
+
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
@@ -227,9 +237,12 @@ public abstract class SystemUpdater {
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            Ans = gson.fromJson(rd, WM_Answer.class);
+            Ans
+                    = gson.fromJson(rd, WM_Answer.class
+                    );
 
-            if (Ans.AnswerState== 0) {
+            if (Ans.AnswerState
+                    == 0) {
                 return gson.fromJson(Ans.JsonData, WM_File_Data[].class);
             } else {
                 return null;
