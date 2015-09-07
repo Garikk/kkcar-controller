@@ -52,7 +52,6 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[0].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
         Ret[FEATURE_ODB].Connections[0].PinName=new String[2];
         Ret[FEATURE_ODB].Connections[0].PinName[0]=PluginConsts.KK_PLUGIN_BASE_ODB2_DATA;
-        Ret[FEATURE_ODB].Connections[0].PinName[1]=PluginConsts.KK_PLUGIN_BASE_ODB2_RAW;
         //DataProcessor->ODB
         Ret[FEATURE_ODB].Connections[1]=new PluginConnection();
         Ret[FEATURE_ODB].Connections[1].ConnectionName="Data Display processor to ODB";
