@@ -55,7 +55,11 @@ public abstract class SystemUpdater {
 
     public static boolean CheckUpdate(String KKControllerVersion) {
 
+        if (true)
+            return false;
+        
         boolean NeedReload = false;
+       
         ControllerConfiguration UpdatedConfig = null;
         WM_Answer_Configuration_Data NewConfigurations = null;
 

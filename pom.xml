@@ -89,13 +89,6 @@
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
-                                 <resource>
-                                    <directory>../kkcar-plugin-hwadapter/target/lib</directory>
-                                    <filtering>false</filtering>
-                                    <includes>
-                                        <include>*.jar</include>
-                                    </includes>
-                                </resource>
                             </resources>              
                             <nonFilteredFileExtensions>
                                 <nonFilteredFileExtension>jar</nonFilteredFileExtension>
@@ -142,13 +135,6 @@
                                 </resource>
                                  <resource>
                                     <directory>../kkcar-plugin-bluetooth/target</directory>
-                                    <filtering>false</filtering>
-                                    <includes>
-                                        <include>*.jar</include>
-                                    </includes>
-                                </resource>
-                                <resource>
-                                    <directory>../kkcar-plugin-hwadapter/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
