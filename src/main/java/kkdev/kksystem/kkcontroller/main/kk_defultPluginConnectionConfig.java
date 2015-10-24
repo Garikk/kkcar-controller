@@ -41,7 +41,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].FeatureName="ODB Diag Displ";
         Ret[FEATURE_ODB].FeatureUUID=SystemConsts.KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature=false;
-        Ret[FEATURE_ODB].Connections=new PluginConnection[5];
+        Ret[FEATURE_ODB].Connections=new PluginConnection[8];
         //
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0]=new PluginConnection();
@@ -92,7 +92,35 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[4].PinName=new String[1];
         Ret[FEATURE_ODB].Connections[4].PinName[0]=PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
        
-      
+       //Controls->External
+        Ret[FEATURE_ODB].Connections[5]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[5].ConnectionName="Controls to ExtConnector";
+        Ret[FEATURE_ODB].Connections[5].SourcePluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID;
+        Ret[FEATURE_ODB].Connections[5].SourcePluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID_UUID;
+        Ret[FEATURE_ODB].Connections[5].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_ODB].Connections[5].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[5].PinName=new String[1];
+        Ret[FEATURE_ODB].Connections[5].PinName[0]=PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
+        //DataProcessor->External
+        Ret[FEATURE_ODB].Connections[6]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[6].ConnectionName="DataProcessor to ExtConnector";
+        Ret[FEATURE_ODB].Connections[6].SourcePluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
+        Ret[FEATURE_ODB].Connections[6].SourcePluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
+        Ret[FEATURE_ODB].Connections[6].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_ODB].Connections[6].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[6].PinName=new String[1];
+        Ret[FEATURE_ODB].Connections[6].PinName[0]=PluginConsts.KK_PLUGIN_BASE_LED_DATA;
+        
+          //DataProcessor->External
+        Ret[FEATURE_ODB].Connections[7]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[7].ConnectionName="ExtConnector to DataProcessor";
+        Ret[FEATURE_ODB].Connections[7].SourcePluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_ODB].Connections[7].SourcePluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[7].TargetPluginName=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
+        Ret[FEATURE_ODB].Connections[7].TargetPluginUID=PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
+        Ret[FEATURE_ODB].Connections[7].PinName=new String[1];
+        Ret[FEATURE_ODB].Connections[7].PinName[0]=PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
+        
         return Ret;
         
            
