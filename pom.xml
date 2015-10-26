@@ -83,7 +83,7 @@
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-bluetooth/target/lib</directory>
+                                    <directory>../kkcar-plugin-extconnector/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
@@ -134,7 +134,7 @@
                                     </includes>
                                 </resource>
                                  <resource>
-                                    <directory>../kkcar-plugin-bluetooth/target</directory>
+                                    <directory>../kkcar-plugin-extconnector/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
