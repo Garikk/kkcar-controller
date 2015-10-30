@@ -5,7 +5,7 @@
  */
 package kkdev.kksystem.kkcontroller.sysupdate;
 
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer;
+import kkdev.kksystem.base.classes.plugins.webkkmaster.WM_Answer;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
+import static kkdev.kksystem.base.classes.plugins.webkkmaster.WM_KKMasterConsts.*;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader;
@@ -39,20 +40,7 @@ public abstract class SystemUpdater {
     final static String WEBMASTER_URL = "http://localhost/";
     final static String WEBMASTER_URL_SERVICE = "kkcontroller/request";
 
-    final static String WEBMASTER_REQUEST_ACT = "action";
-    final static String WEBMASTER_REQUEST_MYUUID = "myid";
-    final static String WEBMASTER_REQUEST_CONFUUID = "confuid";
-    final static String WEBMASTER_REQUEST_JSON_OBJ = "json_object";
-    final static String WEBMASTER_REQUEST_REQFILESBIN = "reqfilesbin";
-
-    final static String WEBMASTER_REQUEST_GET_MYCONF_INFO = "1";           //get ctrlr configuration, ID, stamp
-    final static String WEBMASTER_REQUEST_GET_MYCONF_DATA = "2";           //get ctrlr configuration
-    final static String WEBMASTER_REQUEST_GET_PLUGINS_INFO = "5";          //get plugins id, version and config stamp
-    final static String WEBMASTER_REQUEST_GET_PLUGINS_DATA = "6";          //get extended plugins info (with file names)
-    final static String WEBMASTER_REQUEST_GET_FILES_INFO_BIN = "10";          //get extended plugins info (with file names)
-    final static String WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF = "11";          //get extended plugins info (with file names)
-    final static String WEBMASTER_REQUEST_CTRLR_DATA_KKPIN = "50";               //KKSystem PIN
-
+ 
     public static boolean CheckUpdate(String KKControllerVersion) {
 
         if (true)
