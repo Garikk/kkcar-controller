@@ -5,9 +5,11 @@
  */
 package kkdev.kksystem.kkcontroller.pluginmanager;
 
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
 import kkdev.kksystem.base.classes.base.PinBaseCommand;
+import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
@@ -18,7 +20,9 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
+import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ProcessCommands;
 
 /**
  *
@@ -35,7 +39,7 @@ public class PluginExecute implements IPluginBaseInterface {
         //
         Pin = new HashMap();
         //
-        for (FeatureConfiguration Feature : ControllerSettingsManager.MainConfiguration.Features) {
+        for (FeatureConfiguration Feature : MainConfiguration.Features) {
             if (Feature.Connections != null) {
                 for (PluginConnection PC : Feature.Connections) {
                     for (String PIN : PC.PinName) {
@@ -69,7 +73,7 @@ public class PluginExecute implements IPluginBaseInterface {
    {
        for (IPluginKKConnector CONN: ActivePlugins.values())
        {
-           CONN.PluginInit(this,ControllerSettingsManager.MainConfiguration.ConfigurationUID);
+           CONN.PluginInit(this,MainConfiguration.ConfigurationUID);
        }
    
    }
@@ -95,7 +99,7 @@ public class PluginExecute implements IPluginBaseInterface {
         Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
         //
         PinBaseCommand PData = new PinBaseCommand();
-        PData.BaseCommand=PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
+        PData.BaseCommand=CHANGE_FEATURE;
         //
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         PData.ChangeFeatureID=FeatureID;
@@ -119,12 +123,12 @@ public class PluginExecute implements IPluginBaseInterface {
              return null;
          
          if (!Pin.containsKey(PP.FeatureID))
-            System.out.println("Wrong PIN received (not found feature)");
+            out.println("Wrong PIN received (not found feature)");
         if (!Pin.get(PP.FeatureID).containsKey(PP.SenderUID))
-            System.out.println("Wrong PIN received (not found sender)");
+            out.println("Wrong PIN received (not found sender)");
         
         if (!Pin.get(PP.FeatureID).get(PP.SenderUID).containsKey(PP.PinName))
-            System.out.println("Wrong PIN received (Not found Pin)");
+            out.println("Wrong PIN received (Not found Pin)");
         
         
         ArrayList<IPluginKKConnector> Exec=null;
@@ -166,7 +170,7 @@ public class PluginExecute implements IPluginBaseInterface {
         }
         else
         {
-            System.out.println(TargetUUID);
+            out.println(TargetUUID);
             return ActivePlugins.get(TargetUUID).ExecutePin(PP);
         }
     }
@@ -179,10 +183,10 @@ public class PluginExecute implements IPluginBaseInterface {
     private void SystemBasePINReceiver(PluginMessage PP) {
         switch (PP.FeatureID) {
             case (KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID):
-                SystemMenu.ProcessCommands(PP);
+                ProcessCommands(PP);
                 break;
             case (KK_BASE_FEATURES_SYSTEM_UID):
-                SystemMenu.ProcessCommands(PP);
+                ProcessCommands(PP);
                 break;
         }
 

@@ -10,14 +10,23 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.String.join;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import static kkdev.kksystem.base.classes.plugins.webkkmaster.WM_KKMasterConsts.*;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.SaveLastConfUID;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetPluginUIDs;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetRequiredPlugins;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PreInitAllPlugins;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader;
+import static kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader.DownloadFiles;
+import static kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader.SaveConfigFiles;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Data;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
@@ -28,6 +37,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
+import static org.apache.http.impl.client.HttpClientBuilder.create;
 import org.apache.http.message.BasicNameValuePair;
 
 /**
@@ -54,12 +64,12 @@ public abstract class SystemUpdater {
         //Check configuration
         WM_Answer_Configuration_Info[] ConfInfo = GetConfigInfoFromWeb();
         //
-        if (ConfInfo[0] != null && (!ControllerSettingsManager.MainConfiguration.ConfigurationUID.equals(ConfInfo[0].confuuid) | !ControllerSettingsManager.MainConfiguration.ConfigurationStamp.equals(ConfInfo[0].confstamp))) {
-            System.out.println("Loading new Config");
+        if (ConfInfo[0] != null && (!MainConfiguration.ConfigurationUID.equals(ConfInfo[0].confuuid) | !MainConfiguration.ConfigurationStamp.equals(ConfInfo[0].confstamp))) {
+            out.println("Loading new Config");
             NeedReload = true;
             NewConfigurations = GetUpdatedConfigurations();
         } else {
-            UpdatedConfig = ControllerSettingsManager.MainConfiguration;
+            UpdatedConfig = MainConfiguration;
         }
         //
 
@@ -73,10 +83,10 @@ public abstract class SystemUpdater {
                 }
             }
             for (WM_Configuration_Data DT : NewConfigurations.configurations) {
-                Downloader.SaveConfigFiles(MainConfUID, DT);
+                SaveConfigFiles(MainConfUID, DT);
             }
             //
-            ControllerSettingsManager.SaveLastConfUID(MainConfUID);
+            SaveLastConfUID(MainConfUID);
             //
         }
 
@@ -85,15 +95,15 @@ public abstract class SystemUpdater {
         //
         //Pre init
         //
-        PluginLoader.PreInitAllPlugins();
+        PreInitAllPlugins();
         //
         //Get Available plugins list
         //
-        Set<String> AvailPlugins = PluginLoader.GetPluginUIDs();
+        Set<String> AvailPlugins = GetPluginUIDs();
         //
         // Get Required plugins
         //
-        Set<String> ReqPlugins = PluginLoader.GetRequiredPlugins(UpdatedConfig.Features);
+        Set<String> ReqPlugins = GetRequiredPlugins(UpdatedConfig.Features);
         //
         // Remove existed plugins from requierments list
         //
@@ -102,7 +112,7 @@ public abstract class SystemUpdater {
             ReqPlugins.remove(RP);
         });
 
-        Downloader.DownloadFiles(UpdatedConfig.ConfigurationUID, ReqPlugins);
+        DownloadFiles(UpdatedConfig.ConfigurationUID, ReqPlugins);
 
         return NeedReload;
 
@@ -158,7 +168,7 @@ public abstract class SystemUpdater {
         Gson gson = new Gson();
 
         try {
-            HttpClient client = HttpClientBuilder.create().build();
+            HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
             post.setEntity(new UrlEncodedFormEntity(GetConfigurationInfoRequest()));
@@ -187,7 +197,7 @@ public abstract class SystemUpdater {
         Gson gson = new Gson();
 
         try {
-            HttpClient client = HttpClientBuilder.create().build();
+            HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
             post.setEntity(new UrlEncodedFormEntity(GetConfigurationDataRequest()));
@@ -222,10 +232,10 @@ public abstract class SystemUpdater {
         Gson gson = new Gson();
 
         try {
-            HttpClient client = HttpClientBuilder.create().build();
+            HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
-            post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequestBin(String.join(",", Plugins))));
+            post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequestBin(join(",", Plugins))));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -252,7 +262,7 @@ public abstract class SystemUpdater {
         Gson gson = new Gson();
 
         try {
-            HttpClient client = HttpClientBuilder.create().build();
+            HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
             post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequestExtConf(MainConf)));

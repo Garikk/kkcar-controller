@@ -12,11 +12,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.util.Set;
 import java.util.logging.Level;
+import static java.util.logging.Level.SEVERE;
 import java.util.logging.Logger;
+import static java.util.logging.Logger.getLogger;
 import static kkdev.kksystem.base.constants.SystemConsts.*;
 import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
+import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.GetExternalConfigurationsInfo;
+import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.GetPluginFilesInfo;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_File_Data;
 import org.apache.http.HttpEntity;
@@ -24,6 +29,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import static org.apache.http.impl.client.HttpClientBuilder.create;
 
 /**
  *
@@ -32,7 +38,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 public abstract class Downloader {
 
     public static void DownloadFiles(String ConfigUID, Set<String> ReqPlugins) {
-        System.out.println("KK System Watchdog");
+        out.println("KK System Watchdog");
         //
         // Create updater folders
         //
@@ -67,8 +73,8 @@ public abstract class Downloader {
         }
         //
         //
-        WM_File_Data[] BinFilesToDownload = SystemUpdater.GetPluginFilesInfo(ReqPlugins);
-        WM_File_Data[] ConfFilesToDownload = SystemUpdater.GetExternalConfigurationsInfo(ConfigUID);
+        WM_File_Data[] BinFilesToDownload = GetPluginFilesInfo(ReqPlugins);
+        WM_File_Data[] ConfFilesToDownload = GetExternalConfigurationsInfo(ConfigUID);
 
         if (BinFilesToDownload != null) {
             for (WM_File_Data F : BinFilesToDownload) {
@@ -85,7 +91,7 @@ public abstract class Downloader {
 
     private static void DownloadFile(String Dir, String URL, String TargetName) {
 
-        HttpClient client = HttpClientBuilder.create().build();
+        HttpClient client = create().build();
 
         BufferedOutputStream bos = null;
         try {
@@ -93,24 +99,24 @@ public abstract class Downloader {
             HttpResponse response = client.execute(httpget);
             HttpEntity entity = response.getEntity();
 
-            BufferedInputStream bis = new BufferedInputStream(entity.getContent());
-            String filePath = Dir+"/"+TargetName;
-            bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-            int inByte;
-            while ((inByte = bis.read()) != -1) {
-                bos.write(inByte);
+            try (BufferedInputStream bis = new BufferedInputStream(entity.getContent())) {
+                String filePath = Dir+"/"+TargetName;
+                bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+                int inByte;
+                while ((inByte = bis.read()) != -1) {
+                    bos.write(inByte);
+                }
             }
-            bis.close();
             bos.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(Downloader.class.getName()).log(SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(Downloader.class.getName()).log(SEVERE, null, ex);
         } finally {
             try {
                 bos.close();
             } catch (IOException ex) {
-                Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
+                getLogger(Downloader.class.getName()).log(SEVERE, null, ex);
             }
         }
     }

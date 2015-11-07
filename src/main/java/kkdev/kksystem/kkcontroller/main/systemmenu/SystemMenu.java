@@ -8,8 +8,13 @@ package kkdev.kksystem.kkcontroller.main.systemmenu;
 import java.util.ArrayList;
 import java.util.List;
 import kkdev.kksystem.base.classes.controls.PinControlData;
+import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_BACK;
+import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_DOWN;
+import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_ENTER;
+import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_UP;
 import kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA;
 import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_LONGPRESS;
+import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_TRIGGERED;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
@@ -20,7 +25,10 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
+import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
 
 /**
  *
@@ -47,11 +55,11 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, null, BaseConnector, MenuCallBack, ControllerSettingsManager.MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
-        for (FeatureConfiguration FT : ControllerSettingsManager.MainConfiguration.Features) {
+        for (FeatureConfiguration FT : MainConfiguration.Features) {
             if (FT.IsSystemFeature) {
                 continue;
             }
@@ -61,7 +69,7 @@ public abstract class SystemMenu {
             MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID;
             FeatureItems.add(MI);
         }
-        for (MKMenuItem MI : ControllerSettingsManager.MainConfiguration.SystemMenuItems) {
+        for (MKMenuItem MI : MainConfiguration.SystemMenuItems) {
             FeatureItems.add(MI);
         }
         MKMenuItem[] MT = new MKMenuItem[FeatureItems.size()];
@@ -84,10 +92,10 @@ public abstract class SystemMenu {
 
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
-                PluginLoader.PlEx.ChangeFeature(CMD[1]);
+                PlEx.ChangeFeature(CMD[1]);
                 break;
             case MNU_CMD_SYSMENU_PFX:
-                MenuOperations.ExecSysMenuOperation(CMD);
+                ExecSysMenuOperation(CMD);
                 break;
         }
 
@@ -110,7 +118,7 @@ public abstract class SystemMenu {
         switch (PD.DataType) {
             case CONTROL_LONGPRESS:
                 if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID)) {
-                    if (PD.ControlID.equals(PinControlData.DEF_BTN_BACK)) {
+                    if (PD.ControlID.equals(DEF_BTN_BACK)) {
                         ButtonsManager(PD, true);
                     }
                 }
@@ -123,19 +131,19 @@ public abstract class SystemMenu {
 
     private static void ButtonsManager(PinControlData PD, boolean GlobalCommand) {
         switch (PD.ControlID) {
-            case PinControlData.DEF_BTN_UP:
+            case DEF_BTN_UP:
                 SysMenu.MenuSelectUp();
                 break;
-            case PinControlData.DEF_BTN_DOWN:
+            case DEF_BTN_DOWN:
                 SysMenu.MenuSelectDown();
                 break;
-            case PinControlData.DEF_BTN_ENTER:
+            case DEF_BTN_ENTER:
                 SysMenu.MenuExec();
                 break;
-            case PinControlData.DEF_BTN_BACK:
-                if (PD.DataType == KK_CONTROL_DATA.CONTROL_TRIGGERED) {
+            case DEF_BTN_BACK:
+                if (PD.DataType == CONTROL_TRIGGERED) {
                     SysMenu.MenuSelectBack();
-                } else if (PD.DataType == KK_CONTROL_DATA.CONTROL_LONGPRESS) {
+                } else if (PD.DataType == CONTROL_LONGPRESS) {
                     ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID);
                 }
                 break;

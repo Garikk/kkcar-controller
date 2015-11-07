@@ -12,15 +12,21 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.System.exit;
+import static java.lang.System.out;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import kkdev.kksystem.base.classes.plugins.simple.SettingsManager;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID_UUID;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
 import kkdev.kksystem.base.constants.SystemConsts;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_CONFPATH;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_SETTINGS_FILE_PFX;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_SETTINGS_LASTCONF_FILE;
+import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.GetDefaultFeature;
+import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.GetDefaultSystemMenuItems;
 
 /**
  *
@@ -52,20 +58,20 @@ public abstract class ControllerSettingsManager {
         LoadControllerConfiguration();
         //
         if (MainConfiguration == null) {
-            System.out.print("Load error");
-            System.exit(0);
+            out.print("Load error");
+            exit(0);
         }
 
     }
 
     private static String GetLastConfUID() {
 
-        File dir = new java.io.File(SystemConsts.KK_BASE_CONFPATH);
+        File dir = new java.io.File(KK_BASE_CONFPATH);
         if (!dir.exists()) {
             return null;
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(SystemConsts.KK_BASE_CONFPATH + "//" + SystemConsts.KK_BASE_SETTINGS_LASTCONF_FILE))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
             String line;
             while ((line = br.readLine()) != null) {
                 br.close();
@@ -80,7 +86,7 @@ public abstract class ControllerSettingsManager {
     }
      public  static String SaveLastConfUID(String UID) {
 
-        try (BufferedWriter br = new BufferedWriter(new FileWriter(SystemConsts.KK_BASE_CONFPATH + "//" + SystemConsts.KK_BASE_SETTINGS_LASTCONF_FILE))) {
+        try (BufferedWriter br = new BufferedWriter(new FileWriter(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
           br.write(UID);
           br.close();
         } catch (FileNotFoundException ex) {
@@ -93,9 +99,9 @@ public abstract class ControllerSettingsManager {
 
     private static void LoadControllerConfiguration() {
         ControllerConfiguration Ret;
-        System.out.println("Load plugin connection config.");
+        out.println("Load plugin connection config.");
 
-        File dir = new java.io.File(SystemConsts.KK_BASE_CONFPATH);
+        File dir = new java.io.File(KK_BASE_CONFPATH);
         if (!dir.exists()) {
             dir.mkdir();
         }
@@ -113,15 +119,15 @@ public abstract class ControllerSettingsManager {
         ControllerConfiguration DefConfig;
         DefConfig = new ControllerConfiguration();
         //
-        System.out.println("Creating default plugin connections config");
+        out.println("Creating default plugin connections config");
         //
-        FeatureConfiguration[] DefConfFeatures = kk_defultPluginConnectionConfig.GetDefaultFeature();
+        FeatureConfiguration[] DefConfFeatures = GetDefaultFeature();
         //
         DefConfig.SystemDisplay_UID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
         DefConfig.SystemHID_UID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
 
         DefConfig.Features = DefConfFeatures;
-        DefConfig.SystemMenuItems = kk_defultPluginConnectionConfig.GetDefaultSystemMenuItems();
+        DefConfig.SystemMenuItems = GetDefaultSystemMenuItems();
         DefConfig.ConfigurationStamp = KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
         DefConfig.ConfigurationUID = KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
 

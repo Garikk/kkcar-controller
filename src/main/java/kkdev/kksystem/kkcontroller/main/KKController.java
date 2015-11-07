@@ -6,11 +6,20 @@
 package kkdev.kksystem.kkcontroller.main;
 
 import java.io.IOException;
+import static java.lang.System.exit;
+import static java.lang.System.out;
 import static java.lang.Thread.sleep;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.Init;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
+import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.InitSystemMenu;
+import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ShowMenu;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.InitPlugins;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.StartPlugins;
 import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
+import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
 
 /**
  *
@@ -25,7 +34,7 @@ public class KKController {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println("KK System INIT Begin");
+        out.println("KK System INIT Begin");
         //
         InitSystem();
         //
@@ -38,38 +47,38 @@ public class KKController {
                 Shutdown=true;
             
         }
-        System.out.println("Stop");
-        System.exit(0);
+        out.println("Stop");
+        exit(0);
     }
     
     
     private static void InitSystem() throws IOException
     {
-            System.out.println("================");
-            System.out.println("Settings:");
+            out.println("================");
+            out.println("Settings:");
             //
-            ControllerSettingsManager.Init();
+            Init();
             //
             //Check updates, if "true" - have updates, watchdog make update and start app
             //
-            if (SystemUpdater.CheckUpdate(CONTROLLER_VERSION))
-                System.exit(0);
+            if (CheckUpdate(CONTROLLER_VERSION))
+                exit(0);
             
             //
-            System.out.println("================");
-            System.out.println("Plugins:");
+            out.println("================");
+            out.println("Plugins:");
             //
-            PluginLoader.InitPlugins();
+            InitPlugins();
             //
-            System.out.println("================");
+            out.println("================");
             //
-            SystemMenu.InitSystemMenu(PM.PlEx);
-           PluginLoader.PlEx.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
+            InitSystemMenu(PlEx);
+           PlEx.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
             //
-            System.out.println("================");
-            System.out.println("System start:");
-            PluginLoader.StartPlugins();
-            SystemMenu.ShowMenu();
+            out.println("================");
+            out.println("System start:");
+            StartPlugins();
+            ShowMenu();
             //
          
     }
