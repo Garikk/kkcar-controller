@@ -11,7 +11,6 @@ import static java.lang.System.out;
 import static java.lang.Thread.sleep;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.Init;
-import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.InitSystemMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ShowMenu;
 import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
@@ -19,7 +18,6 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.InitPlugins;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.StartPlugins;
-import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
 import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
 
 /**
@@ -31,6 +29,7 @@ public class KKController {
     
     static PluginLoader PM;
     static boolean Shutdown=false;
+    static RS232Scanner HW_RS232Scan;
     /**
      * @param args the command line arguments
      */
@@ -67,7 +66,8 @@ public class KKController {
             out.println("================");
             out.println("Base utils:");
             out.println("Collect RS-232 ports:");
-            RS232Scanner.MakeRS232DevList();
+            HW_RS232Scan=new RS232Scanner();
+            HW_RS232Scan.MakeRS232DevList();
             //
             out.println("================");
             out.println("Plugins:");
