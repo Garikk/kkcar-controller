@@ -14,6 +14,7 @@ import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.Init;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.InitSystemMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ShowMenu;
+import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.InitPlugins;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
@@ -63,7 +64,10 @@ public class KKController {
             //
             if (CheckUpdate(CONTROLLER_VERSION))
                 exit(0);
-            
+            out.println("================");
+            out.println("Base utils:");
+            out.println("Collect RS-232 ports:");
+            RS232Scanner.MakeRS232DevList();
             //
             out.println("================");
             out.println("Plugins:");
