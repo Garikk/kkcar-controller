@@ -25,11 +25,13 @@ import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
  * @author blinov_is
  */
 public class KKController {
-    public static String CONTROLLER_VERSION="0.9.test";
-    
+
+    public static String CONTROLLER_VERSION = "0.9.test";
+
     static PluginLoader PM;
-    static boolean Shutdown=false;
+    static boolean Shutdown = false;
     static RS232Scanner HW_RS232Scan;
+
     /**
      * @param args the command line arguments
      */
@@ -38,53 +40,56 @@ public class KKController {
         //
         InitSystem();
         //
-        int i=0;
-        while (!Shutdown)
-        {
+        int i = 0;
+        while (!Shutdown) {
             i++;
             sleep(1000);
-            if (i==55)
-                Shutdown=true;
-            
+            if (i == 55) {
+                Shutdown = true;
+            }
+
         }
         out.println("Stop");
         exit(0);
     }
-    
-    
-    private static void InitSystem() throws IOException
-    {
-            out.println("================");
-            out.println("Settings:");
-            //
-            Init();
-            //
-            //Check updates, if "true" - have updates, watchdog make update and start app
-            //
-            if (CheckUpdate(CONTROLLER_VERSION))
-                exit(0);
-            out.println("================");
-            out.println("Base utils:");
-            out.println("Collect RS-232 ports:");
-            HW_RS232Scan=new RS232Scanner();
-            HW_RS232Scan.MakeRS232DevList();
-            //
-            out.println("================");
-            out.println("Plugins:");
-            //
-            InitPlugins();
-            //
-            out.println("================");
-            //
-            InitSystemMenu(PlEx);
-           PlEx.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
-            //
-            out.println("================");
-            out.println("System start:");
-            StartPlugins();
-            ShowMenu();
-            //
-         
+
+    private static void InitSystem() throws IOException {
+        out.println("================");
+        out.println("OS: " + System.getProperty("os.name").toLowerCase());
+        out.println("ARCH: " + System.getProperty("os.arch").toLowerCase());
+
+        out.println("================");
+        out.println("Settings:");
+        //
+        Init();
+        //
+        //Check updates, if "true" - have updates, watchdog make update and start app
+        //
+        if (CheckUpdate(CONTROLLER_VERSION)) {
+            exit(0);
+        }
+        out.println("================");
+        out.println("Base utils:");
+        out.println("Collect RS-232 ports:");
+        HW_RS232Scan = new RS232Scanner();
+        HW_RS232Scan.MakeRS232DevList();
+        //
+        out.println("================");
+        out.println("Plugins:");
+        //
+        InitPlugins();
+        //
+        out.println("================");
+        //
+        InitSystemMenu(PlEx);
+        PlEx.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
+        //
+        out.println("================");
+        out.println("System start:");
+        StartPlugins();
+        ShowMenu();
+        //
+
     }
-    
+
 }
