@@ -17,14 +17,10 @@ import java.util.List;
 import java.util.Set;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import static kkdev.kksystem.base.classes.plugins.webkkmaster.WM_KKMasterConsts.*;
-import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.SaveLastConfUID;
-import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
-import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetPluginUIDs;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetRequiredPlugins;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PreInitAllPlugins;
-import kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader;
 import static kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader.DownloadFiles;
 import static kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader.SaveConfigFiles;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Data;
@@ -36,9 +32,10 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
 import org.apache.http.message.BasicNameValuePair;
+import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetActivePluginUIDs;
+import static java.lang.String.join;
 
 /**
  *
@@ -47,17 +44,17 @@ import org.apache.http.message.BasicNameValuePair;
 public abstract class SystemUpdater {
 
     final static String ___TEST_KKCAR_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
-    final static String WEBMASTER_URL = "http://localhost/";
+    final static String WEBMASTER_URL = "http://kkdev-kkcar.tk/";
     final static String WEBMASTER_URL_SERVICE = "kkcontroller/request";
 
- 
     public static boolean CheckUpdate(String KKControllerVersion) {
-
-        if (true)
+        //Skip by now
+        if (true) {
             return false;
-        
+        }
+
         boolean NeedReload = false;
-       
+
         ControllerConfiguration UpdatedConfig = null;
         WM_Answer_Configuration_Data NewConfigurations = null;
 
@@ -99,7 +96,7 @@ public abstract class SystemUpdater {
         //
         //Get Available plugins list
         //
-        Set<String> AvailPlugins = GetPluginUIDs();
+        Set<String> AvailPlugins = GetActivePluginUIDs();
         //
         // Get Required plugins
         //
@@ -175,9 +172,7 @@ public abstract class SystemUpdater {
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            Ans
-                    = gson.fromJson(rd, WM_Answer.class
-                    );
+            Ans = gson.fromJson(rd, WM_Answer.class);
 
             // if (Ans!=null || Ans[0].AnswerState == 0) {
             return gson.fromJson(Ans.JsonData, WM_Answer_Configuration_Info[].class

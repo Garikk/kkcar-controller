@@ -38,15 +38,51 @@ import static org.apache.http.impl.client.HttpClientBuilder.create;
 public abstract class Downloader {
 
     public static void DownloadFiles(String ConfigUID, Set<String> ReqPlugins) {
-        out.println("KK System Watchdog");
+        out.println("Download updates");
         //
         // Create updater folders
         //
+        // Base Update folder
         File TempPath = new java.io.File(KK_BASE_UPDATE_TEMP);
         //
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
+         //
+        // Main backup folder
+        //
+        TempPath = new java.io.File(KK_BASE_BACKUP);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
+        // Main backup folder
+        //
+        TempPath = new java.io.File(KK_BASE_UPDATE_REPAIRBACKUP);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
+        // Second backup folder
+        //
+        TempPath = new java.io.File(KK_BASE_UPDATE_REPAIRBACKUP_2);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
+        // Second backup folder
+        //
+        TempPath = new java.io.File(KK_BASE_EMERGENCYREPAIR);
+        //
+        if (!TempPath.exists()) {
+            TempPath.mkdir();
+        }
+        //
+        //
+        // Emergency backup folder
         //
         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_PLUGINS);
         //
@@ -78,7 +114,7 @@ public abstract class Downloader {
 
         if (BinFilesToDownload != null) {
             for (WM_File_Data F : BinFilesToDownload) {
-             //   DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
+                DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
             }
         }
 

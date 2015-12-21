@@ -57,7 +57,7 @@ public abstract class PluginLoader {
     {
         ActivePlugins=ConnectPlugins(null,true);
     }
-    public static Set<String> GetPluginUIDs()
+    public static Set<String> GetActivePluginUIDs()
     {
         return ActivePlugins.keySet();
     }

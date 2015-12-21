@@ -19,6 +19,7 @@ import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.InitPlugins
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.StartPlugins;
 import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
+import static java.lang.Thread.sleep;
 
 /**
  *
