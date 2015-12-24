@@ -20,6 +20,8 @@ import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.StartPlugins;
 import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
 import static java.lang.Thread.sleep;
+import kkdev.kksystem.kkcontroler.wdconnection.WDConnection;
+import kkdev.kksystem.kkcontroler.wdconnection.WDSystemState;
 
 /**
  *
@@ -32,21 +34,35 @@ public class KKController {
     static PluginLoader PM;
     static boolean Shutdown = false;
     static RS232Scanner HW_RS232Scan;
-
+    static boolean ServiceMode=false;
+    static WDConnection WatchDogService;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, InterruptedException {
+        for (String A:args)
+            if (A.equals("service"))
+            {
+                ServiceMode=true;
+                System.in.close();
+                System.out.close();
+            }
+        //
         out.println("KK System INIT Begin");
+        //
+        WatchDogService=new WDConnection();
+        WatchDogService.GetWDInfo();
         //
         InitSystem();
         //
         int i = 0;
+        WDSystemState WS;
         while (!Shutdown) {
             i++;
             sleep(1000);
             if (i == 55) {
-                Shutdown = true;
+                WS = WatchDogService.GetWDInfo();
+                Shutdown = (WS.TargetState==WDSystemState.WDStates.WD_SysState_POWEROFF);
             }
 
         }

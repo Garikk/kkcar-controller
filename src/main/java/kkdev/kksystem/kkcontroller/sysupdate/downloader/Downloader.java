@@ -43,6 +43,7 @@ public abstract class Downloader {
         // Create updater folders
         //
         // Base Update folder
+        
         File TempPath = new java.io.File(KK_BASE_UPDATE_TEMP);
         //
         if (!TempPath.exists()) {
@@ -80,6 +81,7 @@ public abstract class Downloader {
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
+  
         //
         //
         // Emergency backup folder
