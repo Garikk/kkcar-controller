@@ -22,72 +22,13 @@ import kkdev.kksystem.kkcontroler.wdconnection.interfaces.IKKWDConnection;
  *
  * @author blinov_is
  */
-public class WDConnection extends UnicastRemoteObject implements IKKWDConnection {
+public class WDConnection  {
     
-    @Override
-    public WDSystemState GetWDState() {
-        try {
-            IKKWDConnection c = (IKKWDConnection) Naming.lookup("rmi://localhost/KKCarRMI_WD");
-            return c.GetWDState();
-        } catch (NotBoundException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return null;
-    }
 
-    @Override
-    public WDSystemState SetWDState() {
-        try {
-            IKKWDConnection c = (IKKWDConnection) Naming.lookup("rmi://localhost/KKCarRMI_WD");
-            return c.SetWDState();
-        } catch (NotBoundException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }   
     
-    
-    public WDConnection() throws RemoteException
+    public WDConnection()
     {
-        System.setProperty("java.security.policy", "security.policy");
-        try {
-            if (System.getSecurityManager() == null) {
-                System.setSecurityManager(new SecurityManager());
-            }
-            Naming.bind("rmi://localhost/KKCarRMI", this);
-        }
-        catch (ConnectException ex)
-        {
-            out.println("!!NOT FOUND WD!!");
-        } catch (AlreadyBoundException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public WDSystemState GetWDInfo()
-    {
-        try {
-            IKKWDConnection WD = (IKKWDConnection) Naming.lookup("rmi://localhost/KKCarRMI_WD");
-            return WD.GetWDState();
-            
-        } catch (NotBoundException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(WDConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        UDPClient.StartWDUDPClient();
     }
     
 }

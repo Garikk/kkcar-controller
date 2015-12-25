@@ -36,6 +36,7 @@ public class KKController {
     static RS232Scanner HW_RS232Scan;
     static boolean ServiceMode=false;
     static WDConnection WatchDogService;
+    static WDSystemState CurrentSystemState;
     /**
      * @param args the command line arguments
      */
@@ -50,8 +51,10 @@ public class KKController {
         //
         out.println("KK System INIT Begin");
         //
+        CurrentSystemState=new WDSystemState();
+        CurrentSystemState.
         WatchDogService=new WDConnection();
-        WatchDogService.GetWDInfo();
+        //WatchDogService.GetWDInfo();
         //
         InitSystem();
         //
@@ -60,9 +63,10 @@ public class KKController {
         while (!Shutdown) {
             i++;
             sleep(1000);
-            if (i == 55) {
-                WS = WatchDogService.GetWDInfo();
-                Shutdown = (WS.TargetState==WDSystemState.WDStates.WD_SysState_POWEROFF);
+            if (i == 70) {
+                Shutdown=true;
+               // WS = WatchDogService.GetWDInfo();
+               // Shutdown = (WS.TargetState==WDSystemState.WDStates.WD_SysState_POWEROFF);
             }
 
         }
