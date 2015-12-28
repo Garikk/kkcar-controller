@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kkdev.kksystem.controller.wdconnection;
+package kkdev.kksystem.kkcontroller.wdconnection;
 
 /**
  *
@@ -28,11 +28,11 @@ public class WDSystemState {
     public int TargetSleepInterval;
     public int CurrentSleepInterval;
 
-    public int GetTargetStateB() {
+    public byte GetTargetStateB() {
         return (GetByteState(TargetState));
     }
 
-    public int GetCurrentStateB() {
+    public byte GetCurrentStateB() {
         return (GetByteState(CurrentState));
     }
 

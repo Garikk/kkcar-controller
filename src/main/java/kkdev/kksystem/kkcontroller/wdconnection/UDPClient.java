@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kkdev.kksystem.kkcontroler.wdconnection;
+package kkdev.kksystem.kkcontroller.wdconnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import kkdev.kksystem.kkcontroller.main.KKController;
 
 /**
  *
@@ -21,13 +22,13 @@ import java.util.logging.Logger;
  */
 public class UDPClient {
 
-    private static boolean Stop;
+    private boolean Stop;
 
-    public static void Stop() {
+    public void Stop() {
         Stop = true;
     }
 
-    public static void StartWDUDPClient() {
+    public void StartWDUDPClient() {
         Thread myThready = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -39,6 +40,7 @@ public class UDPClient {
                     Logger.getLogger(UDPClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                
                 try {
                     System.out.println("START UDP");
                     while (!Stop) {
@@ -49,7 +51,7 @@ public class UDPClient {
                         sendData[0] = 7;
                         sendData[1] = 17;
                         sendData[2] = KKController.CurrentSystemState.GetCurrentStateB();
-                        sendData[3] = KKController.CurrentSystemState.GetCurrentStateB();
+                        sendData[3] =  KKController.CurrentSystemState.GetTargetStateB();
                         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 39876);
                         clientSocket.send(sendPacket);
                         /*

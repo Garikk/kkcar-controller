@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kkdev.kksystem.kkcontroler.wdconnection.interfaces;
+package kkdev.kksystem.kkcontroller.wdconnection.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import kkdev.kksystem.kkcontroler.wdconnection.WDSystemState;
+import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 
 /**
  *
