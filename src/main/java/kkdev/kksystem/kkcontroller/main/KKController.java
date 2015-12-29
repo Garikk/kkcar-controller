@@ -19,8 +19,10 @@ import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.StartPlugins;
 import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
 import static java.lang.Thread.sleep;
-import kkdev.kksystem.kkcontroller.wdconnection.WDConnection;
+import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
+import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -29,13 +31,11 @@ import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 public class KKController {
 
     public static String CONTROLLER_VERSION = "0.9.test";
-
+       
     static PluginLoader PM;
     static boolean Shutdown = false;
-    static RS232Scanner HW_RS232Scan;
     static boolean ServiceMode=false;
-    static WDConnection WatchDogService;
-    public static WDSystemState CurrentSystemState;
+
     /**
      * @param args the command line arguments
      */
@@ -50,14 +50,11 @@ public class KKController {
         //
         out.println("KK System INIT Begin");
         //
-        CurrentSystemState=new WDSystemState();
-        
-        //WatchDogService.GetWDInfo();
+        WatchDogService.getInstance().StartWDS();
         //
         InitSystem();
         //
         int i = 0;
-        WDSystemState WS;
         while (!Shutdown) {
             i++;
             sleep(1000);
@@ -90,8 +87,8 @@ public class KKController {
         out.println("================");
         out.println("Base utils:");
         out.println("Collect RS-232 ports:");
-        HW_RS232Scan = new RS232Scanner();
-        HW_RS232Scan.MakeRS232DevList();
+        //
+        UtilsManager.getInstance().getRS232Scanner().MakeRS232DevList();
         //
         out.println("================");
         out.println("Plugins:");
@@ -108,7 +105,8 @@ public class KKController {
         StartPlugins();
         ShowMenu();
         //
-
     }
+    
+
 
 }

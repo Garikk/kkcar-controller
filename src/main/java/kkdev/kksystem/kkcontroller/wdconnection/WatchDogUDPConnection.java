@@ -5,23 +5,20 @@
  */
 package kkdev.kksystem.kkcontroller.wdconnection;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import kkdev.kksystem.kkcontroller.main.KKController;
 
 /**
  *
  * @author blinov_is
  */
-public class UDPClient {
-
+public class WatchDogUDPConnection {
+    private final int WD_UDPPORT=39876;
     private boolean Stop;
 
     public void Stop() {
@@ -37,7 +34,7 @@ public class UDPClient {
                 try {
                     clientSocket = new DatagramSocket();
                 } catch (SocketException ex) {
-                    Logger.getLogger(UDPClient.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(WatchDogUDPConnection.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 
@@ -45,28 +42,29 @@ public class UDPClient {
                     System.out.println("START UDP");
                     while (!Stop) {
                         InetAddress IPAddress = InetAddress.getByName("localhost");
-                        byte[] sendData = new byte[1024];
-                        byte[] receiveData = new byte[1024];
+                        byte[] sendData;// = new byte[1024];
+                        byte[] receiveData = new byte[4];
                         sendData = new byte[4];
                         sendData[0] = 7;
                         sendData[1] = 17;
-                        sendData[2] = KKController.CurrentSystemState.GetCurrentStateB();
-                        sendData[3] =  KKController.CurrentSystemState.GetTargetStateB();
-                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 39876);
+                        sendData[2] =  WatchDogService.getInstance().getCurrentSystemState().GetCurrentStateB();
+                        sendData[3] =  WatchDogService.getInstance().getCurrentSystemState().GetTargetStateB();
+                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, WD_UDPPORT);
+                        System.out.println("Send Ok: ");
                         clientSocket.send(sendPacket);
-                        /*
+                        
                         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                         clientSocket.receive(receivePacket);
                         String modifiedSentence = new String(receivePacket.getData());
-                        System.out.println("FROM SERVER:" + modifiedSentence);
-                        */
+                        System.out.println("FROM SERVER: " + modifiedSentence);
+                        
                         Thread.sleep(1000);
                     }
                     clientSocket.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(UDPClient.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(WatchDogUDPConnection.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(UDPClient.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(WatchDogUDPConnection.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 System.out.println("STOP UDP");
             }

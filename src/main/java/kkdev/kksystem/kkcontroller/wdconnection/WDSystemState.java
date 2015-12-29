@@ -5,6 +5,9 @@
  */
 package kkdev.kksystem.kkcontroller.wdconnection;
 
+
+
+
 /**
  *
  * @author blinov_is
@@ -22,8 +25,8 @@ public class WDSystemState {
         WD_SysState_NEEDRESTORE_EMERG  //reboot controller
     }
 
-    public WDStates TargetState;
-    public WDStates CurrentState;
+    public WDStates TargetState=WDStates.WD_SysState_ACTIVE;     //Default - Active,
+    public WDStates CurrentState=WDStates.WD_SysState_ACTIVE;
 
     public int TargetSleepInterval;
     public int CurrentSleepInterval;
