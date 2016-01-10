@@ -12,16 +12,13 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.Init;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.InitSystemMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ShowMenu;
-import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.InitPlugins;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.StartPlugins;
 import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
-import static java.lang.Thread.sleep;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
-import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 import static java.lang.Thread.sleep;
 
 /**
