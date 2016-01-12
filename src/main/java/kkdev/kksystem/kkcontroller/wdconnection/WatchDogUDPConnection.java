@@ -39,7 +39,6 @@ public class WatchDogUDPConnection {
 
                 
                 try {
-                    System.out.println("START UDP");
                     while (!Stop) {
                         InetAddress IPAddress = InetAddress.getByName("localhost");
                         byte[] sendData;// = new byte[1024];
@@ -48,15 +47,13 @@ public class WatchDogUDPConnection {
                         sendData[0] = 7;
                         sendData[1] = 17;
                         sendData[2] =  WatchDogService.getInstance().getCurrentSystemState().GetCurrentStateB();
-                        sendData[3] =  WatchDogService.getInstance().getCurrentSystemState().GetTargetStateB();
+                        sendData[3] =  WatchDogService.getInstance().getCurrentSystemState().GetCurrentStateB();
                         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, WD_UDPPORT);
-                        System.out.println("Send Ok: ");
                         clientSocket.send(sendPacket);
                         
                         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                         clientSocket.receive(receivePacket);
                         String modifiedSentence = new String(receivePacket.getData());
-                        System.out.println("FROM SERVER: " + modifiedSentence);
                         
                         Thread.sleep(1000);
                     }

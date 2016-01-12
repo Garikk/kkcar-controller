@@ -19,10 +19,8 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
-import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
-import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ProcessCommands;
+import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 
 /**
  *
@@ -183,10 +181,10 @@ public class PluginExecute implements IPluginBaseInterface {
     private void SystemBasePINReceiver(PluginMessage PP) {
         switch (PP.FeatureID) {
             case (KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID):
-                ProcessCommands(PP);
+                SystemOperations.ProcessSystemPIN(PP);
                 break;
             case (KK_BASE_FEATURES_SYSTEM_UID):
-                ProcessCommands(PP);
+                SystemOperations.ProcessSystemPIN(PP);
                 break;
         }
 

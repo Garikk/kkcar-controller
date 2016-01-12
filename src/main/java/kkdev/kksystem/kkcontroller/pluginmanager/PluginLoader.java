@@ -65,6 +65,9 @@ public abstract class PluginLoader {
     public static void StartPlugins() {
         PlEx.StartPlugins();
     }
+     public static void StopPlugins() {
+        PlEx.StopPlugins();
+    }
 
     public static Set<String> GetRequiredPlugins(FeatureConfiguration[] Features) {
         Set<String> Ret;

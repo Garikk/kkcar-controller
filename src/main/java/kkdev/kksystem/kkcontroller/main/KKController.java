@@ -13,13 +13,12 @@ import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.Init;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.InitSystemMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ShowMenu;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
-import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.InitPlugins;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
-import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.StartPlugins;
 import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 import static java.lang.Thread.sleep;
+import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 
 /**
  *
@@ -32,6 +31,7 @@ public class KKController {
     static PluginLoader PM;
     static boolean Shutdown = false;
     static boolean ServiceMode=false;
+    static WatchDogService WDS;
 
     /**
      * @param args the command line arguments
@@ -47,21 +47,25 @@ public class KKController {
         //
         out.println("KK System INIT Begin");
         //
-        WatchDogService.getInstance().StartWDS();
+        WDS=WatchDogService.getInstance();
+        WDS.StartWDS();
         //
         InitSystem();
         //
-        int i = 0;
         while (!Shutdown) {
-            i++;
-            sleep(1000);
-            if (i == 70) {
+           
+            if (WDS.getCurrentSystemState().CurrentState==WDSystemState.WDStates.WD_SysState_ACTIVE ||
+                WDS.getCurrentSystemState().CurrentState==WDSystemState.WDStates.WD_SysState_IDLE )
+                 sleep(1000);
+            else
+            {
                 Shutdown=true;
-               // WS = WatchDogService.GetWDInfo();
-               // Shutdown = (WS.TargetState==WDSystemState.WDStates.WD_SysState_POWEROFF);
             }
-
         }
+        //
+        StopSystem();
+        //
+        
         out.println("Stop");
         exit(0);
     }
@@ -90,7 +94,7 @@ public class KKController {
         out.println("================");
         out.println("Plugins:");
         //
-        InitPlugins();
+        PluginLoader.InitPlugins();
         //
         out.println("================");
         //
@@ -99,11 +103,20 @@ public class KKController {
         //
         out.println("================");
         out.println("System start:");
-        StartPlugins();
+        PluginLoader.StartPlugins();
         ShowMenu();
         //
     }
-    
+    private static void StopSystem() 
+    {
+        out.println("================");
+        out.println("Stop Plugins");
+        PluginLoader.StopPlugins();
+        out.println("================");
+        out.println("Stop WDS");
+        WDS.StopWDS();
+         out.println("================");
+    }
 
 
 }
