@@ -41,8 +41,11 @@ public class PluginExecute implements IPluginBaseInterface {
             if (Feature.Connections != null) {
                 for (PluginConnection PC : Feature.Connections) {
                     for (String PIN : PC.PinName) {
-                        RegisterPINTarget(Feature.FeatureUUID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
-                        RegisterPINTarget(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
+                        if (PIN!=null)  //Skip wrong config
+                        {
+                            RegisterPINTarget(Feature.FeatureUUID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
+                            RegisterPINTarget(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
+                        }
                      }
                 }
             }
@@ -131,6 +134,7 @@ public class PluginExecute implements IPluginBaseInterface {
         
         ArrayList<IPluginKKConnector> Exec=null;
         //
+        out.println("FEA " + PP.FeatureID + " SUI " + PP.SenderUID + " PINN "+PP.PinName);
         Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
 
         InternalExecutePin_Exec(Exec,PP);
@@ -139,8 +143,10 @@ public class PluginExecute implements IPluginBaseInterface {
     }
     private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
     {
+        
         for (IPluginKKConnector PKK:Exec)
         {
+              
           PKK.ExecutePin(PP);
         }
     }
