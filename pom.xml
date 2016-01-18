@@ -95,6 +95,13 @@
                                     </includes>
                                 </resource>
                                 <resource>
+                                    <directory>../kkcar-plugin-bluetooth/target/lib</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                                <resource>
                                     <directory>../org.freedesktop/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
@@ -147,6 +154,13 @@
                                 </resource>
                                  <resource>
                                     <directory>../kkcar-plugin-extconnector/target</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>../kkcar-plugin-bluetooth/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>

@@ -11,11 +11,14 @@ import static kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.KK_M
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.constants.PluginConsts;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_LED_COMMAND;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_LED_DATA;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_ODB2_COMMAND;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_ODB2_DATA;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
@@ -68,7 +71,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].FeatureName="ODB Diag Displ";
         Ret[FEATURE_ODB].FeatureUUID=KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature=false;
-        Ret[FEATURE_ODB].Connections=new PluginConnection[8];
+        Ret[FEATURE_ODB].Connections=new PluginConnection[10];
         //
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0]=new PluginConnection();
@@ -147,6 +150,24 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[7].PinName=new String[1];
         Ret[FEATURE_ODB].Connections[7].PinName[0]=KK_PLUGIN_BASE_CONTROL_DATA;
         
+        //External->Bluetooth
+        Ret[FEATURE_ODB].Connections[8]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[8].ConnectionName="ExtConnector to Bluetooth";
+        Ret[FEATURE_ODB].Connections[8].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_ODB].Connections[8].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[8].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
+        Ret[FEATURE_ODB].Connections[8].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
+        Ret[FEATURE_ODB].Connections[8].PinName=new String[1];
+        Ret[FEATURE_ODB].Connections[8].PinName[0]=KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
+        //Bluetooth->External
+        Ret[FEATURE_ODB].Connections[9]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[9].ConnectionName="Bluetooth to ExtConnector";
+        Ret[FEATURE_ODB].Connections[9].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
+        Ret[FEATURE_ODB].Connections[9].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
+        Ret[FEATURE_ODB].Connections[9].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_ODB].Connections[9].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[9].PinName=new String[1];
+        Ret[FEATURE_ODB].Connections[9].PinName[0]=KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
         return Ret;
         
            
