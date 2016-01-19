@@ -12,7 +12,6 @@ import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_BACK;
 import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_DOWN;
 import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_ENTER;
 import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_UP;
-import kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA;
 import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_LONGPRESS;
 import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_TRIGGERED;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
@@ -24,11 +23,9 @@ import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
-import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
-import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
-import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
+import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 
 /**
  *
@@ -92,7 +89,7 @@ public abstract class SystemMenu {
 
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
-                PlEx.ChangeFeature(CMD[1]);
+                SystemOperations.ChangeFeature(CMD[1]);
                 break;
             case MNU_CMD_SYSMENU_PFX:
                 ExecSysMenuOperation(CMD);

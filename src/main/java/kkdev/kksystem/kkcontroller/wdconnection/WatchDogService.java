@@ -15,6 +15,8 @@ import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState.WDStates;
 public class WatchDogService  {
     WatchDogUDPConnection UDC;
     WDSystemState CurrentSystemState;
+    public boolean StateChangeAlert=false;
+    public boolean InternetState=false;
     private static WatchDogService WDS;
     
     public static WatchDogService getInstance()
@@ -64,4 +66,12 @@ public class WatchDogService  {
         }
     }
     
+    public void WatchDogOk(byte[] Data)
+    {
+        if (InternetState!=(Data[2]==1))
+        {
+            InternetState=(Data[2]==1);
+            StateChangeAlert=true;
+        }
+    }
 }

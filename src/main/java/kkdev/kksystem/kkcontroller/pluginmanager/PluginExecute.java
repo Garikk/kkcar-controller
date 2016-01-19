@@ -8,12 +8,9 @@ package kkdev.kksystem.kkcontroller.pluginmanager;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
-import kkdev.kksystem.base.classes.base.PinBaseCommand;
-import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
@@ -55,7 +52,6 @@ public class PluginExecute implements IPluginBaseInterface {
 
     private void RegisterPINTarget(String FeatureID, String SenderPluginUUID, String TargetPluginUID,String PIN)
     {
-        
         //
         if (!Pin.containsKey(FeatureID))
             Pin.put(FeatureID,new HashMap());
@@ -93,23 +89,6 @@ public class PluginExecute implements IPluginBaseInterface {
         });
    }
 
-   //Change active system feature
-   public void ChangeFeature(String FeatureID)
-   {
-        PluginMessage Msg = new PluginMessage();
-        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
-        //
-        PinBaseCommand PData = new PinBaseCommand();
-        PData.BaseCommand=CHANGE_FEATURE;
-        //
-        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
-        PData.ChangeFeatureID=FeatureID;
-        Msg.PinData = PData;
-        //
-        ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
-        //
-   }
-   
     @Override
     public  PluginMessage ExecutePinCommand(PluginMessage PP) {
         return InternalExecutePin(PP);

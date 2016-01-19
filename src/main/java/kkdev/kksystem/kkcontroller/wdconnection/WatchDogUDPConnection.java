@@ -42,19 +42,26 @@ public class WatchDogUDPConnection {
                     while (!Stop) {
                         InetAddress IPAddress = InetAddress.getByName("localhost");
                         byte[] sendData;// = new byte[1024];
-                        byte[] receiveData = new byte[4];
-                        sendData = new byte[4];
+                        byte[] receiveData = new byte[8];
+                        sendData = new byte[8];
                         sendData[0] = 7;
                         sendData[1] = 17;
-                        sendData[2] =  WatchDogService.getInstance().getCurrentSystemState().GetCurrentStateB();
-                        sendData[3] =  WatchDogService.getInstance().getCurrentSystemState().GetCurrentStateB();
+                        sendData[2] = WatchDogService.getInstance().getCurrentSystemState().GetCurrentStateB();
+                        sendData[3] = WatchDogService.getInstance().getCurrentSystemState().GetCurrentStateB();
+                        sendData[4] = 0; //internet state, not need
+                        sendData[5] = 0;
+                        sendData[6] =  0;
+                        sendData[7] =  0;
                         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, WD_UDPPORT);
                         clientSocket.send(sendPacket);
                         
                         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                         clientSocket.receive(receivePacket);
-                        String modifiedSentence = new String(receivePacket.getData());
-                        
+               
+                        byte[] RecData=receivePacket.getData();
+                        if (RecData[0]==7 & RecData[1]==17)
+                            WatchDogService.getInstance().WatchDogOk(RecData);
+
                         Thread.sleep(1000);
                     }
                     clientSocket.close();

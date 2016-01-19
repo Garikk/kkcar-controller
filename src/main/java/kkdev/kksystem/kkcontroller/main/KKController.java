@@ -18,6 +18,7 @@ import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 import static java.lang.Thread.sleep;
+import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 
 /**
@@ -57,6 +58,12 @@ public class KKController {
             if (WDS.getCurrentSystemState().CurrentState==WDSystemState.WDStates.WD_SysState_ACTIVE ||
                 WDS.getCurrentSystemState().CurrentState==WDSystemState.WDStates.WD_SysState_IDLE )
                  sleep(1000);
+                 if (WDS.StateChangeAlert)
+                 {
+                     WDS.StateChangeAlert=false;
+                     SystemOperations.SystemStateChangedAlert();
+                 }
+            
             else
             {
                 Shutdown=true;
@@ -99,7 +106,7 @@ public class KKController {
         out.println("================");
         //
         InitSystemMenu(PlEx);
-        PlEx.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
+        SystemOperations.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
         //
         out.println("================");
         out.println("System start:");

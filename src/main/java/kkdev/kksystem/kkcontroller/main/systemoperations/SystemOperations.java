@@ -5,9 +5,15 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemoperations;
 
+import kkdev.kksystem.base.classes.base.PinBaseCommand;
+import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.constants.PluginConsts;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
+import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 
 /**
  *
@@ -29,4 +35,50 @@ public class SystemOperations {
         }
     }
     
+    
+     //Change active system feature
+   public static void InternetStateChenged(boolean State)
+   {
+        PluginMessage Msg = new PluginMessage();
+        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+        //
+        PinBaseCommand PData = new PinBaseCommand();
+        if (State)
+            PData.BaseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_ACTIVE;
+        else
+            PData.BaseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_INACTIVE;
+        //
+        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        Msg.PinData = PData;
+        //
+
+        PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
+        //
+   }
+   
+   //Change active system feature
+   public static void ChangeFeature(String FeatureID)
+   {
+        PluginMessage Msg = new PluginMessage();
+        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+        //
+        PinBaseCommand PData = new PinBaseCommand();
+        PData.BaseCommand=CHANGE_FEATURE;
+        //
+        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        PData.ChangeFeatureID=FeatureID;
+        Msg.PinData = PData;
+        //
+        PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
+        //
+   }
+   
+   public static void SystemStateChangedAlert()
+   {
+       if (WatchDogService.getInstance().InternetState)
+            InternetStateChenged(true);
+       else
+            InternetStateChenged(false);   
+    
+   }
 }
