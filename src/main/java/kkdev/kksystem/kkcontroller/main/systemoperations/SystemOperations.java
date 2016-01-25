@@ -37,7 +37,7 @@ public class SystemOperations {
     
     
      //Change active system feature
-   public static void InternetStateChenged(boolean State)
+   public static void InternetStateChanged(boolean State)
    {
         PluginMessage Msg = new PluginMessage();
         Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
@@ -76,9 +76,9 @@ public class SystemOperations {
    public static void SystemStateChangedAlert()
    {
        if (WatchDogService.getInstance().InternetState)
-            InternetStateChenged(true);
+            InternetStateChanged(true);
        else
-            InternetStateChenged(false);   
+            InternetStateChanged(false);   
     
    }
 }

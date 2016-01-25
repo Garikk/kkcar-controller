@@ -113,7 +113,7 @@ public class PluginExecute implements IPluginBaseInterface {
         
         ArrayList<IPluginKKConnector> Exec=null;
         //
-        out.println("FEA " + PP.FeatureID + " SUI " + PP.SenderUID + " PINN "+PP.PinName);
+        //out.println("FEA " + PP.FeatureID + " SUI " + PP.SenderUID + " PINN "+PP.PinName);
         Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
 
         InternalExecutePin_Exec(Exec,PP);

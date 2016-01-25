@@ -20,6 +20,7 @@ import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 import static java.lang.Thread.sleep;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -50,29 +51,25 @@ public class KKController {
         //
         WDS=WatchDogService.getInstance();
         WDS.StartWDS();
+        WDS.ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_ACTIVE); //Default state
         //
         InitSystem();
         //
         while (!Shutdown) {
-           
-            if (WDS.getCurrentSystemState().CurrentState==WDSystemState.WDStates.WD_SysState_ACTIVE ||
-                WDS.getCurrentSystemState().CurrentState==WDSystemState.WDStates.WD_SysState_IDLE )
-                 sleep(1000);
-                 if (WDS.StateChangeAlert)
-                 {
-                     WDS.StateChangeAlert=false;
-                     SystemOperations.SystemStateChangedAlert();
-                 }
-            
-            else
-            {
-                Shutdown=true;
+            if (WDS.getCurrentSystemState().CurrentState == WDSystemState.WDStates.WD_SysState_ACTIVE) {
+                sleep(1000);
+                if (WDS.StateChangeAlert) {
+                    WDS.StateChangeAlert = false;
+                    SystemOperations.SystemStateChangedAlert();
+                }
+            } else {
+               Shutdown = true;
             }
         }
         //
         StopSystem();
         //
-        
+
         out.println("Stop");
         exit(0);
     }
