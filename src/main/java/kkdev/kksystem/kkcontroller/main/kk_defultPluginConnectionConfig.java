@@ -148,8 +148,10 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[7].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
         Ret[FEATURE_ODB].Connections[7].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
         Ret[FEATURE_ODB].Connections[7].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
-        Ret[FEATURE_ODB].Connections[7].PinName=new String[1];
+        Ret[FEATURE_ODB].Connections[7].PinName=new String[2];
         Ret[FEATURE_ODB].Connections[7].PinName[0]=KK_PLUGIN_BASE_CONTROL_DATA;
+        Ret[FEATURE_ODB].Connections[7].PinName[1]=KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
+        
         
         //External->Bluetooth
         Ret[FEATURE_ODB].Connections[8]=new PluginConnection();
