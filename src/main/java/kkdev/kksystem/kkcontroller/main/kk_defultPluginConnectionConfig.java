@@ -71,7 +71,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].FeatureName="ODB Diag Displ";
         Ret[FEATURE_ODB].FeatureUUID=KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature=false;
-        Ret[FEATURE_ODB].Connections=new PluginConnection[10];
+        Ret[FEATURE_ODB].Connections=new PluginConnection[12];
         //
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0]=new PluginConnection();
@@ -171,6 +171,27 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[9].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
         Ret[FEATURE_ODB].Connections[9].PinName=new String[1];
         Ret[FEATURE_ODB].Connections[9].PinName[0]=KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
+        
+//External->ODB2
+        Ret[FEATURE_ODB].Connections[10]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[10].ConnectionName="ExtConnector to ODB2";
+        Ret[FEATURE_ODB].Connections[10].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_ODB].Connections[10].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[10].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_ODB2;
+        Ret[FEATURE_ODB].Connections[10].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
+        Ret[FEATURE_ODB].Connections[10].PinName=new String[2];
+        Ret[FEATURE_ODB].Connections[10].PinName[0]=KK_PLUGIN_BASE_ODB2_DATA;
+        Ret[FEATURE_ODB].Connections[10].PinName[1]=KK_PLUGIN_BASE_ODB2_COMMAND;
+        //ODB2->External
+        Ret[FEATURE_ODB].Connections[11]=new PluginConnection();
+        Ret[FEATURE_ODB].Connections[11].ConnectionName="ODB2 to ExtConnector";
+        Ret[FEATURE_ODB].Connections[11].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_ODB2;
+        Ret[FEATURE_ODB].Connections[11].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
+        Ret[FEATURE_ODB].Connections[11].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_ODB].Connections[11].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[11].PinName=new String[2];
+        Ret[FEATURE_ODB].Connections[11].PinName[0]=KK_PLUGIN_BASE_ODB2_DATA;
+        Ret[FEATURE_ODB].Connections[11].PinName[1]=KK_PLUGIN_BASE_ODB2_COMMAND;
         return Ret;
         
            
