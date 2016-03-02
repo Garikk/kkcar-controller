@@ -30,6 +30,7 @@ import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_L
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_ODB2;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
 import kkdev.kksystem.base.constants.SystemConsts;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_ODB_DIAG_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_SETTINGS_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_VERSIONINFO_UID;
@@ -51,10 +52,11 @@ public final class kk_defultPluginConnectionConfig {
     static int FEATURE_ODB=0;
     static int FEATURE_VERSION=1;
     static int FEATURE_SETTINGS=2;
+    static int FEATURE_MOBILEANDROID=3;
     
     public static FeatureConfiguration[] GetDefaultFeature()
     {
-        FeatureConfiguration[] Ret=new FeatureConfiguration[3];
+        FeatureConfiguration[] Ret=new FeatureConfiguration[4];
 
         Ret[FEATURE_VERSION]=new FeatureConfiguration();
         Ret[FEATURE_VERSION].FeatureName="Version info";
@@ -73,6 +75,11 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].IsSystemFeature=false;
         Ret[FEATURE_ODB].Connections=new PluginConnection[12];
         //
+        Ret[FEATURE_MOBILEANDROID]=new FeatureConfiguration();
+        Ret[FEATURE_MOBILEANDROID].FeatureName="Android App";
+        Ret[FEATURE_MOBILEANDROID].FeatureUUID=KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
+        Ret[FEATURE_MOBILEANDROID].IsSystemFeature=false;
+        Ret[FEATURE_MOBILEANDROID].Connections=new PluginConnection[2];
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0]=new PluginConnection();
         Ret[FEATURE_ODB].Connections[0].ConnectionName="ODB to Data Display processor";
@@ -172,7 +179,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[9].PinName=new String[1];
         Ret[FEATURE_ODB].Connections[9].PinName[0]=KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
         
-//External->ODB2
+        //External->ODB2
         Ret[FEATURE_ODB].Connections[10]=new PluginConnection();
         Ret[FEATURE_ODB].Connections[10].ConnectionName="ExtConnector to ODB2";
         Ret[FEATURE_ODB].Connections[10].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
@@ -192,6 +199,27 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[11].PinName=new String[2];
         Ret[FEATURE_ODB].Connections[11].PinName[0]=KK_PLUGIN_BASE_ODB2_DATA;
         Ret[FEATURE_ODB].Connections[11].PinName[1]=KK_PLUGIN_BASE_ODB2_COMMAND;
+        //
+          //External->ODB2
+        Ret[FEATURE_MOBILEANDROID].Connections[0]=new PluginConnection();
+        Ret[FEATURE_MOBILEANDROID].Connections[0].ConnectionName="ExtConnector to ODB2";
+        Ret[FEATURE_MOBILEANDROID].Connections[0].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_MOBILEANDROID].Connections[0].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_MOBILEANDROID].Connections[0].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_ODB2;
+        Ret[FEATURE_MOBILEANDROID].Connections[0].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
+        Ret[FEATURE_MOBILEANDROID].Connections[0].PinName=new String[2];
+        Ret[FEATURE_MOBILEANDROID].Connections[0].PinName[0]=KK_PLUGIN_BASE_ODB2_DATA;
+        Ret[FEATURE_MOBILEANDROID].Connections[0].PinName[1]=KK_PLUGIN_BASE_ODB2_COMMAND;
+        //ODB2->External
+        Ret[FEATURE_MOBILEANDROID].Connections[1]=new PluginConnection();
+        Ret[FEATURE_MOBILEANDROID].Connections[1].ConnectionName="ODB2 to ExtConnector";
+        Ret[FEATURE_MOBILEANDROID].Connections[1].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_ODB2;
+        Ret[FEATURE_MOBILEANDROID].Connections[1].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
+        Ret[FEATURE_MOBILEANDROID].Connections[1].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
+        Ret[FEATURE_MOBILEANDROID].Connections[1].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_MOBILEANDROID].Connections[1].PinName=new String[2];
+        Ret[FEATURE_MOBILEANDROID].Connections[1].PinName[0]=KK_PLUGIN_BASE_ODB2_DATA;
+        Ret[FEATURE_MOBILEANDROID].Connections[1].PinName[1]=KK_PLUGIN_BASE_ODB2_COMMAND;
         return Ret;
         
            

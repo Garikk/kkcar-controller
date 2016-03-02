@@ -103,12 +103,21 @@ public class PluginExecute implements IPluginBaseInterface {
              return null;
          
          if (!Pin.containsKey(PP.FeatureID))
-            out.println("Wrong PIN received (not found feature)");
+         {
+            out.println("Wrong PIN received (not found feature) FTR " +PP.FeatureID + " PIN " + PP.PinName);
+            return null;
+         }
         if (!Pin.get(PP.FeatureID).containsKey(PP.SenderUID))
-            out.println("Wrong PIN received (not found sender)");
+        {
+            out.println("Wrong PIN received (not found sender) FTR " +PP.FeatureID + " PIN " + PP.PinName);
+            return null;
+        }
         
         if (!Pin.get(PP.FeatureID).get(PP.SenderUID).containsKey(PP.PinName))
-            out.println("Wrong PIN received (Not found Pin)");
+        {
+            out.println("Wrong PIN received (Not found Pin) FTR " +PP.FeatureID + " PIN " + PP.PinName);
+            return null;
+        }
         
         
         ArrayList<IPluginKKConnector> Exec=null;
