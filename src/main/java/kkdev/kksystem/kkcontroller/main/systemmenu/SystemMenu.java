@@ -112,7 +112,7 @@ public abstract class SystemMenu {
         //
 
                 
-        switch (PD.DataType) {
+        switch (PD.ControlDataType) {
             case CONTROL_LONGPRESS:
                 if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID)) {
                     if (PD.ControlID.equals(DEF_BTN_BACK)) {
@@ -138,9 +138,9 @@ public abstract class SystemMenu {
                 SysMenu.MenuExec();
                 break;
             case DEF_BTN_BACK:
-                if (PD.DataType == CONTROL_TRIGGERED) {
+                if (PD.ControlDataType == CONTROL_TRIGGERED) {
                     SysMenu.MenuSelectBack();
-                } else if (PD.DataType == CONTROL_LONGPRESS) {
+                } else if (PD.ControlDataType == CONTROL_LONGPRESS) {
                     ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID);
                 }
                 break;
