@@ -91,6 +91,7 @@ public class PluginExecute implements IPluginBaseInterface {
 
     @Override
     public  PluginMessage ExecutePinCommand(PluginMessage PP) {
+       //     out.println("[PLEX][INF] PM " + PP.FeatureID + " " + PP.PinName + " " + PP.SenderUID);
         return InternalExecutePin(PP);
     }
     //

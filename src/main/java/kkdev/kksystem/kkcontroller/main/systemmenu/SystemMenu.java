@@ -5,6 +5,7 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import kkdev.kksystem.base.classes.controls.PinControlData;
@@ -86,7 +87,6 @@ public abstract class SystemMenu {
 
     private static void ExecMenuFunction(String Exec) {
         String[] CMD = Exec.split(" ");
-
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
                 SystemOperations.ChangeFeature(CMD[1]);
