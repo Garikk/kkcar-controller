@@ -15,6 +15,8 @@ import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
  * @author blinov_is
  */
 public class SystemKKControl {
+
+    
     public static void ProcessKKCommand(PluginMessage PP)
     {
         PinBaseCommand PBK=(PinBaseCommand)PP.PinData;
@@ -33,6 +35,8 @@ public class SystemKKControl {
             case SYSTEM_RESTORE_BACKUP:
                 break;
             case SYSTEM_RESTORE_EMERGENCY:
+                break;
+            case GET_CURRENT_FEATURE:
                 break;
         }
     }

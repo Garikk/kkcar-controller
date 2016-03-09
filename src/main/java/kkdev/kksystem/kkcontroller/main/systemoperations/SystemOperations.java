@@ -7,6 +7,7 @@ package kkdev.kksystem.kkcontroller.main.systemoperations;
 
 import kkdev.kksystem.base.classes.base.PinBaseCommand;
 import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
+import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.CURRENT_FEATURE;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
@@ -20,6 +21,7 @@ import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
  * @author blinov_is
  */
 public class SystemOperations {
+    public static String CurrentFeatureGlobal;
     
     public static void ProcessSystemPIN(PluginMessage Msg)
     {
@@ -81,5 +83,19 @@ public class SystemOperations {
        else
             InternetStateChanged(false);   
     
+   }
+   
+   public static void SendCurrentFeature()
+   {
+        PluginMessage Msg = new PluginMessage();
+        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+        //
+        PinBaseCommand PData = new PinBaseCommand();
+        PData.BaseCommand=CURRENT_FEATURE;
+        //
+        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        PData.ChangeFeatureID=CurrentFeatureGlobal;
+        Msg.PinData = PData;
+     PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
    }
 }
