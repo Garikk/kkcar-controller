@@ -11,6 +11,7 @@ import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
@@ -67,9 +68,10 @@ public class SystemOperations {
         PinBaseCommand PData = new PinBaseCommand();
         PData.BaseCommand=CHANGE_FEATURE;
         //
-        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         PData.ChangeFeatureID=FeatureID;
+        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         Msg.PinData = PData;
+        Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;
         //
         
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
