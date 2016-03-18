@@ -73,7 +73,6 @@ public class SystemOperations {
         Msg.PinData = PData;
         Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;
         //
-        
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
         //
    }

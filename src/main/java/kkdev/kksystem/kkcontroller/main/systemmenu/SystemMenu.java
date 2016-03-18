@@ -61,10 +61,16 @@ public abstract class SystemMenu {
             if (FT.IsSystemFeature) {
                 continue;
             }
+            
+            if (!FT.ShowInSystemMenu) {
+                continue;
+            }
 
             MKMenuItem MI = new MKMenuItem();
             MI.DisplayName = FT.FeatureName;
+            //
             MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID;
+            //
             FeatureItems.add(MI);
         }
         for (MKMenuItem MI : MainConfiguration.SystemMenuItems) {

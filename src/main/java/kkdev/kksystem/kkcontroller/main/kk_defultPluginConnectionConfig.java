@@ -6,43 +6,13 @@
 package kkdev.kksystem.kkcontroller.main;
 
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
-import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import static kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
-import kkdev.kksystem.base.constants.PluginConsts;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_LED_COMMAND;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_LED_DATA;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_ODB2_COMMAND;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_ODB2_DATA;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_DATADISPLAY_UUID;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID_UUID;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_ODB2;
-import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
-import kkdev.kksystem.base.constants.SystemConsts;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_ODB_DIAG_UID;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_SETTINGS_UID;
-import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_VERSIONINFO_UID;
-import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_INFO_PLUGINS;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_INFO_VERSION;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_TOOLS_BOARDINFO;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_TOOLS_POWEROFF;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_TOOLS_REBOOT;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_SYSMENU_PFX;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_SYSMENU_PFX_BRDTOOLS;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_SYSMENU_PFX_INFO;
+import static kkdev.kksystem.base.constants.PluginConsts.*;
+import static kkdev.kksystem.base.constants.SystemConsts.*;
+import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.*;
+
 
 /**
  *
@@ -54,9 +24,10 @@ public final class kk_defultPluginConnectionConfig {
     static int FEATURE_VERSION = 1;
     static int FEATURE_SETTINGS = 2;
     static int FEATURE_MOBILEANDROID = 3;
+    static int FEATURE_BLUETOOTH = 4;
 
     public static FeatureConfiguration[] GetDefaultFeature() {
-        FeatureConfiguration[] Ret = new FeatureConfiguration[4];
+        FeatureConfiguration[] Ret = new FeatureConfiguration[5];
 
         Ret[FEATURE_VERSION] = new FeatureConfiguration();
         Ret[FEATURE_VERSION].FeatureName = "Version info";
@@ -73,13 +44,23 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].FeatureName = "ODB Diag Displ";
         Ret[FEATURE_ODB].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature = false;
+        Ret[FEATURE_ODB].ShowInSystemMenu = true;
         Ret[FEATURE_ODB].Connections = new PluginConnection[10];
         //
         Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
         Ret[FEATURE_MOBILEANDROID].FeatureName = "Android App";
         Ret[FEATURE_MOBILEANDROID].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
         Ret[FEATURE_MOBILEANDROID].IsSystemFeature = false;
+        Ret[FEATURE_MOBILEANDROID].ShowInSystemMenu = false;
         Ret[FEATURE_MOBILEANDROID].Connections = new PluginConnection[2];
+        //
+        Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
+        Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
+        Ret[FEATURE_BLUETOOTH].FeatureUUID = KK_BASE_FEATURES_BLUETOOTH_UID;
+        Ret[FEATURE_BLUETOOTH].IsSystemFeature = false;
+        Ret[FEATURE_BLUETOOTH].ShowInSystemMenu = true;
+        Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[2];
+        
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0] = new PluginConnection();
         Ret[FEATURE_ODB].Connections[0].ConnectionName = "ODB to Data Display processor";
@@ -180,7 +161,26 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[9].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
         Ret[FEATURE_ODB].Connections[9].PinName = new String[1];
         Ret[FEATURE_ODB].Connections[9].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
-
+        //
+         //DataProcessor->LED
+        Ret[FEATURE_BLUETOOTH].Connections[0] = new PluginConnection();
+        Ret[FEATURE_BLUETOOTH].Connections[0].ConnectionName = "Bluetooth to LED";
+        Ret[FEATURE_BLUETOOTH].Connections[0].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
+        Ret[FEATURE_BLUETOOTH].Connections[0].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[0].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
+        Ret[FEATURE_BLUETOOTH].Connections[0].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[0].PinName = new String[2];
+        Ret[FEATURE_BLUETOOTH].Connections[0].PinName[0] = KK_PLUGIN_BASE_LED_COMMAND;
+        Ret[FEATURE_BLUETOOTH].Connections[0].PinName[1] = KK_PLUGIN_BASE_LED_DATA;
+        //LED->Data Processor
+        Ret[FEATURE_BLUETOOTH].Connections[1] = new PluginConnection();
+        Ret[FEATURE_BLUETOOTH].Connections[1].ConnectionName = "LED to Bluetooth";
+        Ret[FEATURE_BLUETOOTH].Connections[1].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
+        Ret[FEATURE_BLUETOOTH].Connections[1].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[1].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
+        Ret[FEATURE_BLUETOOTH].Connections[1].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[1].PinName = new String[1];
+        Ret[FEATURE_BLUETOOTH].Connections[1].PinName[0] = KK_PLUGIN_BASE_LED_DATA;
         //External->ODB2
         //*
         //[FEATURE_ODB].Connections[10]=new PluginConnection();

@@ -163,7 +163,6 @@ public class PluginExecute implements IPluginBaseInterface {
         }
         else
         {
-            out.println(TargetUUID);
             return ActivePlugins.get(TargetUUID).ExecutePin(PP);
         }
     }
