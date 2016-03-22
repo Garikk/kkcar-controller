@@ -59,7 +59,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_BLUETOOTH].FeatureUUID = KK_BASE_FEATURES_BLUETOOTH_UID;
         Ret[FEATURE_BLUETOOTH].IsSystemFeature = false;
         Ret[FEATURE_BLUETOOTH].ShowInSystemMenu = true;
-        Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[2];
+        Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[3];
         
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0] = new PluginConnection();
@@ -181,6 +181,15 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_BLUETOOTH].Connections[1].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
         Ret[FEATURE_BLUETOOTH].Connections[1].PinName = new String[1];
         Ret[FEATURE_BLUETOOTH].Connections[1].PinName[0] = KK_PLUGIN_BASE_LED_DATA;
+         //Controls->Bluetooth
+        Ret[FEATURE_BLUETOOTH].Connections[2] = new PluginConnection();
+        Ret[FEATURE_BLUETOOTH].Connections[2].ConnectionName = "Controls to Bluetooth";
+        Ret[FEATURE_BLUETOOTH].Connections[2].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_HID;
+        Ret[FEATURE_BLUETOOTH].Connections[2].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[2].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
+        Ret[FEATURE_BLUETOOTH].Connections[2].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[2].PinName = new String[1];
+        Ret[FEATURE_BLUETOOTH].Connections[2].PinName[0] = KK_PLUGIN_BASE_CONTROL_DATA;
         //External->ODB2
         //*
         //[FEATURE_ODB].Connections[10]=new PluginConnection();
