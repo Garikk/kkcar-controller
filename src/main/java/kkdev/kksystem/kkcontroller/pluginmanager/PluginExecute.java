@@ -135,8 +135,7 @@ public class PluginExecute implements IPluginBaseInterface {
         
         for (IPluginKKConnector PKK:Exec)
         {
-              
-          PKK.ExecutePin(PP);
+          PKK.ExecutePin(PP.newInstance());
         }
     }
     
