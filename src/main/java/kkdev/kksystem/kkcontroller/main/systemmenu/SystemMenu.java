@@ -21,6 +21,7 @@ import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerI
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
+import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
@@ -53,7 +54,7 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
