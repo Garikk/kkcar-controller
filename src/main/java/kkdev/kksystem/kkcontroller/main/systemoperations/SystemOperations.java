@@ -60,18 +60,21 @@ public class SystemOperations {
    }
    
    //Change active system feature
-   public static void ChangeFeature(String FeatureID)
+   public static void ChangeFeature(String FeatureID,String UIContextID)
    {
         PluginMessage Msg = new PluginMessage();
         Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
         //
         PinBaseCommand PData = new PinBaseCommand();
         PData.BaseCommand=CHANGE_FEATURE;
-        //
+        PData.ChangeUIContextID=UIContextID;
         PData.ChangeFeatureID=FeatureID;
+        //
+        
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         Msg.PinData = PData;
         Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;
+        
         //
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
         //

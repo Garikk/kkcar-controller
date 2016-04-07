@@ -21,6 +21,7 @@ import static java.lang.Thread.sleep;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 import static java.lang.Thread.sleep;
+import kkdev.kksystem.base.constants.SystemConsts;
 
 /**
  *
@@ -103,7 +104,7 @@ public class KKController {
         out.println("================");
         //
         InitSystemMenu(PlEx);
-        SystemOperations.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID);
+        SystemOperations.ChangeFeature(KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
         //
         out.println("================");
         out.println("System start:");

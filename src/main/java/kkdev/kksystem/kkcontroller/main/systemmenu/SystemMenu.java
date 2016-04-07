@@ -96,7 +96,7 @@ public abstract class SystemMenu {
         String[] CMD = Exec.split(" ");
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
-                SystemOperations.ChangeFeature(CMD[1]);
+                SystemOperations.ChangeFeature(CMD[1],CMD[2]);
                 break;
             case MNU_CMD_SYSMENU_PFX:
                 ExecSysMenuOperation(CMD);
@@ -148,7 +148,7 @@ public abstract class SystemMenu {
                 if (PD.ControlDataType == CONTROL_TRIGGERED) {
                     SysMenu.MenuSelectBack();
                 } else if (PD.ControlDataType == CONTROL_LONGPRESS) {
-                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID);
+                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT );
                 }
                 break;
 
