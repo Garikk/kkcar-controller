@@ -8,6 +8,7 @@ package kkdev.kksystem.kkcontroller.pluginmanager;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
+import kkdev.kksystem.base.classes.display.PinLedCommand;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
@@ -91,14 +92,13 @@ public class PluginExecute implements IPluginBaseInterface {
 
     @Override
     public  PluginMessage ExecutePinCommand(PluginMessage PP) {
-       //     out.println("[PLEX][INF] PM " + PP.FeatureID + " " + PP.PinName + " " + PP.SenderUID);
         return InternalExecutePin(PP);
     }
     //
     
     private  PluginMessage InternalExecutePin(PluginMessage PP)
     {
-        SystemBasePINReceiver(PP);
+        SystemBasePINReceiver(PP.newInstance());
         //
          if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_UID))
              return null;
@@ -132,7 +132,7 @@ public class PluginExecute implements IPluginBaseInterface {
     }
     private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
     {
-        
+
         for (IPluginKKConnector PKK:Exec)
         {
           PKK.ExecutePin(PP.newInstance());
@@ -156,13 +156,13 @@ public class PluginExecute implements IPluginBaseInterface {
         {
             for (IPluginKKConnector PKK:ActivePlugins.values())
             {
-                PKK.ExecutePin(PP);
+                PKK.ExecutePin(PP.newInstance());
             }
             return null;
         }
         else
         {
-            return ActivePlugins.get(TargetUUID).ExecutePin(PP);
+            return ActivePlugins.get(TargetUUID).ExecutePin(PP.newInstance());
         }
     }
 
