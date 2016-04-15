@@ -70,7 +70,7 @@ public abstract class SystemMenu {
             MKMenuItem MI = new MKMenuItem();
             MI.DisplayName = FT.FeatureName;
             //
-            MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID;
+            MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID + " " + FT.DefaultUIContext;
             //
             FeatureItems.add(MI);
         }
