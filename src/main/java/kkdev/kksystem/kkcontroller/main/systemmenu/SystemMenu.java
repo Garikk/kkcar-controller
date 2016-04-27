@@ -21,6 +21,7 @@ import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerI
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
+import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
@@ -53,7 +54,7 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
@@ -69,7 +70,7 @@ public abstract class SystemMenu {
             MKMenuItem MI = new MKMenuItem();
             MI.DisplayName = FT.FeatureName;
             //
-            MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID;
+            MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID + " " + FT.DefaultUIContext;
             //
             FeatureItems.add(MI);
         }
@@ -95,7 +96,7 @@ public abstract class SystemMenu {
         String[] CMD = Exec.split(" ");
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
-                SystemOperations.ChangeFeature(CMD[1]);
+                SystemOperations.ChangeFeature(CMD[1],CMD[2]);
                 break;
             case MNU_CMD_SYSMENU_PFX:
                 ExecSysMenuOperation(CMD);
@@ -147,7 +148,7 @@ public abstract class SystemMenu {
                 if (PD.ControlDataType == CONTROL_TRIGGERED) {
                     SysMenu.MenuSelectBack();
                 } else if (PD.ControlDataType == CONTROL_LONGPRESS) {
-                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID);
+                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT );
                 }
                 break;
 

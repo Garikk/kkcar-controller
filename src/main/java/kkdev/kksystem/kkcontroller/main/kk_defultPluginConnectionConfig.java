@@ -10,6 +10,7 @@ import static kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.KK_M
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import static kkdev.kksystem.base.constants.PluginConsts.*;
+import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.*;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.*;
 
@@ -33,11 +34,13 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_VERSION].FeatureName = "Version info";
         Ret[FEATURE_VERSION].FeatureUUID = KK_BASE_FEATURES_SYSTEM_VERSIONINFO_UID;
         Ret[FEATURE_VERSION].IsSystemFeature = true;
+        Ret[FEATURE_VERSION].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
 
         Ret[FEATURE_SETTINGS] = new FeatureConfiguration();
         Ret[FEATURE_SETTINGS].FeatureName = "Settings";
         Ret[FEATURE_SETTINGS].FeatureUUID = KK_BASE_FEATURES_SYSTEM_SETTINGS_UID;
         Ret[FEATURE_SETTINGS].IsSystemFeature = true;
+        Ret[FEATURE_SETTINGS].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
 
         //
         Ret[FEATURE_ODB] = new FeatureConfiguration();
@@ -46,6 +49,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].IsSystemFeature = false;
         Ret[FEATURE_ODB].ShowInSystemMenu = true;
         Ret[FEATURE_ODB].Connections = new PluginConnection[10];
+        Ret[FEATURE_ODB].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         //
         Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
         Ret[FEATURE_MOBILEANDROID].FeatureName = "Android App";
@@ -53,6 +57,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_MOBILEANDROID].IsSystemFeature = false;
         Ret[FEATURE_MOBILEANDROID].ShowInSystemMenu = false;
         Ret[FEATURE_MOBILEANDROID].Connections = new PluginConnection[2];
+        Ret[FEATURE_MOBILEANDROID].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         //
         Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
         Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
@@ -60,6 +65,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_BLUETOOTH].IsSystemFeature = false;
         Ret[FEATURE_BLUETOOTH].ShowInSystemMenu = true;
         Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[3];
+        Ret[FEATURE_BLUETOOTH].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0] = new PluginConnection();
