@@ -16,6 +16,7 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
+import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232DevType;
 
 /**
  *
@@ -35,12 +36,7 @@ public class RS232Scanner {
         }
     }
 
-    public enum RS232DevType {
-        Dev3GModem,
-        DevELM327,
-        Other,
-        Error;
-    }
+
         public void MakeRS232DevList() {
             RS232Ports = new ArrayList<>();
 
@@ -91,6 +87,10 @@ public class RS232Scanner {
                         Ret = RS232DevType.DevELM327;
                         break;
                     }
+                      if (IsSmarthead(buffer)) {
+                        Ret = RS232DevType.DevSmarthead;
+                        break;
+                    }
                 }
                 //Closing the port
                 serialPort.closePort();
@@ -118,6 +118,13 @@ public class RS232Scanner {
 
         public boolean IsELM(String CheckString) {
             if (CheckString.contains("ELM")) {
+                return true;
+            }
+
+            return false;
+        }
+          public boolean IsSmarthead(String CheckString) {
+            if (CheckString.contains("KKSmarthead")) {
                 return true;
             }
 

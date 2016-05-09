@@ -48,7 +48,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature = false;
         Ret[FEATURE_ODB].ShowInSystemMenu = true;
-        Ret[FEATURE_ODB].Connections = new PluginConnection[10];
+        Ret[FEATURE_ODB].Connections = new PluginConnection[12];
         Ret[FEATURE_ODB].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         //
         Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
@@ -167,6 +167,25 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[9].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
         Ret[FEATURE_ODB].Connections[9].PinName = new String[1];
         Ret[FEATURE_ODB].Connections[9].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
+        //
+         //RSCOMM->Controls Smarthead
+        Ret[FEATURE_ODB].Connections[10] = new PluginConnection();
+        Ret[FEATURE_ODB].Connections[10].ConnectionName = "Smarthead RSCOMM to Controls";
+        Ret[FEATURE_ODB].Connections[10].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_RSCOMM;
+        Ret[FEATURE_ODB].Connections[10].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_RSCOMM_UUID;
+        Ret[FEATURE_ODB].Connections[10].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_HID;
+        Ret[FEATURE_ODB].Connections[10].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
+        Ret[FEATURE_ODB].Connections[10].PinName = new String[1];
+        Ret[FEATURE_ODB].Connections[10].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
+        //LEDDisplay->RSCOMM Smarthead
+        Ret[FEATURE_ODB].Connections[11] = new PluginConnection();
+        Ret[FEATURE_ODB].Connections[11].ConnectionName = "Smarthead Display to RSCOMM";
+        Ret[FEATURE_ODB].Connections[11].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
+        Ret[FEATURE_ODB].Connections[11].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        Ret[FEATURE_ODB].Connections[11].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_RSCOMM;
+        Ret[FEATURE_ODB].Connections[11].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_RSCOMM_UUID;
+        Ret[FEATURE_ODB].Connections[11].PinName = new String[1];
+        Ret[FEATURE_ODB].Connections[11].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
         //
          //DataProcessor->LED
         Ret[FEATURE_BLUETOOTH].Connections[0] = new PluginConnection();
