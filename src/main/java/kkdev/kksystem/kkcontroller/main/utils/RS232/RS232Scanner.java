@@ -64,8 +64,8 @@ public class RS232Scanner {
                         SerialPort.DATABITS_8,
                         SerialPort.STOPBITS_1,
                         SerialPort.PARITY_NONE);
-                serialPort.writeString("ATI");
-                serialPort.writeString("\r");
+                serialPort.writeString("ATI\r\n");
+                //serialPort.writeString("");
 
                 int i = 0;
                 boolean Ok = true;
