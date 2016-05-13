@@ -92,6 +92,7 @@ public class PluginExecute implements IPluginBaseInterface {
 
     @Override
     public  PluginMessage ExecutePinCommand(PluginMessage PP) {
+     //       out.println("DBG[BSE] " +PP.FeatureID + " PIN " + PP.PinName + " ");
         return InternalExecutePin(PP);
     }
     //
