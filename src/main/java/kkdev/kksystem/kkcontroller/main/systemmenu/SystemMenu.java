@@ -20,10 +20,12 @@ import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
+import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UICONTEXT_GFX2;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
@@ -48,13 +50,15 @@ public abstract class SystemMenu {
     public static final String MNU_CMD_BRD_INFO_PLUGINS = "PLUGINS";
     public static final String MNU_CMD_BRD_INFO_VERSION = "VERSION";
     
+    private static IPluginBaseInterface BCE;
 
 
     public static void InitSystemMenu(IPluginBaseInterface BaseConnector) {
+        BCE=BaseConnector;
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_GFX1, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
@@ -151,8 +155,19 @@ public abstract class SystemMenu {
                     ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT );
                 }
                 break;
+            case "CUSTOM_CHR_CLOCK_M":
+                InitClock();
+                break;
 
         }
 
+    }
+    
+    private static void InitClock()
+    {
+        PluginManagerDataProcessor  PManager = new PluginManagerDataProcessor();
+        PManager.BaseConnector=BCE;
+        PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID,KK_BASE_UICONTEXT_GFX2,MainConfiguration.SystemDisplay_UID, "CLOCK");
+        
     }
 }

@@ -26,6 +26,7 @@ public final class kk_defultPluginConnectionConfig {
     static int FEATURE_SETTINGS = 2;
     static int FEATURE_MOBILEANDROID = 3;
     static int FEATURE_BLUETOOTH = 4;
+    static int FEATURE_MEDIACENTER = 4;
 
     public static FeatureConfiguration[] GetDefaultFeature() {
         FeatureConfiguration[] Ret = new FeatureConfiguration[5];
@@ -58,6 +59,14 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_MOBILEANDROID].ShowInSystemMenu = false;
         Ret[FEATURE_MOBILEANDROID].Connections = new PluginConnection[2];
         Ret[FEATURE_MOBILEANDROID].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+         //
+      //  Ret[FEATURE_MEDIACENTER] = new FeatureConfiguration();
+       // Ret[FEATURE_MEDIACENTER].FeatureName = "Media center";
+       // Ret[FEATURE_MEDIACENTER].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
+       // Ret[FEATURE_MEDIACENTER].IsSystemFeature = true;
+       // Ret[FEATURE_MEDIACENTER].ShowInSystemMenu = true;
+       // Ret[FEATURE_MEDIACENTER].Connections = new PluginConnection[2];
+       // Ret[FEATURE_MEDIACENTER].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         //
         Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
         Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
@@ -280,55 +289,80 @@ public final class kk_defultPluginConnectionConfig {
         // KK Info
         //  -Plugins
         //  -Version
-        Ret = new MKMenuItem[3]; // 3 main items (see above)
-
+        Ret = new MKMenuItem[4]; // 3 main items (see above)
         Ret[0] = new MKMenuItem();
-        Ret[0].DisplayName = "Settings";
+        //=================TEMPORARY
+        Ret[0].DisplayName = "Media Center";
         Ret[0].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[0].SubItems = new MKMenuItem[4];
+        Ret[0].SubItems = new MKMenuItem[2];
         Ret[0].SubItems[0] = new MKMenuItem();
-        Ret[0].SubItems[0].DisplayName = "Test Prm11";
-        Ret[0].SubItems[0].ItemCommand = "";
+        Ret[0].SubItems[0].DisplayName = "Internet radio";
+        Ret[0].SubItems[0].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].SubItems[0].SubItems = new MKMenuItem[2];
+        Ret[0].SubItems[0].SubItems[0] = new MKMenuItem();
+        Ret[0].SubItems[0].SubItems[0].DisplayName = "Record Club";
+        Ret[0].SubItems[0].SubItems[0].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].SubItems[0].SubItems[0].SubItems = new MKMenuItem[1];
+        Ret[0].SubItems[0].SubItems[0].SubItems[0] = new MKMenuItem();
+        Ret[0].SubItems[0].SubItems[0].SubItems[0].DisplayName = "Playing";
+        Ret[0].SubItems[0].SubItems[0].SubItems[0].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].SubItems[0].SubItems[1] = new MKMenuItem();
+        Ret[0].SubItems[0].SubItems[1].DisplayName = "Record Radio";
+        Ret[0].SubItems[0].SubItems[1].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].SubItems[0].SubItems[1].SubItems = new MKMenuItem[1];
+        Ret[0].SubItems[0].SubItems[1].SubItems[0] = new MKMenuItem();
+        Ret[0].SubItems[0].SubItems[1].SubItems[0].DisplayName = "Playing";
+        Ret[0].SubItems[0].SubItems[1].SubItems[0].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
         Ret[0].SubItems[1] = new MKMenuItem();
-        Ret[0].SubItems[1].DisplayName = "Test Prm12";
+        Ret[0].SubItems[1].DisplayName = "Media File";
         Ret[0].SubItems[1].ItemCommand = "";
-        Ret[0].SubItems[2] = new MKMenuItem();
-        Ret[0].SubItems[2].DisplayName = "Test Prm13";
-        Ret[0].SubItems[2].ItemCommand = "";
-        Ret[0].SubItems[3] = new MKMenuItem();
-        Ret[0].SubItems[3].DisplayName = "test submenu";
-        Ret[0].SubItems[3].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[0].SubItems[3].SubItems = new MKMenuItem[2];
-        Ret[0].SubItems[3].SubItems[0] = new MKMenuItem();
-        Ret[0].SubItems[3].SubItems[0].DisplayName = "Test Prm21";
-        Ret[0].SubItems[3].SubItems[0].ItemCommand = "";
-        Ret[0].SubItems[3].SubItems[1] = new MKMenuItem();
-        Ret[0].SubItems[3].SubItems[1].DisplayName = "Test Prm22";
-        Ret[0].SubItems[3].SubItems[1].ItemCommand = "";
+        //=========================
         Ret[1] = new MKMenuItem();
-        Ret[1].DisplayName = "Board tools";
+        Ret[1].DisplayName = "Settings";
         Ret[1].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[1].SubItems = new MKMenuItem[3];
+        Ret[1].SubItems = new MKMenuItem[4];
         Ret[1].SubItems[0] = new MKMenuItem();
-        Ret[1].SubItems[0].DisplayName = "System Info";
-        Ret[1].SubItems[0].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_BOARDINFO;
+        Ret[1].SubItems[0].DisplayName = "Test Prm11";
+        Ret[1].SubItems[0].ItemCommand = "";
         Ret[1].SubItems[1] = new MKMenuItem();
-        Ret[1].SubItems[1].DisplayName = "Reboot";
-        Ret[1].SubItems[1].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_REBOOT;
+        Ret[1].SubItems[1].DisplayName = "Test Prm12";
+        Ret[1].SubItems[1].ItemCommand = "";
         Ret[1].SubItems[2] = new MKMenuItem();
-        Ret[1].SubItems[2].DisplayName = "Power Off";
-        Ret[1].SubItems[2].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_POWEROFF;
+        Ret[1].SubItems[2].DisplayName = "Test Prm13";
+        Ret[1].SubItems[2].ItemCommand = "";
+        Ret[1].SubItems[3] = new MKMenuItem();
+        Ret[1].SubItems[3].DisplayName = "test submenu";
+        Ret[1].SubItems[3].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[1].SubItems[3].SubItems = new MKMenuItem[2];
+        Ret[1].SubItems[3].SubItems[0] = new MKMenuItem();
+        Ret[1].SubItems[3].SubItems[0].DisplayName = "Test Prm21";
+        Ret[1].SubItems[3].SubItems[0].ItemCommand = "";
+        Ret[1].SubItems[3].SubItems[1] = new MKMenuItem();
+        Ret[1].SubItems[3].SubItems[1].DisplayName = "Test Prm22";
+        Ret[1].SubItems[3].SubItems[1].ItemCommand = "";
         Ret[2] = new MKMenuItem();
-        Ret[2].DisplayName = "KK Info";
+        Ret[2].DisplayName = "Board tools";
         Ret[2].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[2].SubItems = new MKMenuItem[2];
+        Ret[2].SubItems = new MKMenuItem[3];
         Ret[2].SubItems[0] = new MKMenuItem();
-        Ret[2].SubItems[0].DisplayName = "Plugins";
-        Ret[2].SubItems[0].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_PLUGINS;
+        Ret[2].SubItems[0].DisplayName = "System Info";
+        Ret[2].SubItems[0].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_BOARDINFO;
         Ret[2].SubItems[1] = new MKMenuItem();
-        Ret[2].SubItems[1].DisplayName = "Version";
-        Ret[2].SubItems[1].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_VERSION;
-
+        Ret[2].SubItems[1].DisplayName = "Reboot";
+        Ret[2].SubItems[1].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_REBOOT;
+        Ret[2].SubItems[2] = new MKMenuItem();
+        Ret[2].SubItems[2].DisplayName = "Power Off";
+        Ret[2].SubItems[2].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_POWEROFF;
+        Ret[3] = new MKMenuItem();
+        Ret[3].DisplayName = "KK Info";
+        Ret[3].ItemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[3].SubItems = new MKMenuItem[2];
+        Ret[3].SubItems[0] = new MKMenuItem();
+        Ret[3].SubItems[0].DisplayName = "Plugins";
+        Ret[3].SubItems[0].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_PLUGINS;
+        Ret[3].SubItems[1] = new MKMenuItem();
+        Ret[3].SubItems[1].DisplayName = "Version";
+        Ret[3].SubItems[1].ItemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_VERSION;
         return Ret;
     }
 
