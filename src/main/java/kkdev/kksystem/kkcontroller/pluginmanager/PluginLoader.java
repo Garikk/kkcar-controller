@@ -13,18 +13,19 @@ import static java.lang.System.out;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
-import kkdev.kksystem.base.constants.SystemConsts;
+import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINPATH;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
-import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 
 /**
@@ -173,4 +174,16 @@ public abstract class PluginLoader {
         return Ret;
     }
 
+    public static List<PluginInfo> GetActivePluginsInfo()
+    {
+        List<PluginInfo> Ret;
+        Ret=new ArrayList<>();
+        //
+        for (IPluginKKConnector PK:ActivePlugins.values())
+        {
+            Ret.add(PK.GetPluginInfo());
+        }
+        //
+        return Ret;
+    }
 }

@@ -8,17 +8,18 @@ package kkdev.kksystem.kkcontroller.pluginmanager;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
-import kkdev.kksystem.base.classes.display.PinLedCommand;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
+import kkdev.kksystem.base.interfaces.IKKControllerUtils;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
+import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 
 /**
  *
@@ -29,7 +30,8 @@ public class PluginExecute implements IPluginBaseInterface {
     //Pin path: FeatureID,SenderID,PIN,array of connectors
      HashMap<String,HashMap<String,HashMap<String,ArrayList<IPluginKKConnector>>>> Pin;  
      HashMap<String,IPluginKKConnector> ActivePlugins;
-
+     
+     
     public PluginExecute(HashMap<String, IPluginKKConnector> Plugins) {
         ActivePlugins = Plugins;
         //
@@ -178,6 +180,11 @@ public class PluginExecute implements IPluginBaseInterface {
                 break;
         }
 
+    }
+
+    @Override
+    public IKKControllerUtils SystemUtilities() {
+        return UtilsManager.getInstance();
     }
     
     

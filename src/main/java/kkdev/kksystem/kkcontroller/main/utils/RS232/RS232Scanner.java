@@ -17,6 +17,7 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232DevType;
+import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232Device;
 
 /**
  *
@@ -27,16 +28,6 @@ public class RS232Scanner {
     public List<RS232Device> RS232Ports;
        SerialPort serialPort;
        
-    public class RS232Device {
-
-        public String PortName;
-        public RS232DevType PortType;
-        public RS232Device(String PName) {
-            PortName = PName;
-        }
-    }
-
-
         public void MakeRS232DevList() {
             RS232Ports = new ArrayList<>();
 
