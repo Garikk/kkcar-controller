@@ -11,6 +11,7 @@ import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232Device;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.interfaces.IKKControllerUtils;
 import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
+import kkdev.kksystem.kkcontroller.main.utils.display.DisplayPageStorage;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 
 
@@ -20,7 +21,7 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
  */
 public class UtilsManager implements IKKControllerUtils {
     private static UtilsManager UTMInstance;
-    
+    private static DisplayPageStorage DPStor;
     private RS232Scanner RS232ScanUtility;
     
     public static UtilsManager getInstance()
@@ -34,6 +35,7 @@ public class UtilsManager implements IKKControllerUtils {
     private UtilsManager()
     {
         RS232ScanUtility=new RS232Scanner();
+         DPStor=new DisplayPageStorage();
     }
     
     public RS232Scanner getRS232Scanner()
@@ -55,12 +57,17 @@ public class UtilsManager implements IKKControllerUtils {
 
     @Override
     public List<DisplayPage> DISPLAY_GetUIDisplayPages() {
-      return UtilsManager.getInstance().DISPLAY_GetUIDisplayPages();
+      return DPStor.GetPages();
     }
 
     @Override
     public void DISPLAY_AddUIDisplayPage(DisplayPage Page) {
-     UtilsManager.getInstance().DISPLAY_AddUIDisplayPage(Page);
+     DPStor.AddPage(Page);
+    }
+
+    @Override
+    public DisplayPage DISPLAY_GetUIDisplayPage(String Page) {
+      return DPStor.GetPage(Page);
     }
 
         

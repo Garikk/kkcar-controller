@@ -23,7 +23,7 @@ public class DisplayPageStorage {
     }
     public DisplayPage GetPage(String PageID)
     {
-        return DisplayPages.get(PageID);
+        return DisplayPages.get(PageID).GetInstance();
     }
     public void AddPage(DisplayPage Page)
     {

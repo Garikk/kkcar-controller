@@ -22,6 +22,7 @@ import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 import static java.lang.Thread.sleep;
 import kkdev.kksystem.base.constants.SystemConsts;
+import kkdev.kksystem.kkcontroller.main.systemmenu.kk_defaultUI;
 
 /**
  *
@@ -92,10 +93,14 @@ public class KKController {
         }
         out.println("================");
         out.println("Base utils:");
+          out.println("==");
         out.println("Collect RS-232 ports:");
         //
         UtilsManager.getInstance().getRS232Scanner().MakeRS232DevList();
         //
+        out.println("==");
+        out.println("Make system menu");
+        kk_defaultUI.AddDefaultSystemUIPages();
         out.println("================");
         out.println("Plugins:");
         //
