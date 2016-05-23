@@ -58,7 +58,7 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
-        SysMenu = new MenuMaker(KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_GFX1, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(BCE.SystemUtilities(),KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
@@ -87,6 +87,7 @@ public abstract class SystemMenu {
             MT[i] = M;
             i++;
         }
+        
         SysMenu.AddMenuItems(MT);
         //
     }

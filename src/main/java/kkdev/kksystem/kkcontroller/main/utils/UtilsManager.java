@@ -6,8 +6,10 @@
 package kkdev.kksystem.kkcontroller.main.utils;
 
 import java.util.List;
+import kkdev.kksystem.base.classes.display.DisplayInfo;
 import kkdev.kksystem.base.classes.display.pages.DisplayPage;
 import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232Device;
+import kkdev.kksystem.base.classes.kkcontroller.UIContextInfo;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.interfaces.IKKControllerUtils;
 import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
@@ -22,6 +24,7 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 public class UtilsManager implements IKKControllerUtils {
     private static UtilsManager UTMInstance;
     private static DisplayPageStorage DPStor;
+    private static UIContextStorage UICtxStor;
     private RS232Scanner RS232ScanUtility;
     
     public static UtilsManager getInstance()
@@ -36,6 +39,8 @@ public class UtilsManager implements IKKControllerUtils {
     {
         RS232ScanUtility=new RS232Scanner();
          DPStor=new DisplayPageStorage();
+         UICtxStor=new UIContextStorage();
+         
     }
     
     public RS232Scanner getRS232Scanner()
@@ -62,6 +67,7 @@ public class UtilsManager implements IKKControllerUtils {
 
     @Override
     public void DISPLAY_AddUIDisplayPage(DisplayPage Page) {
+       // System.out.println("[KK][UTIL] Add display page " + Page.PageName + " "+ Page.UIContexts);
      DPStor.AddPage(Page);
     }
 
@@ -69,6 +75,23 @@ public class UtilsManager implements IKKControllerUtils {
     public DisplayPage DISPLAY_GetUIDisplayPage(String Page) {
       return DPStor.GetPage(Page);
     }
+
+    @Override
+    public void UICONTEXT_AddUIContext(String UIContextID) {
+        UIContextInfo UIC=  new UIContextInfo(UIContextID);
+        UICtxStor.AddContext(UIC);
+    }
+
+    @Override
+    public UIContextInfo UICONTEXT_GetUIContextInfo(String ContextID) {
+      return UICtxStor.GetContext(ContextID);
+    }
+
+    @Override
+    public void UICONTEXT_UpdateDisplayInUIContext(String ContextID,DisplayInfo DI) {
+       UICtxStor.GetContext(ContextID).UIDisplay=DI;
+    }
+
 
         
 }

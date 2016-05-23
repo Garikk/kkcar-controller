@@ -10,6 +10,7 @@ import kkdev.kksystem.base.classes.display.pages.DisplayPage;
 import static kkdev.kksystem.base.classes.display.pages.PageConsts.*;
 import kkdev.kksystem.base.classes.display.pages.UIFrameData;
 import kkdev.kksystem.base.classes.display.pages.UIFramePack;
+import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 
@@ -27,6 +28,8 @@ public class kk_defaultUI {
         //
         DP = new DisplayPage();
         DP.DynamicElements = false;
+        DP.UIContexts=new String[1];
+        DP.UIContexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         DP.Features = new String[1];
         DP.Features[0] = KK_BASE_FEATURES_SYSTEM_UID;
         DP.PageName = KK_DISPLAY_PAGES_SIMPLEMENU_TXT_C1RX_PREFIX;
@@ -38,10 +41,12 @@ public class kk_defaultUI {
         //
         UtilsManager.getInstance().DISPLAY_AddUIDisplayPage(DP);
         //
-         DP = new DisplayPage();
+        DP = new DisplayPage();
         DP.DynamicElements = false;
         DP.Features = new String[1];
         DP.Features[0] = KK_BASE_FEATURES_SYSTEM_UID;
+        DP.UIContexts=new String[1];
+        DP.UIContexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         DP.PageName = KK_DISPLAY_PAGES_SIMPLECLOCK_TXT_PREFIX;
         DP.IsDefaultPage = false;
         DP.IsMultifeaturePage = true;
