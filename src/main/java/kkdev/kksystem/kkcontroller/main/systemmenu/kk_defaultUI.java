@@ -33,8 +33,6 @@ public class kk_defaultUI {
         DP.Features = new String[1];
         DP.Features[0] = KK_BASE_FEATURES_SYSTEM_UID;
         DP.PageName = KK_DISPLAY_PAGES_SIMPLEMENU_TXT_C1RX_PREFIX;
-        DP.UIContexts = new String[2];
-
         DP.IsDefaultPage = false;
         DP.IsMultifeaturePage = true;
         DP.UIFramesPack = FramePack[0];
@@ -72,7 +70,7 @@ public class kk_defaultUI {
         Ret[0].PackID = "";
         Ret[0].Data = new UIFrameData[1];
         Ret[0].Data[0] = new UIFrameData();
-        Ret[0].Data[0].FrameData = "[SEL_[$COUNT]][SYSMENU_[$COUNT]][SEL_[$COUNT]]\r\n[SEL_[$COUNT]][SYSMENU_[$COUNT]][SEL_[$COUNT]]";
+        Ret[0].Data[0].FrameData = "[SEL_[$COUNT]][SYSMENU_[$COUNT]][SEL_[$COUNT]]\r\n";
         Ret[0].Data[0].FontSize = 2;
       
         Ret[1] = new UIFramePack();
