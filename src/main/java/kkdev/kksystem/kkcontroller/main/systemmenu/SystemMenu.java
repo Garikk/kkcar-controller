@@ -38,7 +38,9 @@ import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 public abstract class SystemMenu {
 
     private static MenuMaker SysMenu;
-       
+    
+    public static final String MNU_CMD_LEAVE = "LEAVE";
+    
     public static final String MNU_CMD_CHANGE_FEATURE = "CHFTR";
     public static final String MNU_CMD_SYSMENU_PFX = "KKSYSCMD";
     public static final String MNU_CMD_SYSMENU_PFX_BRDTOOLS = "TOOLS";
@@ -58,6 +60,9 @@ public abstract class SystemMenu {
         IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
             ExecMenuFunction(ItemCMD);
         };
+        
+        
+        
         SysMenu = new MenuMaker(BCE.SystemUtilities(),KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
@@ -122,18 +127,13 @@ public abstract class SystemMenu {
     private static void ProcessMenuManager(PluginMessage PP) {
         PinControlData PD = (PinControlData) PP.PinData;
         //
-
-                
+              //
         switch (PD.ControlDataType) {
             case CONTROL_LONGPRESS:
-                if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID)) {
-                    if (PD.ControlID.equals(DEF_BTN_BACK)) {
-                        ButtonsManager(PD, true);
-                    }
-                }
+                ButtonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
             case CONTROL_TRIGGERED:
-                ButtonsManager(PD, false);
+                ButtonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
         }
     }
@@ -150,9 +150,10 @@ public abstract class SystemMenu {
                 SysMenu.MenuExec();
                 break;
             case DEF_BTN_BACK:
-                if (PD.ControlDataType == CONTROL_TRIGGERED) {
+                if (PD.ControlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
+                    System.out.println("[BSE] Sys menu back");
                     SysMenu.MenuSelectBack();
-                } else if (PD.ControlDataType == CONTROL_LONGPRESS) {
+                } else if (PD.ControlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
                     ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT );
                 }
                 break;
