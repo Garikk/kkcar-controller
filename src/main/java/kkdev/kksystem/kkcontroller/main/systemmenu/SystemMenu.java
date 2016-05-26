@@ -57,13 +57,26 @@ public abstract class SystemMenu {
 
     public static void InitSystemMenu(IPluginBaseInterface BaseConnector) {
         BCE=BaseConnector;
-        IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
-            ExecMenuFunction(ItemCMD);
-        };
+    //    IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
+       //     ExecMenuFunction(ItemCMD);
+      //  };
+        
+         class MenuCallBack implements IMenuMakerItemSelected{
+
+            @Override
+            public void SelectedItem(String ItemCMD) {
+                 ExecMenuFunction(ItemCMD);
+            }
+
+            @Override
+            public void StepBack(String BackCMD) {
+              //Not Uses
+            }
+        }
+      
         
         
-        
-        SysMenu = new MenuMaker(BCE.SystemUtilities(),KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, MenuCallBack, MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(BCE.SystemUtilities(),KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
@@ -151,7 +164,7 @@ public abstract class SystemMenu {
                 break;
             case DEF_BTN_BACK:
                 if (PD.ControlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
-                    System.out.println("[BSE] Sys menu back");
+                    //System.out.println("[BSE] Sys menu back");
                     SysMenu.MenuSelectBack();
                 } else if (PD.ControlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
                     ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT );
