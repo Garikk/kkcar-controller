@@ -26,7 +26,7 @@ public final class kk_defultPluginConnectionConfig {
     static int FEATURE_SETTINGS = 2;
     static int FEATURE_MOBILEANDROID = 3;
     static int FEATURE_BLUETOOTH = 4;
-    static int FEATURE_MEDIACENTER = 4;
+    //static int FEATURE_MEDIACENTER = 5;
 
     public static FeatureConfiguration[] GetDefaultFeature() {
         FeatureConfiguration[] Ret = new FeatureConfiguration[5];
@@ -43,39 +43,16 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_SETTINGS].IsSystemFeature = true;
         Ret[FEATURE_SETTINGS].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
 
-        //
+    
+          //
         Ret[FEATURE_ODB] = new FeatureConfiguration();
         Ret[FEATURE_ODB].FeatureName = "ODB Diag Displ";
         Ret[FEATURE_ODB].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_UID;
         Ret[FEATURE_ODB].IsSystemFeature = false;
         Ret[FEATURE_ODB].ShowInSystemMenu = true;
-        Ret[FEATURE_ODB].Connections = new PluginConnection[12];
+        Ret[FEATURE_ODB].Connections = new PluginConnection[11];
         Ret[FEATURE_ODB].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         //
-        Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
-        Ret[FEATURE_MOBILEANDROID].FeatureName = "Android App";
-        Ret[FEATURE_MOBILEANDROID].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
-        Ret[FEATURE_MOBILEANDROID].IsSystemFeature = false;
-        Ret[FEATURE_MOBILEANDROID].ShowInSystemMenu = false;
-        Ret[FEATURE_MOBILEANDROID].Connections = new PluginConnection[2];
-        Ret[FEATURE_MOBILEANDROID].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
-         //
-      //  Ret[FEATURE_MEDIACENTER] = new FeatureConfiguration();
-       // Ret[FEATURE_MEDIACENTER].FeatureName = "Media center";
-       // Ret[FEATURE_MEDIACENTER].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
-       // Ret[FEATURE_MEDIACENTER].IsSystemFeature = true;
-       // Ret[FEATURE_MEDIACENTER].ShowInSystemMenu = true;
-       // Ret[FEATURE_MEDIACENTER].Connections = new PluginConnection[2];
-       // Ret[FEATURE_MEDIACENTER].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
-        //
-        Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
-        Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
-        Ret[FEATURE_BLUETOOTH].FeatureUUID = KK_BASE_FEATURES_BLUETOOTH_UID;
-        Ret[FEATURE_BLUETOOTH].IsSystemFeature = false;
-        Ret[FEATURE_BLUETOOTH].ShowInSystemMenu = true;
-        Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[3];
-        Ret[FEATURE_BLUETOOTH].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
-        
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0] = new PluginConnection();
         Ret[FEATURE_ODB].Connections[0].ConnectionName = "ODB to Data Display processor";
@@ -158,44 +135,42 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[7].PinName[2] = KK_PLUGIN_BASE_LED_DATA;
         Ret[FEATURE_ODB].Connections[7].PinName[3] = KK_PLUGIN_BASE_LED_COMMAND;
 
-        //External->Bluetooth
+         //RSCOMM->Controls Smarthead
         Ret[FEATURE_ODB].Connections[8] = new PluginConnection();
-        Ret[FEATURE_ODB].Connections[8].ConnectionName = "ExtConnector to Bluetooth";
-        Ret[FEATURE_ODB].Connections[8].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
-        Ret[FEATURE_ODB].Connections[8].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
-        Ret[FEATURE_ODB].Connections[8].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
-        Ret[FEATURE_ODB].Connections[8].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
+        Ret[FEATURE_ODB].Connections[8].ConnectionName = "Smarthead RSCOMM to Controls";
+        Ret[FEATURE_ODB].Connections[8].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_RSCOMM;
+        Ret[FEATURE_ODB].Connections[8].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_RSCOMM_UUID;
+        Ret[FEATURE_ODB].Connections[8].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_HID;
+        Ret[FEATURE_ODB].Connections[8].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
         Ret[FEATURE_ODB].Connections[8].PinName = new String[1];
         Ret[FEATURE_ODB].Connections[8].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
-        //Bluetooth->External
+        //LEDDisplay->RSCOMM Smarthead
         Ret[FEATURE_ODB].Connections[9] = new PluginConnection();
-        Ret[FEATURE_ODB].Connections[9].ConnectionName = "Bluetooth to ExtConnector";
-        Ret[FEATURE_ODB].Connections[9].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
-        Ret[FEATURE_ODB].Connections[9].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
-        Ret[FEATURE_ODB].Connections[9].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
-        Ret[FEATURE_ODB].Connections[9].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
+        Ret[FEATURE_ODB].Connections[9].ConnectionName = "Smarthead Display to RSCOMM";
+        Ret[FEATURE_ODB].Connections[9].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
+        Ret[FEATURE_ODB].Connections[9].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        Ret[FEATURE_ODB].Connections[9].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_RSCOMM;
+        Ret[FEATURE_ODB].Connections[9].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_RSCOMM_UUID;
         Ret[FEATURE_ODB].Connections[9].PinName = new String[1];
         Ret[FEATURE_ODB].Connections[9].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
-        //
-         //RSCOMM->Controls Smarthead
+          //LEDDisplay->RSCOMM Smarthead
         Ret[FEATURE_ODB].Connections[10] = new PluginConnection();
-        Ret[FEATURE_ODB].Connections[10].ConnectionName = "Smarthead RSCOMM to Controls";
-        Ret[FEATURE_ODB].Connections[10].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_RSCOMM;
-        Ret[FEATURE_ODB].Connections[10].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_RSCOMM_UUID;
-        Ret[FEATURE_ODB].Connections[10].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_HID;
-        Ret[FEATURE_ODB].Connections[10].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
+        Ret[FEATURE_ODB].Connections[10].ConnectionName = "Data Processor to TTS";
+        Ret[FEATURE_ODB].Connections[10].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
+        Ret[FEATURE_ODB].Connections[10].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        Ret[FEATURE_ODB].Connections[10].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_TTS;
+        Ret[FEATURE_ODB].Connections[10].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_TTS_UUID;
         Ret[FEATURE_ODB].Connections[10].PinName = new String[1];
-        Ret[FEATURE_ODB].Connections[10].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
-        //LEDDisplay->RSCOMM Smarthead
-        Ret[FEATURE_ODB].Connections[11] = new PluginConnection();
-        Ret[FEATURE_ODB].Connections[11].ConnectionName = "Smarthead Display to RSCOMM";
-        Ret[FEATURE_ODB].Connections[11].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
-        Ret[FEATURE_ODB].Connections[11].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
-        Ret[FEATURE_ODB].Connections[11].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_RSCOMM;
-        Ret[FEATURE_ODB].Connections[11].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_RSCOMM_UUID;
-        Ret[FEATURE_ODB].Connections[11].PinName = new String[1];
-        Ret[FEATURE_ODB].Connections[11].PinName[0] = KK_PLUGIN_BASE_BASIC_TAGGEDOBJ_DATA;
+        Ret[FEATURE_ODB].Connections[10].PinName[0] = KK_PLUGIN_BASE_NOTIFY_DATA;
         //
+          
+        Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
+        Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
+        Ret[FEATURE_BLUETOOTH].FeatureUUID = KK_BASE_FEATURES_BLUETOOTH_UID;
+        Ret[FEATURE_BLUETOOTH].IsSystemFeature = false;
+        Ret[FEATURE_BLUETOOTH].ShowInSystemMenu = true;
+        Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[4];
+        Ret[FEATURE_BLUETOOTH].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
          //DataProcessor->LED
         Ret[FEATURE_BLUETOOTH].Connections[0] = new PluginConnection();
         Ret[FEATURE_BLUETOOTH].Connections[0].ConnectionName = "Bluetooth to LED";
@@ -224,28 +199,24 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_BLUETOOTH].Connections[2].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
         Ret[FEATURE_BLUETOOTH].Connections[2].PinName = new String[1];
         Ret[FEATURE_BLUETOOTH].Connections[2].PinName[0] = KK_PLUGIN_BASE_CONTROL_DATA;
-        //External->ODB2
-        //*
-        //[FEATURE_ODB].Connections[10]=new PluginConnection();
-        //Ret[FEATURE_ODB].Connections[10].ConnectionName="ExtConnector to ODB2";
-        // Ret[FEATURE_ODB].Connections[10].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
-        // Ret[FEATURE_ODB].Connections[10].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
-        ///Ret[FEATURE_ODB].Connections[10].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_ODB2;
-        //Ret[FEATURE_ODB].Connections[10].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
-        //Ret[FEATURE_ODB].Connections[10].PinName=new String[2];
-        //Ret[FEATURE_ODB].Connections[10].PinName[0]=KK_PLUGIN_BASE_ODB2_DATA;
-        //Ret[FEATURE_ODB].Connections[10].PinName[1]=KK_PLUGIN_BASE_ODB2_COMMAND;
-        //ODB2->External
-        //Ret[FEATURE_ODB].Connections[11]=new PluginConnection();
-        //Ret[FEATURE_ODB].Connections[11].ConnectionName="ODB2 to ExtConnector";
-        //Ret[FEATURE_ODB].Connections[11].SourcePluginName=KK_PLUGIN_BASE_PLUGIN_ODB2;
-        //Ret[FEATURE_ODB].Connections[11].SourcePluginUID=KK_PLUGIN_BASE_PLUGIN_ODB2_UUID;
-        //Ret[FEATURE_ODB].Connections[11].TargetPluginName=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR;
-        //Ret[FEATURE_ODB].Connections[11].TargetPluginUID=KK_PLUGIN_BASE_PLUGIN_EXTCONNECTOR_UUID;
-        //Ret[FEATURE_ODB].Connections[11].PinName=new String[2];
-        //Ret[FEATURE_ODB].Connections[11].PinName[0]=KK_PLUGIN_BASE_ODB2_DATA;
-        //Ret[FEATURE_ODB].Connections[11].PinName[1]=KK_PLUGIN_BASE_ODB2_COMMAND;
-        //
+        // BT to TTS
+        Ret[FEATURE_BLUETOOTH].Connections[3] = new PluginConnection();
+        Ret[FEATURE_BLUETOOTH].Connections[3].ConnectionName = "Bluetooth to TTS";
+        Ret[FEATURE_BLUETOOTH].Connections[3].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH;
+        Ret[FEATURE_BLUETOOTH].Connections[3].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_BLUETOOTH_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[3].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_TTS;
+        Ret[FEATURE_BLUETOOTH].Connections[3].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_TTS_UUID;
+        Ret[FEATURE_BLUETOOTH].Connections[3].PinName = new String[1];
+        Ret[FEATURE_BLUETOOTH].Connections[3].PinName[0] = KK_PLUGIN_BASE_NOTIFY_DATA;
+        
+        Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
+        Ret[FEATURE_MOBILEANDROID].FeatureName = "Android App";
+        Ret[FEATURE_MOBILEANDROID].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
+        Ret[FEATURE_MOBILEANDROID].IsSystemFeature = false;
+        Ret[FEATURE_MOBILEANDROID].ShowInSystemMenu = false;
+        Ret[FEATURE_MOBILEANDROID].Connections = new PluginConnection[2];
+        Ret[FEATURE_MOBILEANDROID].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+         //
         //External->ODB2
         Ret[FEATURE_MOBILEANDROID].Connections[0] = new PluginConnection();
         Ret[FEATURE_MOBILEANDROID].Connections[0].ConnectionName = "ExtConnector to ODB2";

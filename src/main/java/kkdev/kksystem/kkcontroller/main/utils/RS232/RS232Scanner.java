@@ -7,13 +7,10 @@ package kkdev.kksystem.kkcontroller.main.utils.RS232;
 
 import static java.lang.System.out;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232DevType;
