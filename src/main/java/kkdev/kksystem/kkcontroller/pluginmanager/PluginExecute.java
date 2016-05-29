@@ -65,6 +65,7 @@ public class PluginExecute implements IPluginBaseInterface {
         if (!Pin.get(FeatureID).get(SenderPluginUUID).containsKey(PIN))
             Pin.get(FeatureID).get(SenderPluginUUID).put(PIN, new ArrayList<>());
         //
+        //System.out.println("[PKK] Reg PIN " +PIN + " " +TargetPluginUID +" " +  ActivePlugins.get(TargetPluginUID));
         Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
         //
     }
@@ -135,7 +136,6 @@ public class PluginExecute implements IPluginBaseInterface {
     }
     private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
     {
-        
         for (IPluginKKConnector PKK:Exec)
         {
           PKK.ExecutePin(PP.newInstance());
