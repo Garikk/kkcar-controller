@@ -18,6 +18,7 @@ import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DAT
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
+import kkdev.kksystem.base.classes.notify.NotifyConsts;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
@@ -38,9 +39,9 @@ import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 public abstract class SystemMenu {
 
     private static MenuMaker SysMenu;
-    
+
     public static final String MNU_CMD_LEAVE = "LEAVE";
-    
+
     public static final String MNU_CMD_CHANGE_FEATURE = "CHFTR";
     public static final String MNU_CMD_SYSMENU_PFX = "KKSYSCMD";
     public static final String MNU_CMD_SYSMENU_PFX_BRDTOOLS = "TOOLS";
@@ -51,32 +52,36 @@ public abstract class SystemMenu {
     public static final String MNU_CMD_BRD_TOOLS_BOARDINFO = "BOARDINFO";
     public static final String MNU_CMD_BRD_INFO_PLUGINS = "PLUGINS";
     public static final String MNU_CMD_BRD_INFO_VERSION = "VERSION";
-    
-    private static IPluginBaseInterface BCE;
 
+    private static IPluginBaseInterface BCE;
+    static PluginManagerDataProcessor PManager = new PluginManagerDataProcessor();
 
     public static void InitSystemMenu(IPluginBaseInterface BaseConnector) {
-        BCE=BaseConnector;
-    //    IMenuMakerItemSelected MenuCallBack = (String ItemCMD) -> {
-       //     ExecMenuFunction(ItemCMD);
-      //  };
-        
-         class MenuCallBack implements IMenuMakerItemSelected{
+        BCE = BaseConnector;
+        PManager.BaseConnector = BCE;
+
+        class MenuCallBack implements IMenuMakerItemSelected {
 
             @Override
             public void SelectedItem(String ItemCMD) {
-                 ExecMenuFunction(ItemCMD);
+                ExecMenuFunction(ItemCMD);
             }
 
             @Override
             public void StepBack(String BackCMD) {
-              //Not Uses
+                //Not Uses
+            }
+
+            @Override
+            public void ActiveMenuElement(String ItemText, String ItemCMD) {
+                NotifyConsts.NOTIFY_METHOD[] NM = new NotifyConsts.NOTIFY_METHOD[1];
+                NM[0] = NotifyConsts.NOTIFY_METHOD.VOICE;
+                PManager.NOTIFY_SendNotifyMessage(KK_BASE_FEATURES_SYSTEM_UID, NotifyConsts.NOTIFY_TYPE.SYSTEM_INFO, NM, ItemText);
+               
             }
         }
-      
-        
-        
-        SysMenu = new MenuMaker(BCE.SystemUtilities(),KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), MainConfiguration.SystemDisplay_UID);
+
+        SysMenu = new MenuMaker(BCE.SystemUtilities(), KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), MainConfiguration.SystemDisplay_UID);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
@@ -84,7 +89,7 @@ public abstract class SystemMenu {
             if (FT.IsSystemFeature) {
                 continue;
             }
-            
+
             if (!FT.ShowInSystemMenu) {
                 continue;
             }
@@ -105,7 +110,7 @@ public abstract class SystemMenu {
             MT[i] = M;
             i++;
         }
-        
+
         SysMenu.AddMenuItems(MT);
         //
     }
@@ -119,7 +124,7 @@ public abstract class SystemMenu {
         String[] CMD = Exec.split(" ");
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
-                SystemOperations.ChangeFeature(CMD[1],CMD[2]);
+                SystemOperations.ChangeFeature(CMD[1], CMD[2]);
                 break;
             case MNU_CMD_SYSMENU_PFX:
                 ExecSysMenuOperation(CMD);
@@ -140,7 +145,7 @@ public abstract class SystemMenu {
     private static void ProcessMenuManager(PluginMessage PP) {
         PinControlData PD = (PinControlData) PP.PinData;
         //
-              //
+        //
         switch (PD.ControlDataType) {
             case CONTROL_LONGPRESS:
                 ButtonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
@@ -167,7 +172,7 @@ public abstract class SystemMenu {
                     //System.out.println("[BSE] Sys menu back");
                     SysMenu.MenuSelectBack();
                 } else if (PD.ControlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
-                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT );
+                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
                 }
                 break;
             case "CUSTOM_CHR_CLOCK_M":
@@ -177,12 +182,11 @@ public abstract class SystemMenu {
         }
 
     }
-    
-    private static void InitClock()
-    {
-        PluginManagerDataProcessor  PManager = new PluginManagerDataProcessor();
-        PManager.BaseConnector=BCE;
-        PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID,KK_BASE_UICONTEXT_GFX2,MainConfiguration.SystemDisplay_UID, "CLOCK");
-        
+
+    private static void InitClock() {
+        // PluginManagerDataProcessor PManager = new PluginManagerDataProcessor();
+        // PManager.BaseConnector = BCE;
+        PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID, KK_BASE_UICONTEXT_GFX2, MainConfiguration.SystemDisplay_UID, "CLOCK");
+
     }
 }
