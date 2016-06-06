@@ -11,6 +11,7 @@ import java.util.HashMap;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
+import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
@@ -44,7 +45,10 @@ public class PluginExecute implements IPluginBaseInterface {
                         if (PIN!=null)  //Skip wrong config
                         {
                             RegisterPINTarget(Feature.FeatureUUID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
+                            //Register multicast feature pin
                             RegisterPINTarget(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
+                            //KKController may send any pin to any plugin in system feature
+                            RegisterPINTarget(KK_BASE_FEATURES_SYSTEM_UID, PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID, PC.TargetPluginUID, PIN);
                         }
                      }
                 }
@@ -66,7 +70,7 @@ public class PluginExecute implements IPluginBaseInterface {
             Pin.get(FeatureID).get(SenderPluginUUID).put(PIN, new ArrayList<>());
         //
         //System.out.println("[PKK] Reg PIN " +PIN + " " +TargetPluginUID +" " +  ActivePlugins.get(TargetPluginUID));
-        Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
+           Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
         //
     }
     
@@ -102,9 +106,10 @@ public class PluginExecute implements IPluginBaseInterface {
     
     private  PluginMessage InternalExecutePin(PluginMessage PP)
     {
+         
         SystemBasePINReceiver(PP.newInstance());
         //
-         if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_UID))
+         if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_UID) & !PP.SenderUID.equals(PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID))
              return null;
          
          if (!Pin.containsKey(PP.FeatureID))
@@ -136,8 +141,10 @@ public class PluginExecute implements IPluginBaseInterface {
     }
     private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
     {
+
         for (IPluginKKConnector PKK:Exec)
         {
+            
           PKK.ExecutePin(PP.newInstance());
         }
     }

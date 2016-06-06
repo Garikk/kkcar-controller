@@ -20,14 +20,17 @@ import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
 import kkdev.kksystem.base.classes.notify.NotifyConsts;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
+import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
+import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UICONTEXT_GFX2;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
+import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
@@ -74,14 +77,12 @@ public abstract class SystemMenu {
 
             @Override
             public void ActiveMenuElement(String ItemText, String ItemCMD) {
-                NotifyConsts.NOTIFY_METHOD[] NM = new NotifyConsts.NOTIFY_METHOD[1];
-                NM[0] = NotifyConsts.NOTIFY_METHOD.VOICE;
-                PManager.NOTIFY_SendNotifyMessage(KK_BASE_FEATURES_SYSTEM_UID, NotifyConsts.NOTIFY_TYPE.SYSTEM_INFO, NM, ItemText);
-               
+                //not used
+
             }
         }
 
-        SysMenu = new MenuMaker(BCE.SystemUtilities(), KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), MainConfiguration.SystemDisplay_UID);
+        SysMenu = new MenuMaker(BCE.SystemUtilities(), KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), MainConfiguration.SystemDisplay_UID, true);
         //
         //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
@@ -159,13 +160,16 @@ public abstract class SystemMenu {
     private static void ButtonsManager(PinControlData PD, boolean GlobalCommand) {
         switch (PD.ControlID) {
             case DEF_BTN_UP:
-                SysMenu.MenuSelectUp();
+                SysMenu.ProcessControlCommand(PD.ControlID);
+                //SysMenu.MenuSelectUp();
                 break;
             case DEF_BTN_DOWN:
-                SysMenu.MenuSelectDown();
+                SysMenu.ProcessControlCommand(PD.ControlID);
+                //SysMenu.MenuSelectDown();
                 break;
             case DEF_BTN_ENTER:
-                SysMenu.MenuExec();
+                SysMenu.ProcessControlCommand(PD.ControlID);
+                //SysMenu.MenuExec();
                 break;
             case DEF_BTN_BACK:
                 if (PD.ControlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
