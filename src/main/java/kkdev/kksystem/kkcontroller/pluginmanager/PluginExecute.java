@@ -70,7 +70,8 @@ public class PluginExecute implements IPluginBaseInterface {
             Pin.get(FeatureID).get(SenderPluginUUID).put(PIN, new ArrayList<>());
         //
         //System.out.println("[PKK] Reg PIN " +PIN + " " +TargetPluginUID +" " +  ActivePlugins.get(TargetPluginUID));
-           Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
+         if (!Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).contains(ActivePlugins.get(TargetPluginUID)))
+                Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
         //
     }
     
@@ -132,7 +133,7 @@ public class PluginExecute implements IPluginBaseInterface {
         
         ArrayList<IPluginKKConnector> Exec=null;
         //
-        //out.println("FEA " + PP.FeatureID + " SUI " + PP.SenderUID + " PINN "+PP.PinName);
+      
         Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
 
         InternalExecutePin_Exec(Exec,PP);

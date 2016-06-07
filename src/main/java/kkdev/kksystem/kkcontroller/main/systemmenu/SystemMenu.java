@@ -173,8 +173,7 @@ public abstract class SystemMenu {
                 break;
             case DEF_BTN_BACK:
                 if (PD.ControlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
-                    //System.out.println("[BSE] Sys menu back");
-                    SysMenu.MenuSelectBack();
+                 SysMenu.MenuSelectBack();
                 } else if (PD.ControlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
                     ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
                 }
