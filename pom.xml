@@ -129,6 +129,13 @@
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
+                                  <resource>
+                                    <directory>../kkcar-plugin-mediacenter/target/lib</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
                             </resources>              
                             <nonFilteredFileExtensions>
                                 <nonFilteredFileExtension>jar</nonFilteredFileExtension>
@@ -203,6 +210,13 @@
                                 </resource>
                                 <resource>
                                     <directory>../kkcar-plugin-geo/target</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                                  <resource>
+                                    <directory>../kkcar-plugin-mediacenter/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
