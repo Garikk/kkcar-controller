@@ -59,7 +59,7 @@ public abstract class SystemMenu {
     private static IPluginBaseInterface BCE;
     static PluginManagerDataProcessor PManager = new PluginManagerDataProcessor();
 
-    public static void InitSystemMenu(IPluginBaseInterface BaseConnector) {
+    public static void initSystemMenu(IPluginBaseInterface BaseConnector) {
         BCE = BaseConnector;
         PManager.baseConnector = BCE;
 
@@ -67,7 +67,7 @@ public abstract class SystemMenu {
 
             @Override
             public void selectedItem(String ItemCMD) {
-                ExecMenuFunction(ItemCMD);
+                execMenuFunction(ItemCMD);
             }
 
             @Override
@@ -116,12 +116,12 @@ public abstract class SystemMenu {
         //
     }
 
-    public static void ShowMenu() {
+    public static void showMenu() {
         SysMenu.showMenu();
 
     }
 
-    private static void ExecMenuFunction(String Exec) {
+    private static void execMenuFunction(String Exec) {
         String[] CMD = Exec.split(" ");
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
@@ -134,59 +134,62 @@ public abstract class SystemMenu {
 
     }
 
-    public static void ProcessCommands(PluginMessage PP) {
+    public static void processCommands(PluginMessage PP) {
         switch (PP.PinName) {
             case (KK_PLUGIN_BASE_CONTROL_DATA):
-                ProcessMenuManager(PP);
+                processMenuManager(PP);
                 break;
 
         }
     }
 
-    private static void ProcessMenuManager(PluginMessage PP) {
+    private static void processMenuManager(PluginMessage PP) {
         PinControlData PD = (PinControlData) PP.PinData;
         //
         //
         switch (PD.controlDataType) {
             case CONTROL_LONGPRESS:
-                ButtonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
             case CONTROL_TRIGGERED:
-                ButtonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
         }
     }
 
-    private static void ButtonsManager(PinControlData PD, boolean GlobalCommand) {
-        switch (PD.controlID) {
-            case DEF_BTN_UP:
-                SysMenu.processControlCommand(PD.controlID);
-                //SysMenu.menuSelectUp();
-                break;
-            case DEF_BTN_DOWN:
-                SysMenu.processControlCommand(PD.controlID);
-                //SysMenu.menuSelectDown();
-                break;
-            case DEF_BTN_ENTER:
-                SysMenu.processControlCommand(PD.controlID);
-                //SysMenu.menuExec();
-                break;
-            case DEF_BTN_BACK:
-                if (PD.controlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
-                 SysMenu.menuSelectBack();
-                } else if (PD.controlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
-                    ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
-                }
-                break;
-            case "CUSTOM_CHR_CLOCK_M":
-                InitClock();
-                break;
+    private static void buttonsManager(PinControlData PD, boolean GlobalCommand) {
+        for (String btnID:PD.controlID)    
+        {
+            switch (btnID) {
+                case DEF_BTN_UP:
+                    SysMenu.processControlCommand(PD.controlID);
+                    //SysMenu.menuSelectUp();
+                    break;
+                case DEF_BTN_DOWN:
+                    SysMenu.processControlCommand(PD.controlID);
+                    //SysMenu.menuSelectDown();
+                    break;
+                case DEF_BTN_ENTER:
+                    SysMenu.processControlCommand(PD.controlID);
+                    //SysMenu.menuExec();
+                    break;
+                case DEF_BTN_BACK:
+                    if (PD.controlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
+                        SysMenu.menuSelectBack();
+                    } else if (PD.controlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
+                        execMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
+                    }
+                    break;
+                case "CUSTOM_CHR_CLOCK_M":
+                    initClock();
+                    break;
 
+            }
         }
 
     }
 
-    private static void InitClock() {
+    private static void initClock() {
         // PluginManagerDataProcessor PManager = new PluginManagerDataProcessor();
         // PManager.baseConnector = BCE;
         PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID, KK_BASE_UICONTEXT_GFX2, mainConfiguration.systemDisplay_UID, "CLOCK");

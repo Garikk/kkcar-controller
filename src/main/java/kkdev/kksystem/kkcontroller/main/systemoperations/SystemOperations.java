@@ -29,7 +29,7 @@ public class SystemOperations {
         //Redirect all control data to menu module
         if (Msg.PinName.equals(PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA))
         {
-            SystemMenu.ProcessCommands(Msg);
+            SystemMenu.processCommands(Msg);
         }
         //Redirect all PIN CMD data to KK control
         else if (Msg.PinName.equals(PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND))
