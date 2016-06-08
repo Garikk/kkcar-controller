@@ -9,7 +9,6 @@ import java.io.IOException;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
-import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.Init;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.InitSystemMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.ShowMenu;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
@@ -23,6 +22,13 @@ import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 import static java.lang.Thread.sleep;
 import kkdev.kksystem.base.constants.SystemConsts;
 import kkdev.kksystem.kkcontroller.main.systemmenu.kk_defaultUI;
+import static java.lang.Thread.sleep;
+import static java.lang.Thread.sleep;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.init;
+import static java.lang.Thread.sleep;
+import static java.lang.Thread.sleep;
+import static java.lang.Thread.sleep;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -84,7 +90,7 @@ public class KKController {
         out.println("================");
         out.println("Settings:");
         //
-        Init();
+        init();
         //
         //Check updates, if "true" - have updates, watchdog make update and start app
         //

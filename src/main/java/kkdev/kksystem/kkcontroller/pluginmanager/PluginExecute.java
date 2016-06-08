@@ -18,9 +18,9 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import kkdev.kksystem.base.interfaces.IKKControllerUtils;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
-import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
 
 /**
  *
@@ -38,7 +38,7 @@ public class PluginExecute implements IPluginBaseInterface {
         //
         Pin = new HashMap();
         //
-        for (FeatureConfiguration Feature : MainConfiguration.Features) {
+        for (FeatureConfiguration Feature : mainConfiguration.features) {
             if (Feature.Connections != null) {
                 for (PluginConnection PC : Feature.Connections) {
                     for (String PIN : PC.PinName) {
@@ -79,7 +79,7 @@ public class PluginExecute implements IPluginBaseInterface {
    {
        for (IPluginKKConnector CONN: ActivePlugins.values())
        {
-           CONN.PluginInit(this,MainConfiguration.ConfigurationUID);
+           CONN.pluginInit(this,mainConfiguration.configurationUID);
        }
    
    }
@@ -87,19 +87,19 @@ public class PluginExecute implements IPluginBaseInterface {
    {
        for (IPluginKKConnector CONN: ActivePlugins.values())
        {
-           CONN.PluginStart();
+           CONN.pluginStart();
        }
    
    }
    public   void StopPlugins()
    {
        ActivePlugins.values().stream().forEach((CONN) -> {
-           CONN.PluginStop();
+           CONN.pluginStop();
         });
    }
 
     @Override
-    public  PluginMessage ExecutePinCommand(PluginMessage PP) {
+    public  PluginMessage executePinCommand(PluginMessage PP) {
      //       out.println("DBG[BSE] " +PP.FeatureID + " PIN " + PP.PinName + " ");
         return InternalExecutePin(PP);
     }
@@ -146,12 +146,12 @@ public class PluginExecute implements IPluginBaseInterface {
         for (IPluginKKConnector PKK:Exec)
         {
             
-          PKK.ExecutePin(PP.newInstance());
+          PKK.executePin(PP.newInstance());
         }
     }
     
     @Override
-    public PluginMessage _ExecutePinCommandDirect(String PluginUUID, PluginMessage PP) {
+    public PluginMessage _executePinCommandDirect(String PluginUUID, PluginMessage PP) {
        return ExecuteDirectCommand(PluginUUID,PP);
     }
     
@@ -167,13 +167,13 @@ public class PluginExecute implements IPluginBaseInterface {
         {
             for (IPluginKKConnector PKK:ActivePlugins.values())
             {
-                PKK.ExecutePin(PP.newInstance());
+                PKK.executePin(PP.newInstance());
             }
             return null;
         }
         else
         {
-            return ActivePlugins.get(TargetUUID).ExecutePin(PP.newInstance());
+            return ActivePlugins.get(TargetUUID).executePin(PP.newInstance());
         }
     }
 
@@ -191,7 +191,7 @@ public class PluginExecute implements IPluginBaseInterface {
     }
 
     @Override
-    public IKKControllerUtils SystemUtilities() {
+    public IKKControllerUtils systemUtilities() {
         return UtilsManager.getInstance();
     }
     

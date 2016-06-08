@@ -31,9 +31,9 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UICONTEXT_GFX2;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
-import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
 
 /**
  *
@@ -61,32 +61,32 @@ public abstract class SystemMenu {
 
     public static void InitSystemMenu(IPluginBaseInterface BaseConnector) {
         BCE = BaseConnector;
-        PManager.BaseConnector = BCE;
+        PManager.baseConnector = BCE;
 
         class MenuCallBack implements IMenuMakerItemSelected {
 
             @Override
-            public void SelectedItem(String ItemCMD) {
+            public void selectedItem(String ItemCMD) {
                 ExecMenuFunction(ItemCMD);
             }
 
             @Override
-            public void StepBack(String BackCMD) {
+            public void stepBack(String BackCMD) {
                 //Not Uses
             }
 
             @Override
-            public void ActiveMenuElement(String ItemText, String ItemCMD) {
+            public void activeMenuElement(String ItemText, String ItemCMD) {
                 //not used
 
             }
         }
 
-        SysMenu = new MenuMaker(BCE.SystemUtilities(), KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), MainConfiguration.SystemDisplay_UID, true);
+        SysMenu = new MenuMaker(BCE.systemUtilities(), KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), mainConfiguration.systemDisplay_UID, true);
         //
-        //  MenuItem[] MenuItemsToLoad = SettingsManager.MainConfiguration.SystemMenuItems;
+        //  MenuItem[] MenuItemsToLoad = SettingsManager.mainConfiguration.systemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
-        for (FeatureConfiguration FT : MainConfiguration.Features) {
+        for (FeatureConfiguration FT : mainConfiguration.features) {
             if (FT.IsSystemFeature) {
                 continue;
             }
@@ -96,13 +96,13 @@ public abstract class SystemMenu {
             }
 
             MKMenuItem MI = new MKMenuItem();
-            MI.DisplayName = FT.FeatureName;
+            MI.displayName = FT.FeatureName;
             //
-            MI.ItemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID + " " + FT.DefaultUIContext;
+            MI.itemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID + " " + FT.DefaultUIContext;
             //
             FeatureItems.add(MI);
         }
-        for (MKMenuItem MI : MainConfiguration.SystemMenuItems) {
+        for (MKMenuItem MI : mainConfiguration.systemMenuItems) {
             FeatureItems.add(MI);
         }
         MKMenuItem[] MT = new MKMenuItem[FeatureItems.size()];
@@ -112,12 +112,12 @@ public abstract class SystemMenu {
             i++;
         }
 
-        SysMenu.AddMenuItems(MT);
+        SysMenu.addMenuItems(MT);
         //
     }
 
     public static void ShowMenu() {
-        SysMenu.ShowMenu();
+        SysMenu.showMenu();
 
     }
 
@@ -147,7 +147,7 @@ public abstract class SystemMenu {
         PinControlData PD = (PinControlData) PP.PinData;
         //
         //
-        switch (PD.ControlDataType) {
+        switch (PD.controlDataType) {
             case CONTROL_LONGPRESS:
                 ButtonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
@@ -158,23 +158,23 @@ public abstract class SystemMenu {
     }
 
     private static void ButtonsManager(PinControlData PD, boolean GlobalCommand) {
-        switch (PD.ControlID) {
+        switch (PD.controlID) {
             case DEF_BTN_UP:
-                SysMenu.ProcessControlCommand(PD.ControlID);
-                //SysMenu.MenuSelectUp();
+                SysMenu.processControlCommand(PD.controlID);
+                //SysMenu.menuSelectUp();
                 break;
             case DEF_BTN_DOWN:
-                SysMenu.ProcessControlCommand(PD.ControlID);
-                //SysMenu.MenuSelectDown();
+                SysMenu.processControlCommand(PD.controlID);
+                //SysMenu.menuSelectDown();
                 break;
             case DEF_BTN_ENTER:
-                SysMenu.ProcessControlCommand(PD.ControlID);
-                //SysMenu.MenuExec();
+                SysMenu.processControlCommand(PD.controlID);
+                //SysMenu.menuExec();
                 break;
             case DEF_BTN_BACK:
-                if (PD.ControlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
-                 SysMenu.MenuSelectBack();
-                } else if (PD.ControlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
+                if (PD.controlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
+                 SysMenu.menuSelectBack();
+                } else if (PD.controlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
                     ExecMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
                 }
                 break;
@@ -188,8 +188,8 @@ public abstract class SystemMenu {
 
     private static void InitClock() {
         // PluginManagerDataProcessor PManager = new PluginManagerDataProcessor();
-        // PManager.BaseConnector = BCE;
-        PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID, KK_BASE_UICONTEXT_GFX2, MainConfiguration.SystemDisplay_UID, "CLOCK");
+        // PManager.baseConnector = BCE;
+        PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID, KK_BASE_UICONTEXT_GFX2, mainConfiguration.systemDisplay_UID, "CLOCK");
 
     }
 }

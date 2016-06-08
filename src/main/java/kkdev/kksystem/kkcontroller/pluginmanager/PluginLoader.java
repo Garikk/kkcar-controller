@@ -26,7 +26,7 @@ import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINPATH;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import kkdev.kksystem.base.interfaces.IPluginKKConnector;
-import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.MainConfiguration;
+import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
 
 /**
  *
@@ -40,7 +40,7 @@ public abstract class PluginLoader {
     public static void InitPlugins() {
         Set<String> ToLoad;
         //Prepare config
-        ToLoad = GetRequiredPlugins(MainConfiguration.Features);
+        ToLoad = GetRequiredPlugins(mainConfiguration.features);
         //Load plugins
         if (ActivePlugins==null)
             ActivePlugins = ConnectPlugins(ToLoad,false);
@@ -156,11 +156,11 @@ public abstract class PluginLoader {
                 //
                 PluginConnection = (IPluginKKConnector) CLoader.loadClass(ConnectorClass).newInstance();
                 //
-                if ( (!ConnectAllPlugins) && (!Plugins.contains(PluginConnection.GetPluginInfo().PluginUUID)) ) {
+                if ( (!ConnectAllPlugins) && (!Plugins.contains(PluginConnection.getPluginInfo().PluginUUID)) ) {
                     out.println("Config: not in config. skip");
                     continue;
                 }
-                Ret.put(PluginConnection.GetPluginInfo().PluginUUID, PluginConnection);
+                Ret.put(PluginConnection.getPluginInfo().PluginUUID, PluginConnection);
                 //
                 out.println("Load: ok");
                 //
@@ -181,7 +181,7 @@ public abstract class PluginLoader {
         //
         for (IPluginKKConnector PK:ActivePlugins.values())
         {
-            Ret.add(PK.GetPluginInfo());
+            Ret.add(PK.getPluginInfo());
         }
         //
         return Ret;

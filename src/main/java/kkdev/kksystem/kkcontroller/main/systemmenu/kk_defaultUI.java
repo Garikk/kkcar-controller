@@ -27,28 +27,28 @@ public class kk_defaultUI {
         FramePack=GetSystemFramePack();
         //
         DP = new DisplayPage();
-        DP.DynamicElements = false;
-        DP.UIContexts=new String[1];
-        DP.UIContexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
-        DP.Features = new String[1];
-        DP.Features[0] = KK_BASE_FEATURES_SYSTEM_UID;
-        DP.PageName = KK_DISPLAY_PAGES_SIMPLEMENU_TXT_C1RX_PREFIX;
-        DP.IsDefaultPage = false;
-        DP.IsMultifeaturePage = true;
-        DP.UIFramesPack = FramePack[0];
+        DP.dynamicElements = false;
+        DP.contexts=new String[1];
+        DP.contexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+        DP.features = new String[1];
+        DP.features[0] = KK_BASE_FEATURES_SYSTEM_UID;
+        DP.pageName = KK_DISPLAY_PAGES_SIMPLEMENU_TXT_C1RX_PREFIX;
+        DP.isDefaultPage = false;
+        DP.isMultifeaturePage = true;
+        DP.framesPack = FramePack[0];
         //
         UtilsManager.getInstance().DISPLAY_AddUIDisplayPage(DP);
         //
         DP = new DisplayPage();
-        DP.DynamicElements = false;
-        DP.Features = new String[1];
-        DP.Features[0] = KK_BASE_FEATURES_SYSTEM_UID;
-        DP.UIContexts=new String[1];
-        DP.UIContexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
-        DP.PageName = KK_DISPLAY_PAGES_SIMPLECLOCK_TXT_PREFIX;
-        DP.IsDefaultPage = false;
-        DP.IsMultifeaturePage = true;
-        DP.UIFramesPack = GetSystemFramePack()[1];
+        DP.dynamicElements = false;
+        DP.features = new String[1];
+        DP.features[0] = KK_BASE_FEATURES_SYSTEM_UID;
+        DP.contexts=new String[1];
+        DP.contexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+        DP.pageName = KK_DISPLAY_PAGES_SIMPLECLOCK_TXT_PREFIX;
+        DP.isDefaultPage = false;
+        DP.isMultifeaturePage = true;
+        DP.framesPack = GetSystemFramePack()[1];
         //
         UtilsManager.getInstance().DISPLAY_AddUIDisplayPage(DP);
         //
@@ -58,28 +58,28 @@ public class kk_defaultUI {
     private static UIFramePack[] GetSystemFramePack() {
         UIFramePack[] Ret = new UIFramePack[7];
         Ret[0] = new UIFramePack();
-        Ret[0].Name = "KKController System menu";
-        Ret[0].PackID = "";
-        Ret[0].Data = new UIFrameData[2];
-        Ret[0].Data[0] = new UIFrameData();
-        Ret[0].Data[1] = new UIFrameData();
+        Ret[0].name = "KKController System menu";
+        Ret[0].packID = "";
+        Ret[0].data = new UIFrameData[2];
+        Ret[0].data[0] = new UIFrameData();
+        Ret[0].data[1] = new UIFrameData();
    
         //
         Ret[0] = new UIFramePack();
-        Ret[0].Name = "SYSTEM MENU 1 Col X Row";
-        Ret[0].PackID = "";
-        Ret[0].Data = new UIFrameData[1];
-        Ret[0].Data[0] = new UIFrameData();
-        Ret[0].Data[0].FrameData = "[SEL_[$COUNT]][SYSMENU_[$COUNT]][SEL_[$COUNT]]\r\n";
-        Ret[0].Data[0].FontSize = 2;
+        Ret[0].name = "SYSTEM MENU 1 Col X Row";
+        Ret[0].packID = "";
+        Ret[0].data = new UIFrameData[1];
+        Ret[0].data[0] = new UIFrameData();
+        Ret[0].data[0].frameData = "[SEL_[$COUNT]][SYSMENU_[$COUNT]][SEL_[$COUNT]]\r\n";
+        Ret[0].data[0].fontSize = 2;
       
         Ret[1] = new UIFramePack();
-        Ret[1].Name = "Default Clock";
-        Ret[1].PackID = "";
-        Ret[1].Data = new UIFrameData[1];
-        Ret[1].Data[0] = new UIFrameData();
-        Ret[1].Data[0].FrameData = "           \r\n           \r\n [KK_PL_TIME] \r\n           \r\n           ";
-        Ret[1].Data[0].FontSize = 3;
+        Ret[1].name = "Default Clock";
+        Ret[1].packID = "";
+        Ret[1].data = new UIFrameData[1];
+        Ret[1].data[0] = new UIFrameData();
+        Ret[1].data[0].frameData = "           \r\n           \r\n [KK_PL_TIME] \r\n           \r\n           ";
+        Ret[1].data[0].fontSize = 3;
         return Ret;
     }
 

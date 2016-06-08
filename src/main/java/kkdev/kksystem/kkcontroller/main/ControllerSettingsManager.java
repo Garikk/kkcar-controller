@@ -34,37 +34,37 @@ import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.G
  */
 public abstract class ControllerSettingsManager {
 
-    public static ControllerConfiguration MainConfiguration;
-    private static SettingsManager Settings;
+    public static ControllerConfiguration mainConfiguration;
+    private static SettingsManager settings;
 
     //TODO CHANGE THIS!!!!
     public static String GetSystemDisplayUID() {
-        return MainConfiguration.SystemDisplay_UID;
+        return mainConfiguration.systemDisplay_UID;
 
     }
 
-    public static void Init() {
+    public static void init() {
         
-        String ConfFileUID=GetLastConfUID();
+        String ConfFileUID=getLastConfUID();
         
         if (ConfFileUID!=null)
-            Settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +ConfFileUID+"_"+ ConfFileUID+".json", ControllerConfiguration.class);
+            settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +ConfFileUID+"_"+ ConfFileUID+".json", ControllerConfiguration.class);
         else //config not found
         {
-            Settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+"_"+ KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+".json", ControllerConfiguration.class);
+            settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+"_"+ KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+".json", ControllerConfiguration.class);
             SaveLastConfUID(KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID);
         }
         //
         LoadControllerConfiguration();
         //
-        if (MainConfiguration == null) {
+        if (mainConfiguration == null) {
             out.print("Load error");
             exit(0);
         }
 
     }
 
-    private static String GetLastConfUID() {
+    private static String getLastConfUID() {
 
         File dir = new java.io.File(KK_BASE_CONFPATH);
         if (!dir.exists()) {
@@ -106,11 +106,11 @@ public abstract class ControllerSettingsManager {
             dir.mkdir();
         }
 
-        MainConfiguration = (ControllerConfiguration) Settings.LoadConfig();
+        mainConfiguration = (ControllerConfiguration) settings.loadConfig();
 
-        if (MainConfiguration == null) {
-            Settings.SaveConfig(MakeDefaultPluginConf());
-            MainConfiguration = (ControllerConfiguration) Settings.LoadConfig();
+        if (mainConfiguration == null) {
+            settings.saveConfig(MakeDefaultPluginConf());
+            mainConfiguration = (ControllerConfiguration) settings.loadConfig();
         }
 
     }
@@ -123,13 +123,13 @@ public abstract class ControllerSettingsManager {
         //
         FeatureConfiguration[] DefConfFeatures = GetDefaultFeature();
         //
-        DefConfig.SystemDisplay_UID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
-        DefConfig.SystemHID_UID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
+        DefConfig.systemDisplay_UID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        DefConfig.systemHID_UID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
 
-        DefConfig.Features = DefConfFeatures;
-        DefConfig.SystemMenuItems = GetDefaultSystemMenuItems();
-        DefConfig.ConfigurationStamp = KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
-        DefConfig.ConfigurationUID = KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
+        DefConfig.features = DefConfFeatures;
+        DefConfig.systemMenuItems = GetDefaultSystemMenuItems();
+        DefConfig.configurationStamp = KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
+        DefConfig.configurationUID = KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
 
         //
         return DefConfig;

@@ -21,7 +21,7 @@ public class SystemKKControl {
     {
         PinBaseCommand PBK=(PinBaseCommand)PP.PinData;
         
-        switch (PBK.BaseCommand)
+        switch (PBK.baseCommand)
         {
             case SYSTEM_POWEROFF:
                 CMD_PowerOffSystem();

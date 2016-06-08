@@ -47,9 +47,9 @@ public class SystemOperations {
         //
         PinBaseCommand PData = new PinBaseCommand();
         if (State)
-            PData.BaseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_ACTIVE;
+            PData.baseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_ACTIVE;
         else
-            PData.BaseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_INACTIVE;
+            PData.baseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_INACTIVE;
         //
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         Msg.PinData = PData;
@@ -66,9 +66,9 @@ public class SystemOperations {
         Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
         //
         PinBaseCommand PData = new PinBaseCommand();
-        PData.BaseCommand=CHANGE_FEATURE;
-        PData.ChangeUIContextID=UIContextID;
-        PData.ChangeFeatureID=FeatureID;
+        PData.baseCommand=CHANGE_FEATURE;
+        PData.changeUIContextID=UIContextID;
+        PData.changeFeatureID=FeatureID;
         //
         
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
@@ -95,10 +95,10 @@ public class SystemOperations {
         Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
         //
         PinBaseCommand PData = new PinBaseCommand();
-        PData.BaseCommand=CURRENT_FEATURE;
+        PData.baseCommand=CURRENT_FEATURE;
         //
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
-        PData.ChangeFeatureID=CurrentFeatureGlobal;
+        PData.changeFeatureID=CurrentFeatureGlobal;
         Msg.PinData = PData;
      PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
    }
