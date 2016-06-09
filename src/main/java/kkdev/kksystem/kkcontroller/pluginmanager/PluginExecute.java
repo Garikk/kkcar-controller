@@ -107,7 +107,12 @@ public class PluginExecute implements IPluginBaseInterface {
     
     private  PluginMessage InternalExecutePin(PluginMessage PP)
     {
-         
+        if (PP.FeatureID==null)
+        {
+            out.println("[ERR] Wrong PluginMessage! Not found FeatureID Plugin: " + PP.SenderUID + " Pin: " + PP.PinName);
+            return null;
+        }
+        // 
         SystemBasePINReceiver(PP.newInstance());
         //
          if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_UID) & !PP.SenderUID.equals(PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID))
@@ -179,6 +184,8 @@ public class PluginExecute implements IPluginBaseInterface {
 
     //
     private void SystemBasePINReceiver(PluginMessage PP) {
+       
+        
         switch (PP.FeatureID) {
             case (KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID):
                 SystemOperations.ProcessSystemPIN(PP);

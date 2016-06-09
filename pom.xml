@@ -216,7 +216,7 @@
                                     </includes>
                                 </resource>
                                   <resource>
-                                    <directory>../kkcar-plugin-mediacenter/target/lib</directory>
+                                    <directory>../kkcar-plugin-mediacenter/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>

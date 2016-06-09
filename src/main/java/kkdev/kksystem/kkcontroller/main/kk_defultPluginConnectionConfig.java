@@ -26,10 +26,10 @@ public final class kk_defultPluginConnectionConfig {
     static int FEATURE_SETTINGS = 2;
     static int FEATURE_MOBILEANDROID = 3;
     static int FEATURE_BLUETOOTH = 4;
-    //static int FEATURE_MEDIACENTER = 5;
+    static int FEATURE_MEDIACENTER = 5;
 
     public static FeatureConfiguration[] GetDefaultFeature() {
-        FeatureConfiguration[] Ret = new FeatureConfiguration[5];
+        FeatureConfiguration[] Ret = new FeatureConfiguration[6];
 
         Ret[FEATURE_VERSION] = new FeatureConfiguration();
         Ret[FEATURE_VERSION].FeatureName = "Version info";
@@ -42,9 +42,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_SETTINGS].FeatureUUID = KK_BASE_FEATURES_SYSTEM_SETTINGS_UID;
         Ret[FEATURE_SETTINGS].IsSystemFeature = true;
         Ret[FEATURE_SETTINGS].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
-
-    
-          //
+      //
         Ret[FEATURE_ODB] = new FeatureConfiguration();
         Ret[FEATURE_ODB].FeatureName = "ODB Diag Displ";
         Ret[FEATURE_ODB].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_UID;
@@ -52,6 +50,30 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].ShowInSystemMenu = true;
         Ret[FEATURE_ODB].Connections = new PluginConnection[11];
         Ret[FEATURE_ODB].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+//
+        Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
+        Ret[FEATURE_MOBILEANDROID].FeatureName = "Android App";
+        Ret[FEATURE_MOBILEANDROID].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
+        Ret[FEATURE_MOBILEANDROID].IsSystemFeature = false;
+        Ret[FEATURE_MOBILEANDROID].ShowInSystemMenu = false;
+        Ret[FEATURE_MOBILEANDROID].Connections = new PluginConnection[2];
+        Ret[FEATURE_MOBILEANDROID].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+//
+        Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
+        Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
+        Ret[FEATURE_BLUETOOTH].FeatureUUID = KK_BASE_FEATURES_BLUETOOTH_UID;
+        Ret[FEATURE_BLUETOOTH].IsSystemFeature = false;
+        Ret[FEATURE_BLUETOOTH].ShowInSystemMenu = true;
+        Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[4];
+        Ret[FEATURE_BLUETOOTH].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+        //
+        Ret[FEATURE_MEDIACENTER] = new FeatureConfiguration();
+        Ret[FEATURE_MEDIACENTER].FeatureName = "Media Center";
+        Ret[FEATURE_MEDIACENTER].FeatureUUID = KK_BASE_FEATURES_MEDIAPLAYER_UID;
+        Ret[FEATURE_MEDIACENTER].IsSystemFeature = false;
+        Ret[FEATURE_MEDIACENTER].ShowInSystemMenu = true;
+        Ret[FEATURE_MEDIACENTER].Connections = new PluginConnection[2];
+        Ret[FEATURE_MEDIACENTER].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         //
         // ODB->DataProcessor
         Ret[FEATURE_ODB].Connections[0] = new PluginConnection();
@@ -164,13 +186,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_ODB].Connections[10].PinName[0] = KK_PLUGIN_BASE_NOTIFY_DATA;
         //
           
-        Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
-        Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
-        Ret[FEATURE_BLUETOOTH].FeatureUUID = KK_BASE_FEATURES_BLUETOOTH_UID;
-        Ret[FEATURE_BLUETOOTH].IsSystemFeature = false;
-        Ret[FEATURE_BLUETOOTH].ShowInSystemMenu = true;
-        Ret[FEATURE_BLUETOOTH].Connections = new PluginConnection[4];
-        Ret[FEATURE_BLUETOOTH].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+
          //DataProcessor->LED
         Ret[FEATURE_BLUETOOTH].Connections[0] = new PluginConnection();
         Ret[FEATURE_BLUETOOTH].Connections[0].ConnectionName = "Bluetooth to LED";
@@ -209,13 +225,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_BLUETOOTH].Connections[3].PinName = new String[1];
         Ret[FEATURE_BLUETOOTH].Connections[3].PinName[0] = KK_PLUGIN_BASE_NOTIFY_DATA;
         
-        Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
-        Ret[FEATURE_MOBILEANDROID].FeatureName = "Android App";
-        Ret[FEATURE_MOBILEANDROID].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
-        Ret[FEATURE_MOBILEANDROID].IsSystemFeature = false;
-        Ret[FEATURE_MOBILEANDROID].ShowInSystemMenu = false;
-        Ret[FEATURE_MOBILEANDROID].Connections = new PluginConnection[2];
-        Ret[FEATURE_MOBILEANDROID].DefaultUIContext=SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+
          //
         //External->ODB2
         Ret[FEATURE_MOBILEANDROID].Connections[0] = new PluginConnection();
@@ -237,6 +247,28 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_MOBILEANDROID].Connections[1].PinName = new String[2];
         Ret[FEATURE_MOBILEANDROID].Connections[1].PinName[0] = KK_PLUGIN_BASE_ODB2_DATA;
         Ret[FEATURE_MOBILEANDROID].Connections[1].PinName[1] = KK_PLUGIN_BASE_ODB2_COMMAND;
+          
+        // Mediacenter
+        //
+        //Controls->Mediacenter
+        Ret[FEATURE_MEDIACENTER].Connections[0] = new PluginConnection();
+        Ret[FEATURE_MEDIACENTER].Connections[0].ConnectionName = "Controls to Mediacenter";
+        Ret[FEATURE_MEDIACENTER].Connections[0].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_HID;
+        Ret[FEATURE_MEDIACENTER].Connections[0].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
+        Ret[FEATURE_MEDIACENTER].Connections[0].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_MEDIACENTER;
+        Ret[FEATURE_MEDIACENTER].Connections[0].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_MEDIACENTER_UUID;
+        Ret[FEATURE_MEDIACENTER].Connections[0].PinName = new String[1];
+        Ret[FEATURE_MEDIACENTER].Connections[0].PinName[0] = KK_PLUGIN_BASE_CONTROL_DATA;
+        //MediaCenter->Leddisplay
+        Ret[FEATURE_MEDIACENTER].Connections[1] = new PluginConnection();
+        Ret[FEATURE_MEDIACENTER].Connections[1].ConnectionName = "Mediacenter to Leddisplay";
+        Ret[FEATURE_MEDIACENTER].Connections[1].SourcePluginName = KK_PLUGIN_BASE_PLUGIN_MEDIACENTER;
+        Ret[FEATURE_MEDIACENTER].Connections[1].SourcePluginUID = KK_PLUGIN_BASE_PLUGIN_MEDIACENTER_UUID;
+        Ret[FEATURE_MEDIACENTER].Connections[1].TargetPluginName = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY;
+        Ret[FEATURE_MEDIACENTER].Connections[1].TargetPluginUID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
+        Ret[FEATURE_MEDIACENTER].Connections[1].PinName = new String[2];
+        Ret[FEATURE_MEDIACENTER].Connections[1].PinName[0] = KK_PLUGIN_BASE_LED_COMMAND;
+        Ret[FEATURE_MEDIACENTER].Connections[1].PinName[1] = KK_PLUGIN_BASE_LED_DATA;
         return Ret;
 
     }
@@ -260,80 +292,53 @@ public final class kk_defultPluginConnectionConfig {
         // KK Info
         //  -Plugins
         //  -Version
-        Ret = new MKMenuItem[4]; // 3 main items (see above)
+        Ret = new MKMenuItem[3]; // 3 main items (see above)
         Ret[0] = new MKMenuItem();
-        //=================TEMPORARY
-        Ret[0].displayName = "Media Center";
+        Ret[0].displayName = "Settings";
         Ret[0].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[0].subItems = new MKMenuItem[2];
+        Ret[0].subItems = new MKMenuItem[4];
         Ret[0].subItems[0] = new MKMenuItem();
-        Ret[0].subItems[0].displayName = "Internet radio";
-        Ret[0].subItems[0].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[0].subItems[0].subItems = new MKMenuItem[2];
-        Ret[0].subItems[0].subItems[0] = new MKMenuItem();
-        Ret[0].subItems[0].subItems[0].displayName = "Record Club";
-        Ret[0].subItems[0].subItems[0].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[0].subItems[0].subItems[0].subItems = new MKMenuItem[1];
-        Ret[0].subItems[0].subItems[0].subItems[0] = new MKMenuItem();
-        Ret[0].subItems[0].subItems[0].subItems[0].displayName = "Playing";
-        Ret[0].subItems[0].subItems[0].subItems[0].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[0].subItems[0].subItems[1] = new MKMenuItem();
-        Ret[0].subItems[0].subItems[1].displayName = "Record Radio";
-        Ret[0].subItems[0].subItems[1].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[0].subItems[0].subItems[1].subItems = new MKMenuItem[1];
-        Ret[0].subItems[0].subItems[1].subItems[0] = new MKMenuItem();
-        Ret[0].subItems[0].subItems[1].subItems[0].displayName = "Playing";
-        Ret[0].subItems[0].subItems[1].subItems[0].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].subItems[0].displayName = "Use narrator";
+        Ret[0].subItems[0].itemCommand = "";
         Ret[0].subItems[1] = new MKMenuItem();
-        Ret[0].subItems[1].displayName = "Media File";
+        Ret[0].subItems[1].displayName = "Test Prm12";
         Ret[0].subItems[1].itemCommand = "";
-        //=========================
+        Ret[0].subItems[2] = new MKMenuItem();
+        Ret[0].subItems[2].displayName = "Test Prm13";
+        Ret[0].subItems[2].itemCommand = "";
+        Ret[0].subItems[3] = new MKMenuItem();
+        Ret[0].subItems[3].displayName = "test submenu";
+        Ret[0].subItems[3].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+        Ret[0].subItems[3].subItems = new MKMenuItem[2];
+        Ret[0].subItems[3].subItems[0] = new MKMenuItem();
+        Ret[0].subItems[3].subItems[0].displayName = "Test Prm21";
+        Ret[0].subItems[3].subItems[0].itemCommand = "";
+        Ret[0].subItems[3].subItems[1] = new MKMenuItem();
+        Ret[0].subItems[3].subItems[1].displayName = "Test Prm22";
+        Ret[0].subItems[3].subItems[1].itemCommand = "";
         Ret[1] = new MKMenuItem();
-        Ret[1].displayName = "Settings";
+        Ret[1].displayName = "Board tools";
         Ret[1].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[1].subItems = new MKMenuItem[4];
+        Ret[1].subItems = new MKMenuItem[3];
         Ret[1].subItems[0] = new MKMenuItem();
-        Ret[1].subItems[0].displayName = "Test Prm11";
-        Ret[1].subItems[0].itemCommand = "";
+        Ret[1].subItems[0].displayName = "System Info";
+        Ret[1].subItems[0].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_BOARDINFO;
         Ret[1].subItems[1] = new MKMenuItem();
-        Ret[1].subItems[1].displayName = "Test Prm12";
-        Ret[1].subItems[1].itemCommand = "";
+        Ret[1].subItems[1].displayName = "Reboot";
+        Ret[1].subItems[1].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_REBOOT;
         Ret[1].subItems[2] = new MKMenuItem();
-        Ret[1].subItems[2].displayName = "Test Prm13";
-        Ret[1].subItems[2].itemCommand = "";
-        Ret[1].subItems[3] = new MKMenuItem();
-        Ret[1].subItems[3].displayName = "test submenu";
-        Ret[1].subItems[3].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[1].subItems[3].subItems = new MKMenuItem[2];
-        Ret[1].subItems[3].subItems[0] = new MKMenuItem();
-        Ret[1].subItems[3].subItems[0].displayName = "Test Prm21";
-        Ret[1].subItems[3].subItems[0].itemCommand = "";
-        Ret[1].subItems[3].subItems[1] = new MKMenuItem();
-        Ret[1].subItems[3].subItems[1].displayName = "Test Prm22";
-        Ret[1].subItems[3].subItems[1].itemCommand = "";
+        Ret[1].subItems[2].displayName = "Power Off";
+        Ret[1].subItems[2].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_POWEROFF;
         Ret[2] = new MKMenuItem();
-        Ret[2].displayName = "Board tools";
+        Ret[2].displayName = "KK Info";
         Ret[2].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[2].subItems = new MKMenuItem[3];
+        Ret[2].subItems = new MKMenuItem[2];
         Ret[2].subItems[0] = new MKMenuItem();
-        Ret[2].subItems[0].displayName = "System Info";
-        Ret[2].subItems[0].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_BOARDINFO;
+        Ret[2].subItems[0].displayName = "Plugins";
+        Ret[2].subItems[0].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_PLUGINS;
         Ret[2].subItems[1] = new MKMenuItem();
-        Ret[2].subItems[1].displayName = "Reboot";
-        Ret[2].subItems[1].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_REBOOT;
-        Ret[2].subItems[2] = new MKMenuItem();
-        Ret[2].subItems[2].displayName = "Power Off";
-        Ret[2].subItems[2].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_BRDTOOLS + " " + MNU_CMD_BRD_TOOLS_POWEROFF;
-        Ret[3] = new MKMenuItem();
-        Ret[3].displayName = "KK Info";
-        Ret[3].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
-        Ret[3].subItems = new MKMenuItem[2];
-        Ret[3].subItems[0] = new MKMenuItem();
-        Ret[3].subItems[0].displayName = "Plugins";
-        Ret[3].subItems[0].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_PLUGINS;
-        Ret[3].subItems[1] = new MKMenuItem();
-        Ret[3].subItems[1].displayName = "Version";
-        Ret[3].subItems[1].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_VERSION;
+        Ret[2].subItems[1].displayName = "Version";
+        Ret[2].subItems[1].itemCommand = MNU_CMD_SYSMENU_PFX + " " + MNU_CMD_SYSMENU_PFX_INFO + " " + MNU_CMD_BRD_INFO_VERSION;
         return Ret;
     }
 
