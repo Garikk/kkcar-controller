@@ -52,20 +52,20 @@ public class RS232Scanner {
                         SerialPort.DATABITS_8,
                         SerialPort.STOPBITS_1,
                         SerialPort.PARITY_NONE);
-                serialPort.writeString("ATI\r\n");
-                //serialPort.writeString("");
+                serialPort.writeString("ATI");
+                serialPort.writeString("\r\n");
 
                 int i = 0;
                 boolean Ok = true;
-                while (Ok & i < 5) {
+                while (i < 10) {
                     String buffer = serialPort.readString();
-                    if (buffer==null || buffer.startsWith("^")) {
+                    // System.out.println("[UTIL] ANS " + buffer);
+                    if (buffer==null) {
                          i++;
-                         Thread.sleep(500);
+                         Thread.sleep(200);
                         continue;
                     }
-
-
+                     // System.out.println("[UTIL] ANS " + buffer);
                     if (IsModem(buffer)) {
                         Ret = RS232DevType.Dev3GModem;
                         break;
@@ -105,17 +105,9 @@ public class RS232Scanner {
         }
 
         public boolean IsELM(String CheckString) {
-            if (CheckString.contains("ELM")) {
-                return true;
-            }
-
-            return false;
+            return CheckString.contains("ELM");
         }
           public boolean IsSmarthead(String CheckString) {
-            if (CheckString.contains("KKSmarthead")) {
-                return true;
-            }
-
-            return false;
+            return CheckString.contains("KKSmarthead");
         }
     }
