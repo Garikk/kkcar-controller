@@ -109,29 +109,29 @@ public class PluginExecute implements IPluginBaseInterface {
     {
         if (PP.FeatureID==null)
         {
-            out.println("[ERR] Wrong PluginMessage! Not found FeatureID Plugin: " + PP.SenderUID + " Pin: " + PP.PinName);
+            out.println("[ERR] Wrong PluginMessage! Not found FeatureID Plugin: " + PP.SenderUID + " Pin: " + PP.pinName);
             return null;
         }
         // 
-        SystemBasePINReceiver(PP.newInstance());
+        SystemBasePINReceiver(PP.cloneMessage());
         //
          if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_UID) & !PP.SenderUID.equals(PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID))
              return null;
          
          if (!Pin.containsKey(PP.FeatureID))
          {
-            out.println("Wrong PIN received (not found feature) FTR " +PP.FeatureID + " PIN " + PP.PinName);
+            out.println("Wrong PIN received (not found feature) FTR " +PP.FeatureID + " PIN " + PP.pinName);
             return null;
          }
         if (!Pin.get(PP.FeatureID).containsKey(PP.SenderUID))
         {
-            out.println("Wrong PIN received (not found sender) FTR " +PP.FeatureID + " PIN " + PP.PinName);
+            out.println("Wrong PIN received (not found sender) FTR " +PP.FeatureID + " PIN " + PP.pinName);
             return null;
         }
         
-        if (!Pin.get(PP.FeatureID).get(PP.SenderUID).containsKey(PP.PinName))
+        if (!Pin.get(PP.FeatureID).get(PP.SenderUID).containsKey(PP.pinName))
         {
-            out.println("Wrong PIN received (Not found Pin) FTR " +PP.FeatureID + " PIN " + PP.PinName);
+            out.println("Wrong PIN received (Not found Pin) FTR " +PP.FeatureID + " PIN " + PP.pinName);
             return null;
         }
         
@@ -139,7 +139,7 @@ public class PluginExecute implements IPluginBaseInterface {
         ArrayList<IPluginKKConnector> Exec=null;
         //
       
-        Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.PinName);
+        Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.pinName);
 
         InternalExecutePin_Exec(Exec,PP);
         
@@ -151,7 +151,7 @@ public class PluginExecute implements IPluginBaseInterface {
         for (IPluginKKConnector PKK:Exec)
         {
             
-          PKK.executePin(PP.newInstance());
+          PKK.executePin(PP.cloneMessage());
         }
     }
     
@@ -172,13 +172,13 @@ public class PluginExecute implements IPluginBaseInterface {
         {
             for (IPluginKKConnector PKK:ActivePlugins.values())
             {
-                PKK.executePin(PP.newInstance());
+                PKK.executePin(PP.cloneMessage());
             }
             return null;
         }
         else
         {
-            return ActivePlugins.get(TargetUUID).executePin(PP.newInstance());
+            return ActivePlugins.get(TargetUUID).executePin(PP.cloneMessage());
         }
     }
 

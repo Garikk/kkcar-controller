@@ -5,8 +5,7 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemoperations;
 
-import kkdev.kksystem.base.classes.base.PinBaseCommand;
-import kkdev.kksystem.base.classes.plugins.PluginMessage;
+import kkdev.kksystem.base.classes.base.PinDataSystemOperations;
 import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 
@@ -17,11 +16,10 @@ import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 public class SystemKKControl {
 
     
-    public static void ProcessKKCommand(PluginMessage PP)
+    public static void ProcessKKCommand(PinDataSystemOperations PBK)
     {
-        PinBaseCommand PBK=(PinBaseCommand)PP.PinData;
         
-        switch (PBK.baseCommand)
+        switch (PBK.CommandType)
         {
             case SYSTEM_POWEROFF:
                 CMD_PowerOffSystem();
@@ -35,8 +33,6 @@ public class SystemKKControl {
             case SYSTEM_RESTORE_BACKUP:
                 break;
             case SYSTEM_RESTORE_EMERGENCY:
-                break;
-            case GET_CURRENT_FEATURE:
                 break;
         }
     }

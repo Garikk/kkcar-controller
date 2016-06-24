@@ -5,9 +5,11 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemoperations;
 
-import kkdev.kksystem.base.classes.base.PinBaseCommand;
-import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.CHANGE_FEATURE;
-import static kkdev.kksystem.base.classes.base.PinBaseCommand.BASE_COMMAND_TYPE.CURRENT_FEATURE;
+import kkdev.kksystem.base.classes.base.PinDataFtrCtx;
+import kkdev.kksystem.base.classes.base.PinDataSystemOperations;
+import kkdev.kksystem.base.classes.base.PluginMessageData;
+import kkdev.kksystem.base.classes.notify.PinDataNotifySystemState;
+import kkdev.kksystem.base.classes.notify.PluginMessageData_Notify;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
@@ -27,32 +29,32 @@ public class SystemOperations {
     public static void ProcessSystemPIN(PluginMessage Msg)
     {
         //Redirect all control data to menu module
-        if (Msg.PinName.equals(PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA))
+        if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA))
         {
             SystemMenu.processCommands(Msg);
         }
         //Redirect all PIN CMD data to KK control
-        else if (Msg.PinName.equals(PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND))
+        else if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND))
         {
-            SystemKKControl.ProcessKKCommand(Msg);
+            SystemKKControl.ProcessKKCommand((PinDataSystemOperations)Msg.getPinData());
         }
     }
     
     
      //Change active system feature
-   public static void InternetStateChanged(boolean State)
+   public static void internetStateChanged(boolean State)
    {
-        PluginMessage Msg = new PluginMessage();
-        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+       
         //
-        PinBaseCommand PData = new PinBaseCommand();
+        PinDataNotifySystemState PData = new PinDataNotifySystemState();
         if (State)
-            PData.baseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_ACTIVE;
+            PData.systemState=PinDataNotifySystemState.SystemStateInfo.INERNET_ACTIVE;
         else
-            PData.baseCommand=PinBaseCommand.BASE_COMMAND_TYPE.INTERNET_STATE_INACTIVE;
+            PData.systemState=PinDataNotifySystemState.SystemStateInfo.INERNET_INACTIVE;
         //
+        PluginMessage Msg = new PluginMessageData_Notify(PData);
+        Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
-        Msg.PinData = PData;
         //
 
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
@@ -60,19 +62,18 @@ public class SystemOperations {
    }
    
    //Change active system feature
-   public static void ChangeFeature(String FeatureID,String UIContextID)
+   public static void changeFeature(String FeatureID,String UIContextID)
    {
-        PluginMessage Msg = new PluginMessage();
-        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+       
         //
-        PinBaseCommand PData = new PinBaseCommand();
-        PData.baseCommand=CHANGE_FEATURE;
+        PinDataFtrCtx PData = new PinDataFtrCtx();
+        PData.managementCommand=PinDataFtrCtx.FCManagementCommand.ChangeFeature;
         PData.changeUIContextID=UIContextID;
         PData.changeFeatureID=FeatureID;
         //
-        
+        PluginMessageData Msg = new PluginMessageData(PData);
+        Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
-        Msg.PinData = PData;
         Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;
         
         //
@@ -80,26 +81,27 @@ public class SystemOperations {
         //
    }
    
-   public static void SystemStateChangedAlert()
+   public static void systemStateChangedAlert()
    {
        if (WatchDogService.getInstance().InternetState)
-            InternetStateChanged(true);
-       else
-            InternetStateChanged(false);   
-    
-   }
-   
-   public static void SendCurrentFeature()
-   {
-        PluginMessage Msg = new PluginMessage();
-        Msg.PinName = KK_PLUGIN_BASE_PIN_COMMAND;
+            internetStateChanged(true);
+        else
+            internetStateChanged(false);
+
+    }
+
+    public static void sendCurrentFeature() {
+
         //
-        PinBaseCommand PData = new PinBaseCommand();
-        PData.baseCommand=CURRENT_FEATURE;
+        PinDataFtrCtx PData = new PinDataFtrCtx();
+        PData.managementCommand = PinDataFtrCtx.FCManagementCommand.CurrentFeature;
+        PData.changeFeatureID = CurrentFeatureGlobal;
         //
-        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
-        PData.changeFeatureID=CurrentFeatureGlobal;
-        Msg.PinData = PData;
-     PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
-   }
+
+        PluginMessage Msg = new PluginMessageData(PData);
+        Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
+        Msg.FeatureID = KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+
+        PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
+    }
 }

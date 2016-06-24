@@ -5,32 +5,28 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
-import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
-import kkdev.kksystem.base.classes.controls.PinControlData;
-import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_BACK;
-import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_DOWN;
-import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_ENTER;
-import static kkdev.kksystem.base.classes.controls.PinControlData.DEF_BTN_UP;
-import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_LONGPRESS;
-import static kkdev.kksystem.base.classes.controls.PinControlData.KK_CONTROL_DATA.CONTROL_TRIGGERED;
+import kkdev.kksystem.base.classes.controls.PinDataControl;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_BACK;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_DOWN;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_ENTER;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_UP;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DATA.CONTROL_LONGPRESS;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DATA.CONTROL_TRIGGERED;
+import kkdev.kksystem.base.classes.controls.PluginMessageData_Controls;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
-import kkdev.kksystem.base.classes.notify.NotifyConsts;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
-import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
-import kkdev.kksystem.base.constants.PluginConsts;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UICONTEXT_GFX2;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
-import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
@@ -125,7 +121,7 @@ public abstract class SystemMenu {
         String[] CMD = Exec.split(" ");
         switch (CMD[0]) {
             case MNU_CMD_CHANGE_FEATURE:
-                SystemOperations.ChangeFeature(CMD[1], CMD[2]);
+                SystemOperations.changeFeature(CMD[1], CMD[2]);
                 break;
             case MNU_CMD_SYSMENU_PFX:
                 ExecSysMenuOperation(CMD);
@@ -135,29 +131,27 @@ public abstract class SystemMenu {
     }
 
     public static void processCommands(PluginMessage PP) {
-        switch (PP.PinName) {
+        switch (PP.pinName) {
             case (KK_PLUGIN_BASE_CONTROL_DATA):
-                processMenuManager(PP);
+                processMenuManager((PluginMessageData_Controls)PP);
                 break;
 
         }
     }
 
-    private static void processMenuManager(PluginMessage PP) {
-        PinControlData PD = (PinControlData) PP.PinData;
+    private static void processMenuManager(PluginMessageData_Controls PD) {
         //
-        //
-        switch (PD.controlDataType) {
+        switch (PD.getPinData().controlDataType) {
             case CONTROL_LONGPRESS:
-                buttonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD.getPinData(), PD.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
             case CONTROL_TRIGGERED:
-                buttonsManager(PD, PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD.getPinData(), PD.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
         }
     }
 
-    private static void buttonsManager(PinControlData PD, boolean GlobalCommand) {
+    private static void buttonsManager(PinDataControl PD, boolean GlobalCommand) {
         for (String btnID:PD.controlID)    
         {
             switch (btnID) {
