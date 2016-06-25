@@ -23,91 +23,93 @@ import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232Device;
 public class RS232Scanner {
 
     public List<RS232Device> RS232Ports;
-       SerialPort serialPort;
-       
-        public void MakeRS232DevList() {
-            RS232Ports = new ArrayList<>();
+    SerialPort serialPort;
 
-            String[] portNames;
-            portNames = SerialPortList.getPortNames();
-            for (String PN : portNames) {
-                RS232Ports.add(new RS232Device(PN));
-            }
-            CheckRS232Devices();
+    public void MakeRS232DevList() {
+        RS232Ports = new ArrayList<>();
+
+        String[] portNames;
+        portNames = SerialPortList.getPortNames();
+        for (String PN : portNames) {
+            RS232Ports.add(new RS232Device(PN));
         }
+        CheckRS232Devices();
+    }
 
-        private void CheckRS232Devices() {
-            for (int i = 0; i < RS232Ports.size(); i++) {
-                RS232Ports.get(i).PortType = GetPortDevice(RS232Ports.get(i).PortName);
-            }
+    private void CheckRS232Devices() {
+        for (int i = 0; i < RS232Ports.size(); i++) {
+            RS232Ports.get(i).PortType = GetPortDevice(RS232Ports.get(i).PortName);
         }
+    }
 
-        private RS232DevType GetPortDevice(String DevName) {
-            RS232DevType Ret=RS232DevType.Other;
-             serialPort = new SerialPort(DevName);
-            try {
-                out.println("Check " +DevName);
-                serialPort.openPort();
-                serialPort.setParams(SerialPort.BAUDRATE_9600,
-                        SerialPort.DATABITS_8,
-                        SerialPort.STOPBITS_1,
-                        SerialPort.PARITY_NONE);
-                serialPort.writeString("ATI");
-                serialPort.writeString("\r\n");
+    private RS232DevType GetPortDevice(String DevName) {
+        RS232DevType Ret = RS232DevType.Other;
+        serialPort = new SerialPort(DevName);
+        try {
+            out.println("Check " + DevName);
+            serialPort.openPort();
+            serialPort.setParams(SerialPort.BAUDRATE_9600,
+                    SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1,
+                    SerialPort.PARITY_NONE);
+            serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN
+                    | SerialPort.FLOWCONTROL_RTSCTS_OUT);
+            serialPort.writeString("ATI");
+            serialPort.writeString("\r\n");
+            //serialPort.writeString("\r\n");
 
-                int i = 0;
-                boolean Ok = true;
-                while (i < 10) {
-                    String buffer = serialPort.readString();
-                    // System.out.println("[UTIL] ANS " + buffer);
-                    if (buffer==null) {
-                         i++;
-                         Thread.sleep(200);
-                        continue;
-                    }
-                     // System.out.println("[UTIL] ANS " + buffer);
+            int i = 0;
+            boolean Ok = false;
+            while (i < 5 && Ok == false) {
+                String buffer = serialPort.readString();
+                //System.out.println("[UTIL] ANS " + buffer);
+                if (buffer != null) {
                     if (IsModem(buffer)) {
                         Ret = RS232DevType.Dev3GModem;
-                        break;
+                        Ok = true;
                     }
 
                     if (IsELM(buffer)) {
                         Ret = RS232DevType.DevELM327;
-                        break;
+                        Ok = true;
                     }
-                      if (IsSmarthead(buffer)) {
+                    if (IsSmarthead(buffer)) {
                         Ret = RS232DevType.DevSmarthead;
-                        break;
+                        Ok = true;
                     }
                 }
-                //Closing the port
-                serialPort.closePort();
-            } catch (SerialPortException ex) {
-                Ret= RS232DevType.Error;
-            } catch (InterruptedException ex) {
+                if (Ok != true) {
+                    i++;
+                    Thread.sleep(200);
+                }
+            }
+            //Closing the port
+            serialPort.closePort();
+        } catch (SerialPortException ex) {
+            Ret = RS232DevType.Error;
+        } catch (InterruptedException ex) {
             Logger.getLogger(RS232Scanner.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-             out.println("Result " +Ret);
-            return Ret;
-        }
-
-         
-        
-        public boolean IsModem(String CheckString) {
-            if (CheckString.contains("IMEI")) {
-                return true;
-            } else if (CheckString.contains("CGSM")) {
-                return true;
-            }
-
-            return false;
-        }
-
-        public boolean IsELM(String CheckString) {
-            return CheckString.contains("ELM");
-        }
-          public boolean IsSmarthead(String CheckString) {
-            return CheckString.contains("KKSmarthead");
-        }
+        out.println("Result " + Ret);
+        return Ret;
     }
+
+    public boolean IsModem(String CheckString) {
+        if (CheckString.contains("IMEI")) {
+            return true;
+        } else if (CheckString.contains("CGSM")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean IsELM(String CheckString) {
+        return CheckString.contains("ELM");
+    }
+
+    public boolean IsSmarthead(String CheckString) {
+        return CheckString.contains("KKSmarthead");
+    }
+}

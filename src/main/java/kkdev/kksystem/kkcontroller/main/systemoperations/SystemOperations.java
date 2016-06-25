@@ -8,6 +8,7 @@ package kkdev.kksystem.kkcontroller.main.systemoperations;
 import kkdev.kksystem.base.classes.base.PinDataFtrCtx;
 import kkdev.kksystem.base.classes.base.PinDataSystemOperations;
 import kkdev.kksystem.base.classes.base.PluginMessageData;
+import kkdev.kksystem.base.classes.controls.PinDataControl;
 import kkdev.kksystem.base.classes.notify.PinDataNotifySystemState;
 import kkdev.kksystem.base.classes.notify.PluginMessageData_Notify;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
@@ -31,7 +32,7 @@ public class SystemOperations {
         //Redirect all control data to menu module
         if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA))
         {
-            SystemMenu.processCommands(Msg);
+            SystemMenu.processCommands(Msg.pinName,(PinDataControl)Msg.getPinData());
         }
         //Redirect all PIN CMD data to KK control
         else if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND))
@@ -53,7 +54,7 @@ public class SystemOperations {
             PData.systemState=PinDataNotifySystemState.SystemStateInfo.INERNET_INACTIVE;
         //
         PluginMessage Msg = new PluginMessageData_Notify(PData);
-        Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
+        Msg.pinName = PluginConsts.KK_PLUGIN_BASE_PIN_SYSTEMSTATE;
         Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         //
 

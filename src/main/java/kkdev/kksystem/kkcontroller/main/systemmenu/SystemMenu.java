@@ -130,23 +130,23 @@ public abstract class SystemMenu {
 
     }
 
-    public static void processCommands(PluginMessage PP) {
-        switch (PP.pinName) {
+    public static void processCommands(String PinName,PinDataControl PP) {
+        switch (PinName) {
             case (KK_PLUGIN_BASE_CONTROL_DATA):
-                processMenuManager((PluginMessageData_Controls)PP);
+                processMenuManager(PP.featureID,PP);
                 break;
 
         }
     }
 
-    private static void processMenuManager(PluginMessageData_Controls PD) {
+    private static void processMenuManager(String FeatureID,PinDataControl PD) {
         //
-        switch (PD.getPinData().controlDataType) {
+        switch (PD.controlDataType) {
             case CONTROL_LONGPRESS:
-                buttonsManager(PD.getPinData(), PD.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD, FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
             case CONTROL_TRIGGERED:
-                buttonsManager(PD.getPinData(), PD.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD, FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
         }
     }
