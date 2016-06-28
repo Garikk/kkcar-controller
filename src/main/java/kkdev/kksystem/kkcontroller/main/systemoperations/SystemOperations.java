@@ -5,6 +5,8 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemoperations;
 
+import java.util.HashMap;
+import java.util.Map;
 import kkdev.kksystem.base.classes.base.PinDataFtrCtx;
 import kkdev.kksystem.base.classes.base.PinDataSystemOperations;
 import kkdev.kksystem.base.classes.base.PluginMessageData;
@@ -26,8 +28,10 @@ import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
  */
 public class SystemOperations {
     public static String CurrentFeatureGlobal;
+    public static HashMap<String,String> ActivePage;    // CtxID, PageID
+    public static HashMap<String,String> ActiveFeature; // CtxID, FeatureID
     
-    public static void ProcessSystemPIN(PluginMessage Msg)
+    public static void processSystemPIN(PluginMessage Msg)
     {
         //Redirect all control data to menu module
         if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA))
@@ -42,7 +46,7 @@ public class SystemOperations {
     }
     
     
-     //Change active system feature
+     //Change active system state
    public static void internetStateChanged(boolean State)
    {
        
@@ -69,8 +73,8 @@ public class SystemOperations {
         //
         PinDataFtrCtx PData = new PinDataFtrCtx();
         PData.managementCommand=PinDataFtrCtx.FCManagementCommand.ChangeFeature;
-        PData.changeUIContextID=UIContextID;
-        PData.changeFeatureID=FeatureID;
+        PData.manageUIContextID=UIContextID;
+        PData.manageFeatureID=FeatureID;
         //
         PluginMessageData Msg = new PluginMessageData(PData);
         Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
@@ -91,12 +95,12 @@ public class SystemOperations {
 
     }
 
-    public static void sendCurrentFeature() {
+    public static void sendCurrentFeatures() {
 
         //
         PinDataFtrCtx PData = new PinDataFtrCtx();
         PData.managementCommand = PinDataFtrCtx.FCManagementCommand.CurrentFeature;
-        PData.changeFeatureID = CurrentFeatureGlobal;
+        PData.FeaturesInfo = getActiveFeatureID();
         //
 
         PluginMessage Msg = new PluginMessageData(PData);
@@ -104,5 +108,40 @@ public class SystemOperations {
         Msg.FeatureID = KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
+    }
+
+    public static void setActivePageID(String UIContext, String PageID) {
+        if (ActivePage == null) {
+            ActivePage = new HashMap<>();
+        }
+
+        ActivePage.put(UIContext, PageID);
+    }
+
+    public static void setActiveFeatureID(String UIContext, String FeatureID) {
+        if (ActiveFeature == null) {
+            ActiveFeature = new HashMap<>();
+        }
+
+        ActiveFeature.put(UIContext, FeatureID);
+    }
+     public static String getActivePageID(String UIContext) {
+        if (ActivePage == null) {
+            ActivePage = new HashMap<>();
+        }
+        return ActivePage.get(UIContext);        
+    }
+
+    public static String getActiveFeatureID(String UIContext) {
+        if (ActiveFeature == null) {
+            ActiveFeature = new HashMap<>();
+        }
+        return ActiveFeature.get(UIContext);
+    }
+      public static Map<String,String> getActiveFeatureID() {
+        if (ActiveFeature == null) {
+            ActiveFeature = new HashMap<>();
+        }
+        return (Map<String,String>)ActiveFeature.clone();
     }
 }

@@ -188,10 +188,10 @@ public class PluginExecute implements IPluginBaseInterface {
         
         switch (PP.FeatureID) {
             case (KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID):
-                SystemOperations.ProcessSystemPIN(PP);
+                SystemOperations.processSystemPIN(PP);
                 break;
             case (KK_BASE_FEATURES_SYSTEM_UID):
-                SystemOperations.ProcessSystemPIN(PP);
+                SystemOperations.processSystemPIN(PP);
                 break;
         }
 
