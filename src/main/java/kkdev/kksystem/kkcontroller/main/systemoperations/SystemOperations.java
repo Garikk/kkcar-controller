@@ -33,7 +33,7 @@ public class SystemOperations {
     
     public static void processSystemPIN(PluginMessage Msg)
     {
-        //Redirect all control data to menu module
+        //Redirect all control data into menu module
         if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA))
         {
             SystemMenu.processCommands(Msg.pinName,(PinDataControl)Msg.getPinData());

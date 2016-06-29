@@ -92,6 +92,11 @@ public class UtilsManager implements IKKControllerUtils {
        UICtxStor.GetContext(ContextID).UIDisplay=DI;
     }
 
+    @Override
+    public UIContextInfo FEATURE_GetFeatureInfo(String ContextID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
         
 }

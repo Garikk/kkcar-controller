@@ -14,12 +14,10 @@ import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_ENTER;
 import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_UP;
 import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DATA.CONTROL_LONGPRESS;
 import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DATA.CONTROL_TRIGGERED;
-import kkdev.kksystem.base.classes.controls.PluginMessageData_Controls;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
-import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import kkdev.kksystem.base.constants.SystemConsts;
@@ -57,7 +55,7 @@ public abstract class SystemMenu {
 
     public static void initSystemMenu(IPluginBaseInterface BaseConnector) {
         BCE = BaseConnector;
-        PManager.baseConnector = BCE;
+        PManager.setBaseConnector(BCE);
 
         class MenuCallBack implements IMenuMakerItemSelected {
 
