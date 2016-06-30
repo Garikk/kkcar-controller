@@ -6,12 +6,15 @@
 package kkdev.kksystem.kkcontroller.main.utils;
 
 import java.util.List;
+import kkdev.kksystem.base.classes.base.PinDataUtils;
 import kkdev.kksystem.base.classes.display.DisplayInfo;
 import kkdev.kksystem.base.classes.display.pages.DisplayPage;
-import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232Device;
+import kkdev.kksystem.base.classes.kkcontroller.RS232Device;
 import kkdev.kksystem.base.classes.kkcontroller.UIContextInfo;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.interfaces.IKKControllerUtils;
+import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
+import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
 import kkdev.kksystem.kkcontroller.main.utils.display.DisplayPageStorage;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
@@ -84,7 +87,14 @@ public class UtilsManager implements IKKControllerUtils {
 
     @Override
     public UIContextInfo UICONTEXT_GetUIContextInfo(String ContextID) {
-      return UICtxStor.GetContext(ContextID);
+        //Fill additional indo
+        UIContextInfo Ret;
+        Ret=UICtxStor.GetContext(ContextID);
+        //
+        Ret.ActiveFeature=SystemOperations.getActiveFeatureID(ContextID);
+        Ret.ActivePage=SystemOperations.ActivePage;
+        //
+      return Ret;
     }
 
     @Override
@@ -92,11 +102,16 @@ public class UtilsManager implements IKKControllerUtils {
        UICtxStor.GetContext(ContextID).UIDisplay=DI;
     }
 
-    @Override
-    public UIContextInfo FEATURE_GetFeatureInfo(String ContextID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public void execUtilityPin(IPluginBaseInterface connector, PinDataUtils PData)
+    {
+          switch (PData.CommandType)
+          {
+              case UICONTEXT_GetUIContext:
+                  break;
+          }
+              
+    
+    
     }
-
-
-        
 }

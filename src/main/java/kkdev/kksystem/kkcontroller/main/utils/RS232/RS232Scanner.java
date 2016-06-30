@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
-import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232DevType;
-import kkdev.kksystem.base.classes.kkcontroller.KKController_Utils.RS232Device;
+import kkdev.kksystem.base.classes.kkcontroller.RS232Device.RS232DevType;
+import kkdev.kksystem.base.classes.kkcontroller.RS232Device;
 
 /**
  *

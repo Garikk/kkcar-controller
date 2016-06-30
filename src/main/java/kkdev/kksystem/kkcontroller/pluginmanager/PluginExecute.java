@@ -77,18 +77,16 @@ public class PluginExecute implements IPluginBaseInterface {
     
      public  void InitPlugins()
    {
-       for (IPluginKKConnector CONN: ActivePlugins.values())
-       {
+       ActivePlugins.values().stream().forEach((CONN) -> {
            CONN.pluginInit(this,mainConfiguration.configurationUID);
-       }
+         });
    
    }
    public  void StartPlugins()
    {
-       for (IPluginKKConnector CONN: ActivePlugins.values())
-       {
+       ActivePlugins.values().stream().forEach((CONN) -> {
            CONN.pluginStart();
-       }
+         });
    
    }
    public   void StopPlugins()
@@ -101,11 +99,11 @@ public class PluginExecute implements IPluginBaseInterface {
     @Override
     public  PluginMessage executePinCommand(PluginMessage PP) {
      //       out.println("DBG[BSE] " +PP.FeatureID + " PIN " + PP.PinName + " ");
-        return InternalExecutePin(PP);
+        return internalExecutePin(PP);
     }
     //
     
-    private  PluginMessage InternalExecutePin(PluginMessage PP)
+    private  PluginMessage internalExecutePin(PluginMessage PP)
     {
         if (PP.FeatureID==null)
         {
@@ -136,7 +134,7 @@ public class PluginExecute implements IPluginBaseInterface {
         }
         
         
-        ArrayList<IPluginKKConnector> Exec=null;
+        ArrayList<IPluginKKConnector> Exec;
         //
       
         Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.pinName);
@@ -147,12 +145,9 @@ public class PluginExecute implements IPluginBaseInterface {
     }
     private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
     {
-
-        for (IPluginKKConnector PKK:Exec)
-        {
-            
-          PKK.executePin(PP.cloneMessage());
-        }
+        Exec.stream().forEach((PKK) -> {
+            PKK.executePin(PP.cloneMessage());
+         });
     }
     
     @Override
@@ -184,14 +179,19 @@ public class PluginExecute implements IPluginBaseInterface {
 
     //
     private void SystemBasePINReceiver(PluginMessage PP) {
-       
-        
+        //Standart PINs
         switch (PP.FeatureID) {
             case (KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID):
                 SystemOperations.processSystemPIN(PP);
                 break;
             case (KK_BASE_FEATURES_SYSTEM_UID):
                 SystemOperations.processSystemPIN(PP);
+                break;
+        }
+        //Special PINs
+        switch (PP.pinName) {
+            case (PluginConsts.KK_PLUGIN_BASE_LED_COMMAND):
+                SystemOperations.processSpecialPIN(PP);
                 break;
         }
 
@@ -201,7 +201,7 @@ public class PluginExecute implements IPluginBaseInterface {
     public IKKControllerUtils systemUtilities() {
         return UtilsManager.getInstance();
     }
-    
+
     
    
 }
