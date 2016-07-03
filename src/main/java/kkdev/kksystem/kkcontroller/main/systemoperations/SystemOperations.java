@@ -60,7 +60,7 @@ public class SystemOperations {
 
     public static void processSpecialPIN(PluginMessage Msg) {
         if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_LED_COMMAND))
-            setActivePageInfo(Msg.FeatureID,(PinDataLed)Msg.getPinData());
+            setActivePageInfo(Msg.FeatureID.iterator().next(),(PinDataLed)Msg.getPinData());
 
     }
     
@@ -77,7 +77,7 @@ public class SystemOperations {
         //
         PluginMessage Msg = new PluginMessageData_Notify(PData);
         Msg.pinName = PluginConsts.KK_PLUGIN_BASE_PIN_SYSTEMSTATE;
-        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID);
         //
 
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
@@ -102,7 +102,7 @@ public class SystemOperations {
         //
         PluginMessageData Msg = new PluginMessageData(PData);
         Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
-        Msg.FeatureID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID);
         Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;
         
         //
@@ -128,7 +128,7 @@ public class SystemOperations {
 
         PluginMessage Msg = new PluginMessageData(PData);
         Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
-        Msg.FeatureID = KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+        Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID);
 
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
     }

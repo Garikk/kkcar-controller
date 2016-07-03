@@ -7,6 +7,7 @@ package kkdev.kksystem.kkcontroller.main.systemmenu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import kkdev.kksystem.base.classes.controls.PinDataControl;
 import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_BACK;
 import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_DOWN;
@@ -137,19 +138,21 @@ public abstract class SystemMenu {
         }
     }
 
-    private static void processMenuManager(String FeatureID,PinDataControl PD) {
+    private static void processMenuManager(Set<String> FeatureID,PinDataControl PD) {
         //
+
         switch (PD.controlDataType) {
             case CONTROL_LONGPRESS:
-                buttonsManager(PD, FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD, FeatureID.contains(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
             case CONTROL_TRIGGERED:
-                buttonsManager(PD, FeatureID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
+                buttonsManager(PD, FeatureID.contains(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID));
                 break;
         }
     }
 
     private static void buttonsManager(PinDataControl PD, boolean GlobalCommand) {
+                
         for (String btnID:PD.controlID)    
         {
             switch (btnID) {
@@ -166,6 +169,7 @@ public abstract class SystemMenu {
                     //SysMenu.menuExec();
                     break;
                 case DEF_BTN_BACK:
+
                     if (PD.controlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
                         SysMenu.menuSelectBack();
                     } else if (PD.controlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {

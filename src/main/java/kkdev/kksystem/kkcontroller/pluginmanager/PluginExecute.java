@@ -12,6 +12,7 @@ import kkdev.kksystem.base.classes.plugins.PluginConnection;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginMessage;
 import kkdev.kksystem.base.constants.PluginConsts;
+import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
@@ -27,12 +28,11 @@ import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainCon
  * @author blinov_is
  */
 public class PluginExecute implements IPluginBaseInterface {
-     
+
     //Pin path: FeatureID,SenderID,PIN,array of connectors
-     HashMap<String,HashMap<String,HashMap<String,ArrayList<IPluginKKConnector>>>> Pin;  
-     HashMap<String,IPluginKKConnector> ActivePlugins;
-     
-     
+    HashMap<String, HashMap<String, HashMap<String, ArrayList<IPluginKKConnector>>>> Pin;
+    HashMap<String, IPluginKKConnector> ActivePlugins;
+
     public PluginExecute(HashMap<String, IPluginKKConnector> Plugins) {
         ActivePlugins = Plugins;
         //
@@ -42,7 +42,7 @@ public class PluginExecute implements IPluginBaseInterface {
             if (Feature.Connections != null) {
                 for (PluginConnection PC : Feature.Connections) {
                     for (String PIN : PC.PinName) {
-                        if (PIN!=null)  //Skip wrong config
+                        if (PIN != null) //Skip wrong config
                         {
                             RegisterPINTarget(Feature.FeatureUUID, PC.SourcePluginUID, PC.TargetPluginUID, PIN);
                             //Register multicast feature pin
@@ -50,149 +50,143 @@ public class PluginExecute implements IPluginBaseInterface {
                             //KKController may send any pin to any plugin in system feature
                             RegisterPINTarget(KK_BASE_FEATURES_SYSTEM_UID, PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID, PC.TargetPluginUID, PIN);
                         }
-                     }
+                    }
                 }
             }
         }
 
     }
 
-    private void RegisterPINTarget(String FeatureID, String SenderPluginUUID, String TargetPluginUID,String PIN)
-    {
+    private void RegisterPINTarget(String FeatureID, String SenderPluginUUID, String TargetPluginUID, String PIN) {
         //
-        if (!Pin.containsKey(FeatureID))
-            Pin.put(FeatureID,new HashMap());
+        if (!Pin.containsKey(FeatureID)) {
+            Pin.put(FeatureID, new HashMap());
+        }
         //
-        if (!Pin.get(FeatureID).containsKey(SenderPluginUUID))
-            Pin.get(FeatureID).put(SenderPluginUUID,new HashMap());
+        if (!Pin.get(FeatureID).containsKey(SenderPluginUUID)) {
+            Pin.get(FeatureID).put(SenderPluginUUID, new HashMap());
+        }
         //
-        if (!Pin.get(FeatureID).get(SenderPluginUUID).containsKey(PIN))
+        if (!Pin.get(FeatureID).get(SenderPluginUUID).containsKey(PIN)) {
             Pin.get(FeatureID).get(SenderPluginUUID).put(PIN, new ArrayList<>());
+        }
         //
         //System.out.println("[PKK] Reg PIN " +PIN + " " +TargetPluginUID +" " +  ActivePlugins.get(TargetPluginUID));
-         if (!Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).contains(ActivePlugins.get(TargetPluginUID)))
-                Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
+        if (!Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).contains(ActivePlugins.get(TargetPluginUID))) {
+            Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
+        }
         //
     }
-    
-     public  void InitPlugins()
-   {
-       ActivePlugins.values().stream().forEach((CONN) -> {
-           CONN.pluginInit(this,mainConfiguration.configurationUID);
-         });
-   
-   }
-   public  void StartPlugins()
-   {
-       ActivePlugins.values().stream().forEach((CONN) -> {
-           CONN.pluginStart();
-         });
-   
-   }
-   public   void StopPlugins()
-   {
-       ActivePlugins.values().stream().forEach((CONN) -> {
-           CONN.pluginStop();
+
+    public void InitPlugins() {
+        ActivePlugins.values().stream().forEach((CONN) -> {
+            CONN.pluginInit(this, mainConfiguration.configurationUID);
         });
-   }
+
+    }
+
+    public void StartPlugins() {
+        ActivePlugins.values().stream().forEach((CONN) -> {
+            CONN.pluginStart();
+        });
+
+    }
+
+    public void StopPlugins() {
+        ActivePlugins.values().stream().forEach((CONN) -> {
+            CONN.pluginStop();
+        });
+    }
 
     @Override
-    public  PluginMessage executePinCommand(PluginMessage PP) {
-     //       out.println("DBG[BSE] " +PP.FeatureID + " PIN " + PP.PinName + " ");
-        return internalExecutePin(PP);
+    public void executePinCommand(PluginMessage PP) {
+        internalExecutePin(PP);
     }
     //
-    
-    private  PluginMessage internalExecutePin(PluginMessage PP)
-    {
-        if (PP.FeatureID==null)
-        {
+
+    private void internalExecutePin(PluginMessage PP) {
+        if (PP.FeatureID == null) {
             out.println("[ERR] Wrong PluginMessage! Not found FeatureID Plugin: " + PP.SenderUID + " Pin: " + PP.pinName);
-            return null;
+            return;
         }
         // 
         SystemBasePINReceiver(PP.cloneMessage());
         //
-         if (PP.FeatureID.equals(KK_BASE_FEATURES_SYSTEM_UID) & !PP.SenderUID.equals(PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID))
-             return null;
-         
-         if (!Pin.containsKey(PP.FeatureID))
-         {
-            out.println("Wrong PIN received (not found feature) FTR " +PP.FeatureID + " PIN " + PP.pinName);
-            return null;
-         }
-        if (!Pin.get(PP.FeatureID).containsKey(PP.SenderUID))
-        {
-            out.println("Wrong PIN received (not found sender) FTR " +PP.FeatureID + " PIN " + PP.pinName);
-            return null;
+        if (PP.FeatureID.contains(KK_BASE_FEATURES_SYSTEM_UID) & !PP.SenderUID.contains(PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID)) {
+            return;
         }
-        
-        if (!Pin.get(PP.FeatureID).get(PP.SenderUID).containsKey(PP.pinName))
-        {
-            out.println("Wrong PIN received (Not found Pin) FTR " +PP.FeatureID + " PIN " + PP.pinName);
-            return null;
+
+        if (!Pin.keySet().containsAll(PP.FeatureID)) {
+            out.println("Wrong PIN received (not found feature) FTR " + PP.FeatureID + " PIN " + PP.pinName);
+            return;
         }
-        
-        
+        for (String Ftr : PP.FeatureID) {
+            if (!Pin.get(Ftr).containsKey(PP.SenderUID)) {
+                out.println("Wrong PIN received (not found sender) FTR " + PP.FeatureID + " PIN " + PP.pinName);
+                return;
+            }
+
+            if (!Pin.get(Ftr).get(PP.SenderUID).containsKey(PP.pinName)) {
+                out.println("Wrong PIN received (Not found Pin) FTR " + PP.FeatureID + " PIN " + PP.pinName);
+                return;
+            }
+        }
+
         ArrayList<IPluginKKConnector> Exec;
         //
-      
-        Exec=Pin.get(PP.FeatureID).get(PP.SenderUID).get(PP.pinName);
 
-        InternalExecutePin_Exec(Exec,PP);
-        
-        return null;
+        if (PP.FeatureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID) || PP.FeatureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID)) {
+            Exec = Pin.get(SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID).get(PP.SenderUID).get(PP.pinName);
+            InternalExecutePin_Exec(Exec, PP);
+        } else {
+            for (String Ftr : PP.FeatureID) {
+                Exec = Pin.get(Ftr).get(PP.SenderUID).get(PP.pinName);
+                InternalExecutePin_Exec(Exec, PP);
+            }
+        }
+
     }
-    private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP)
-    {
+
+    private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP) {
         Exec.stream().forEach((PKK) -> {
             PKK.executePin(PP.cloneMessage());
-         });
+        });
     }
-    
+
     @Override
-    public PluginMessage _executePinCommandDirect(String PluginUUID, PluginMessage PP) {
-       return ExecuteDirectCommand(PluginUUID,PP);
+    public void _executePinCommandDirect(String PluginUUID, PluginMessage PP) {
+        ExecuteDirectCommand(PluginUUID, PP);
     }
-    
-    public PluginMessage ExecuteDirectCommand(String TargetUUID,PluginMessage PP)
-    {
-        if (TargetUUID.equals("")){
-            TargetUUID=KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+
+    public void ExecuteDirectCommand(String TargetUUID, PluginMessage PP) {
+        if (TargetUUID.equals("")) {
+            TargetUUID = KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
         }
-        
+
         SystemBasePINReceiver(PP);
-        
-        if (TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID) | TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID))
-        {
-            for (IPluginKKConnector PKK:ActivePlugins.values())
-            {
+
+        if (TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID) | TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID)) {
+            for (IPluginKKConnector PKK : ActivePlugins.values()) {
                 PKK.executePin(PP.cloneMessage());
             }
-            return null;
-        }
-        else
-        {
-            return ActivePlugins.get(TargetUUID).executePin(PP.cloneMessage());
+            return;
+        } else {
+            ActivePlugins.get(TargetUUID).executePin(PP.cloneMessage());
         }
     }
 
     //
     private void SystemBasePINReceiver(PluginMessage PP) {
         //Standart PINs
-        switch (PP.FeatureID) {
-            case (KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID):
-                SystemOperations.processSystemPIN(PP);
-                break;
-            case (KK_BASE_FEATURES_SYSTEM_UID):
-                SystemOperations.processSystemPIN(PP);
-                break;
+        if (PP.FeatureID.contains(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID) || PP.FeatureID.contains(KK_BASE_FEATURES_SYSTEM_UID)) {
+            SystemOperations.processSystemPIN(PP);
         }
+
         //Special PINs
         switch (PP.pinName) {
             case (PluginConsts.KK_PLUGIN_BASE_LED_COMMAND):
                 SystemOperations.processSpecialPIN(PP);
-                break;
+                return;
         }
 
     }
@@ -202,6 +196,4 @@ public class PluginExecute implements IPluginBaseInterface {
         return UtilsManager.getInstance();
     }
 
-    
-   
 }
