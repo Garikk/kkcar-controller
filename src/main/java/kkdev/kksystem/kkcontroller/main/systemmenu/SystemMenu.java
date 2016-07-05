@@ -9,12 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import kkdev.kksystem.base.classes.controls.PinDataControl;
-import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_BACK;
-import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_DOWN;
-import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_ENTER;
-import static kkdev.kksystem.base.classes.controls.PinDataControl.DEF_BTN_UP;
-import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DATA.CONTROL_LONGPRESS;
-import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DATA.CONTROL_TRIGGERED;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.*;
+import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DATA.*;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
@@ -85,7 +81,6 @@ public abstract class SystemMenu {
             if (FT.IsSystemFeature) {
                 continue;
             }
-
             if (!FT.ShowInSystemMenu) {
                 continue;
             }
@@ -169,8 +164,7 @@ public abstract class SystemMenu {
                     //SysMenu.menuExec();
                     break;
                 case DEF_BTN_BACK:
-
-                    if (PD.controlDataType == CONTROL_TRIGGERED & (!GlobalCommand)) {
+                    if (PD.controlDataType == CONTROL_TRIGGERED & ((!GlobalCommand) || PD.featureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_UID))) {
                         SysMenu.menuSelectBack();
                     } else if (PD.controlDataType == CONTROL_LONGPRESS & (GlobalCommand)) {
                         execMenuFunction(MNU_CMD_CHANGE_FEATURE + " " + KK_BASE_FEATURES_SYSTEM_UID + " " + SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
@@ -179,10 +173,8 @@ public abstract class SystemMenu {
                 case "CUSTOM_CHR_CLOCK_M":
                     initClock();
                     break;
-
             }
         }
-
     }
 
     private static void initClock() {
