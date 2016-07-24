@@ -18,7 +18,6 @@ import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 import kkdev.kksystem.base.constants.SystemConsts;
 import kkdev.kksystem.kkcontroller.main.systemmenu.kk_defaultUI;
-import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.init;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.showMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.initSystemMenu;
 import static java.lang.Thread.sleep;
@@ -83,7 +82,7 @@ public class KKController {
         out.println("================");
         out.println("Settings:");
         //
-        init();
+        ControllerSettingsManager.init();
         //
         //Check updates, if "true" - have updates, watchdog make update and start app
         //
