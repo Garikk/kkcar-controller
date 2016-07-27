@@ -44,7 +44,7 @@ public abstract class SystemUpdater {
 
     final static String ___TEST_KKCAR_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
     final static String WEBMASTER_URL = "http://www.dingo-cloud.tk/";
-    final static String WEBMASTER_URL_SERVICE = "weblink/request";
+    final static String WEBMASTER_URL_SERVICE = "weblink";
     final static int WEBMASTER_CLIENT_VERSION = 1;
 
     public static boolean CheckUpdate(String KKControllerVersion) {
