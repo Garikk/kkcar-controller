@@ -12,6 +12,7 @@ import kkdev.kksystem.base.classes.display.pages.DisplayPage;
 import kkdev.kksystem.base.classes.kkcontroller.RS232Device;
 import kkdev.kksystem.base.classes.kkcontroller.UIContextInfo;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
+import kkdev.kksystem.base.classes.plugins.QuickParameterInfo;
 import kkdev.kksystem.base.interfaces.IKKControllerUtils;
 import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
@@ -113,5 +114,10 @@ public class UtilsManager implements IKKControllerUtils {
               
     
     
+    }
+
+    @Override
+    public List<QuickParameterInfo> PLUGINS_GetPluginQuickParameters(String UUID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

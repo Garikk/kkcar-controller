@@ -6,6 +6,7 @@
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import kkdev.kksystem.base.classes.controls.PinDataControl;
@@ -14,7 +15,10 @@ import static kkdev.kksystem.base.classes.controls.PinDataControl.KK_CONTROL_DAT
 import kkdev.kksystem.base.classes.display.tools.menumaker.MKMenuItem;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
+import static kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
+import kkdev.kksystem.base.classes.plugins.PluginInfo;
+import kkdev.kksystem.base.classes.plugins.QuickParameterInfo;
 import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import kkdev.kksystem.base.constants.SystemConsts;
@@ -92,9 +96,9 @@ public abstract class SystemMenu {
             //
             FeatureItems.add(MI);
         }
-        for (MKMenuItem MI : mainConfiguration.systemMenuItems) {
-            FeatureItems.add(MI);
-        }
+        //
+        FeatureItems.addAll(Arrays.asList(mainConfiguration.systemMenuItems));
+        //
         MKMenuItem[] MT = new MKMenuItem[FeatureItems.size()];
         int i = 0;
         for (MKMenuItem M : FeatureItems) {
@@ -124,16 +128,16 @@ public abstract class SystemMenu {
 
     }
 
-    public static void processCommands(String PinName,PinDataControl PP) {
+    public static void processCommands(String PinName, PinDataControl PP) {
         switch (PinName) {
             case (KK_PLUGIN_BASE_CONTROL_DATA):
-                processMenuManager(PP.featureID,PP);
+                processMenuManager(PP.featureID, PP);
                 break;
 
         }
     }
 
-    private static void processMenuManager(Set<String> FeatureID,PinDataControl PD) {
+    private static void processMenuManager(Set<String> FeatureID, PinDataControl PD) {
         //
 
         switch (PD.controlDataType) {
@@ -147,9 +151,8 @@ public abstract class SystemMenu {
     }
 
     private static void buttonsManager(PinDataControl PD, boolean GlobalCommand) {
-                
-        for (String btnID:PD.controlID)    
-        {
+
+        for (String btnID : PD.controlID) {
             switch (btnID) {
                 case DEF_BTN_UP:
                     SysMenu.processControlCommand(PD.controlID);
@@ -182,5 +185,35 @@ public abstract class SystemMenu {
         // PManager.baseConnector = BCE;
         PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID, KK_BASE_UICONTEXT_GFX2, mainConfiguration.systemDisplay_UID, "CLOCK");
 
+    }
+    
+    private MKMenuItem[] createPluginsQuickSettingsMenu()
+    {
+       MKMenuItem[] Ret;
+       Ret=new MKMenuItem[BCE.systemUtilities().PLUGINS_GetLoadedPlugins().size()];
+        
+       int i=0;
+       for (PluginInfo PI:BCE.systemUtilities().PLUGINS_GetLoadedPlugins())
+       {
+           Ret[i]=new MKMenuItem();
+           Ret[i].displayName=PI.PluginName;
+           Ret[i].itemCommand=KK_MENUMAKER_SPECIALCMD_SUBMENU;
+           
+           List<QuickParameterInfo> QPI=BCE.systemUtilities().PLUGINS_GetPluginQuickParameters(PI.PluginUUID);
+           
+           Ret[i].subItems=new MKMenuItem[QPI.size()];
+           
+           int ii=0;
+           for (QuickParameterInfo Q:QPI)
+           {
+               Ret[i].subItems[ii].displayName=Q.Name;
+               Ret[i].subItems[ii].itemCommand="CHANGE QPR " + PI.PluginUUID + " " + Q.Name;
+               
+               ii++;
+           }
+           i++;
+       }
+    
+       return Ret;
     }
 }
