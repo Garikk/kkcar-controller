@@ -54,6 +54,10 @@ public abstract class PluginLoader {
 
     }
 
+    public static IPluginKKConnector getPluginByUUID(String UUID)
+    {
+        return ActivePlugins.get(UUID);
+    }
     public static void PreInitAllPlugins()
     {
         ActivePlugins=ConnectPlugins(null,true);

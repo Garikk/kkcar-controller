@@ -97,7 +97,21 @@ public abstract class SystemMenu {
             FeatureItems.add(MI);
         }
         //
+        boolean Ok=false;
+        for (MKMenuItem MI:  mainConfiguration.systemMenuItems) {
+            for (MKMenuItem MSI : MI.subItems) {
+                if (MSI.itemCommand.equals("$KK_PLUGINS_QUICKSETTINGS")) {
+                    MSI.subItems = createPluginsQuickSettingsMenu();
+                    Ok=true;
+                    break;
+                }
+            }
+            if (Ok)
+                break;
+        }
+        //
         FeatureItems.addAll(Arrays.asList(mainConfiguration.systemMenuItems));
+        //
         //
         MKMenuItem[] MT = new MKMenuItem[FeatureItems.size()];
         int i = 0;
@@ -187,7 +201,7 @@ public abstract class SystemMenu {
 
     }
     
-    private MKMenuItem[] createPluginsQuickSettingsMenu()
+    private static MKMenuItem[] createPluginsQuickSettingsMenu()
     {
        MKMenuItem[] Ret;
        Ret=new MKMenuItem[BCE.systemUtilities().PLUGINS_GetLoadedPlugins().size()];

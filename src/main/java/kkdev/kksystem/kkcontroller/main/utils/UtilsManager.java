@@ -111,13 +111,10 @@ public class UtilsManager implements IKKControllerUtils {
               case UICONTEXT_GetUIContext:
                   break;
           }
-              
-    
-    
     }
 
     @Override
     public List<QuickParameterInfo> PLUGINS_GetPluginQuickParameters(String UUID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return PluginLoader.getPluginByUUID(UUID).getQuickParameters().getQuickParametersInfo();
     }
 }

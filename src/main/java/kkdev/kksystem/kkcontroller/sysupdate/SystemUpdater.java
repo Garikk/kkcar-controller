@@ -49,9 +49,9 @@ public abstract class SystemUpdater {
 
     public static boolean CheckUpdate(String KKControllerVersion) {
         //Skip by now
-   //    if (true) {
-      //      return false;
-      //  }
+       if (true) {
+            return false;
+        }
 
         boolean NeedReload = false;
 
