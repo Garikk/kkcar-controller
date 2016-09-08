@@ -16,24 +16,24 @@ import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
-import kkdev.kksystem.base.interfaces.IKKControllerUtils;
-import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
-import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
+import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
+import kkdev.kksystem.base.interfaces.IPluginConnection;
+import kkdev.kksystem.base.interfaces.IControllerUtils;
 
 /**
  *
  * @author blinov_is
  */
-public class PluginExecute implements IPluginBaseInterface {
+public class PluginExecute implements IPluginBaseConnection {
 
     //Pin path: FeatureID,SenderID,PIN,array of connectors
-    HashMap<String, HashMap<String, HashMap<String, ArrayList<IPluginKKConnector>>>> Pin;
-    HashMap<String, IPluginKKConnector> ActivePlugins;
+    HashMap<String, HashMap<String, HashMap<String, ArrayList<IPluginConnection>>>> Pin;
+    HashMap<String, IPluginConnection> ActivePlugins;
 
-    public PluginExecute(HashMap<String, IPluginKKConnector> Plugins) {
+    public PluginExecute(HashMap<String, IPluginConnection> Plugins) {
         ActivePlugins = Plugins;
         //
         Pin = new HashMap();
@@ -132,7 +132,7 @@ public class PluginExecute implements IPluginBaseInterface {
             }
         }
 
-        ArrayList<IPluginKKConnector> Exec;
+        ArrayList<IPluginConnection> Exec;
         //
 
         if (PP.FeatureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID) || PP.FeatureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID)) {
@@ -147,7 +147,7 @@ public class PluginExecute implements IPluginBaseInterface {
 
     }
 
-    private void InternalExecutePin_Exec(ArrayList<IPluginKKConnector> Exec, PluginMessage PP) {
+    private void InternalExecutePin_Exec(ArrayList<IPluginConnection> Exec, PluginMessage PP) {
         Exec.stream().forEach((PKK) -> {
             PKK.executePin(PP.cloneMessage());
         });
@@ -166,7 +166,7 @@ public class PluginExecute implements IPluginBaseInterface {
         SystemBasePINReceiver(PP);
 
         if (TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID) | TargetUUID.equals(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID)) {
-            for (IPluginKKConnector PKK : ActivePlugins.values()) {
+            for (IPluginConnection PKK : ActivePlugins.values()) {
                 PKK.executePin(PP.cloneMessage());
             }
             return;
@@ -192,7 +192,7 @@ public class PluginExecute implements IPluginBaseInterface {
     }
 
     @Override
-    public IKKControllerUtils systemUtilities() {
+    public IControllerUtils systemUtilities() {
         return UtilsManager.getInstance();
     }
 

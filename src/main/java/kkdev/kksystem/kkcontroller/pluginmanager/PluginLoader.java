@@ -25,8 +25,8 @@ import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINPATH;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
-import kkdev.kksystem.base.interfaces.IPluginKKConnector;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
+import kkdev.kksystem.base.interfaces.IPluginConnection;
 
 /**
  *
@@ -34,7 +34,7 @@ import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainCon
  */
 public abstract class PluginLoader {
 
-    static HashMap<String, IPluginKKConnector> ActivePlugins;
+    static HashMap<String, IPluginConnection> ActivePlugins;
     public static PluginExecute PlEx;
 
     public static void InitPlugins() {
@@ -54,7 +54,7 @@ public abstract class PluginLoader {
 
     }
 
-    public static IPluginKKConnector getPluginByUUID(String UUID)
+    public static IPluginConnection getPluginByUUID(String UUID)
     {
         return ActivePlugins.get(UUID);
     }
@@ -123,10 +123,10 @@ public abstract class PluginLoader {
         return Ret;
     }
 
-    private static HashMap<String, IPluginKKConnector> ConnectPlugins(Set<String> Plugins, boolean ConnectAllPlugins) {
+    private static HashMap<String, IPluginConnection> ConnectPlugins(Set<String> Plugins, boolean ConnectAllPlugins) {
         //
         int Counter = 0;
-        HashMap<String, IPluginKKConnector> Ret = new HashMap<>();
+        HashMap<String, IPluginConnection> Ret = new HashMap<>();
         //
         //
         File folder = new File(KK_BASE_PLUGINPATH);
@@ -153,12 +153,12 @@ public abstract class PluginLoader {
             try {
                 //
                 String ConnectorClass;
-                IPluginKKConnector PluginConnection;
+                IPluginConnection PluginConnection;
                 ConnectorClass = GetPluginConnectorClass(loadFile);
                 //
                 URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
                 //
-                PluginConnection = (IPluginKKConnector) CLoader.loadClass(ConnectorClass).newInstance();
+                PluginConnection = (IPluginConnection) CLoader.loadClass(ConnectorClass).newInstance();
                 //
                 if ( (!ConnectAllPlugins) && (!Plugins.contains(PluginConnection.getPluginInfo().PluginUUID)) ) {
                     out.println("Config: not in config. skip");
@@ -183,7 +183,7 @@ public abstract class PluginLoader {
         List<PluginInfo> Ret;
         Ret=new ArrayList<>();
         //
-        for (IPluginKKConnector PK:ActivePlugins.values())
+        for (IPluginConnection PK:ActivePlugins.values())
         {
             Ret.add(PK.getPluginInfo());
         }

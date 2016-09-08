@@ -13,19 +13,19 @@ import kkdev.kksystem.base.classes.kkcontroller.RS232Device;
 import kkdev.kksystem.base.classes.kkcontroller.UIContextInfo;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.classes.plugins.QuickParameterInfo;
-import kkdev.kksystem.base.interfaces.IKKControllerUtils;
-import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
 import kkdev.kksystem.kkcontroller.main.utils.display.DisplayPageStorage;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
+import kkdev.kksystem.base.interfaces.IControllerUtils;
 
 
 /**
  *
  * @author blinov_is
  */
-public class UtilsManager implements IKKControllerUtils {
+public class UtilsManager implements IControllerUtils {
     private static UtilsManager UTMInstance;
     private static DisplayPageStorage DPStor;
     private static UIContextStorage UICtxStor;
@@ -104,7 +104,7 @@ public class UtilsManager implements IKKControllerUtils {
     }
 
     
-    public void execUtilityPin(IPluginBaseInterface connector, PinDataUtils PData)
+    public void execUtilityPin(IPluginBaseConnection connector, PinDataUtils PData)
     {
           switch (PData.CommandType)
           {

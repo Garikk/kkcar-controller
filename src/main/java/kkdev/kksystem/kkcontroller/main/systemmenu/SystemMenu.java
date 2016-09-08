@@ -25,10 +25,10 @@ import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UICONTEXT_GFX2;
-import kkdev.kksystem.base.interfaces.IPluginBaseInterface;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
+import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
 
 /**
  *
@@ -51,10 +51,10 @@ public abstract class SystemMenu {
     public static final String MNU_CMD_BRD_INFO_PLUGINS = "PLUGINS";
     public static final String MNU_CMD_BRD_INFO_VERSION = "VERSION";
 
-    private static IPluginBaseInterface BCE;
+    private static IPluginBaseConnection BCE;
     static PluginManagerDataProcessor PManager = new PluginManagerDataProcessor();
 
-    public static void initSystemMenu(IPluginBaseInterface BaseConnector) {
+    public static void initSystemMenu(IPluginBaseConnection BaseConnector) {
         BCE = BaseConnector;
         PManager.setBaseConnector(BCE);
 
