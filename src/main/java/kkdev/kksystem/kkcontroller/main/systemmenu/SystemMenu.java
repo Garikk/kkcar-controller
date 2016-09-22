@@ -101,7 +101,7 @@ public abstract class SystemMenu {
         for (MKMenuItem MI:  mainConfiguration.systemMenuItems) {
             for (MKMenuItem MSI : MI.subItems) {
                 if (MSI.itemCommand.equals("$KK_PLUGINS_QUICKSETTINGS")) {
-                    MSI.subItems = createPluginsQuickSettingsMenu();
+                    MSI.subItems = createQuickSettingsMenu();
                     Ok=true;
                     break;
                 }
@@ -170,15 +170,12 @@ public abstract class SystemMenu {
             switch (btnID) {
                 case DEF_BTN_UP:
                     SysMenu.processControlCommand(PD.controlID);
-                    //SysMenu.menuSelectUp();
                     break;
                 case DEF_BTN_DOWN:
                     SysMenu.processControlCommand(PD.controlID);
-                    //SysMenu.menuSelectDown();
                     break;
                 case DEF_BTN_ENTER:
                     SysMenu.processControlCommand(PD.controlID);
-                    //SysMenu.menuExec();
                     break;
                 case DEF_BTN_BACK:
                     if (PD.controlDataType == CONTROL_TRIGGERED & ((!GlobalCommand) || PD.featureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_UID))) {
@@ -201,7 +198,7 @@ public abstract class SystemMenu {
 
     }
     
-    private static MKMenuItem[] createPluginsQuickSettingsMenu()
+    private static MKMenuItem[] createQuickSettingsMenu()
     {
        MKMenuItem[] Ret;
        Ret=new MKMenuItem[BCE.systemUtilities().PLUGINS_GetLoadedPlugins().size()];
