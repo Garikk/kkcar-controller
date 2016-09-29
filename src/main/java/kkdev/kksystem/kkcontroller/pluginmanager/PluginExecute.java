@@ -21,7 +21,7 @@ import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
 import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
 import kkdev.kksystem.base.interfaces.IPluginConnection;
-import kkdev.kksystem.base.interfaces.IControllerUtils;
+import kkdev.kksystem.base.interfaces.ControllerUtils;
 
 /**
  *
@@ -192,7 +192,7 @@ public class PluginExecute implements IPluginBaseConnection {
     }
 
     @Override
-    public IControllerUtils systemUtilities() {
+    public ControllerUtils systemUtilities() {
         return UtilsManager.getInstance();
     }
 

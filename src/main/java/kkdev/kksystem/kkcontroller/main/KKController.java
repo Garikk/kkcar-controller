@@ -21,6 +21,7 @@ import kkdev.kksystem.kkcontroller.main.systemmenu.kk_defaultUI;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.showMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.initSystemMenu;
 import static java.lang.Thread.sleep;
+import kkdev.kksystem.kkcontroller.main.utils.HWUtility;
 
 /**
  *
@@ -94,7 +95,7 @@ public class KKController {
           out.println("==");
         out.println("Collect RS-232 ports:");
         //
-        UtilsManager.getInstance().getRS232Scanner().MakeRS232DevList();
+        ((HWUtility)UtilsManager.getInstance().HWManager).getRS232Scanner().MakeRS232DevList();
         //
         out.println("==");
         out.println("Make system menu");

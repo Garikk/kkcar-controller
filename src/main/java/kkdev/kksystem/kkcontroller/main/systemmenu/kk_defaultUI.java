@@ -5,7 +5,6 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
-import static java.lang.System.out;
 import kkdev.kksystem.base.classes.display.pages.DisplayPage;
 import static kkdev.kksystem.base.classes.display.pages.PageConsts.*;
 import kkdev.kksystem.base.classes.display.pages.UIFrameData;
@@ -37,7 +36,7 @@ public class kk_defaultUI {
         DP.isMultifeaturePage = true;
         DP.framesPack = FramePack[0];
         //
-        UtilsManager.getInstance().DISPLAY_AddUIDisplayPage(DP);
+        UtilsManager.getInstance().DisplayFunctions.AddUIDisplayPage(DP);
         //
         DP = new DisplayPage();
         DP.dynamicElements = false;
@@ -50,7 +49,7 @@ public class kk_defaultUI {
         DP.isMultifeaturePage = true;
         DP.framesPack = GetSystemFramePack()[1];
         //
-        UtilsManager.getInstance().DISPLAY_AddUIDisplayPage(DP);
+        UtilsManager.getInstance().DisplayFunctions.AddUIDisplayPage(DP);
         //
    
     }

@@ -18,7 +18,6 @@ import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerI
 import static kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
-import kkdev.kksystem.base.classes.plugins.QuickParameterInfo;
 import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
 import kkdev.kksystem.base.constants.SystemConsts;
@@ -201,11 +200,12 @@ public abstract class SystemMenu {
     private static MKMenuItem[] createQuickSettingsMenu()
     {
        MKMenuItem[] Ret;
-       Ret=new MKMenuItem[BCE.systemUtilities().PLUGINS_GetLoadedPlugins().size()];
+       Ret=new MKMenuItem[BCE.systemUtilities().PluginManager.GetLoadedPlugins().size()];
         
        int i=0;
-       for (PluginInfo PI:BCE.systemUtilities().PLUGINS_GetLoadedPlugins())
+       for (PluginInfo PI:BCE.systemUtilities().PluginManager.GetLoadedPlugins())
        {
+           /*
            Ret[i]=new MKMenuItem();
            Ret[i].displayName=PI.PluginName;
            Ret[i].itemCommand=KK_MENUMAKER_SPECIALCMD_SUBMENU;
@@ -223,6 +223,7 @@ public abstract class SystemMenu {
                ii++;
            }
            i++;
+        */
        }
     
        return Ret;
