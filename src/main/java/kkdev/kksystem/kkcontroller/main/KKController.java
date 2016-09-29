@@ -95,7 +95,7 @@ public class KKController {
           out.println("==");
         out.println("Collect RS-232 ports:");
         //
-        ((HWUtility)UtilsManager.getInstance().HWManager).getRS232Scanner().MakeRS232DevList();
+        ((HWUtility)UtilsManager.getInstance().HWManager()).getRS232Scanner().MakeRS232DevList();
         //
         out.println("==");
         out.println("Make system menu");

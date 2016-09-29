@@ -12,20 +12,28 @@ import kkdev.kksystem.base.classes.display.pages.DisplayPage;
 import kkdev.kksystem.base.classes.kkcontroller.RS232Device;
 import kkdev.kksystem.base.classes.kkcontroller.UIContextInfo;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
+import kkdev.kksystem.base.interfaces.IContextUtils;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
 import kkdev.kksystem.kkcontroller.main.utils.display.DisplayPageStorage;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
-import kkdev.kksystem.base.interfaces.ControllerUtils;
-
+import kkdev.kksystem.base.interfaces.IControllerUtils;
+import kkdev.kksystem.base.interfaces.IDisplayUtils;
+import kkdev.kksystem.base.interfaces.IHWDevicesUtils;
+import kkdev.kksystem.base.interfaces.IPluginUtils;
 
 /**
  *
  * @author blinov_is
  */
-public class UtilsManager extends ControllerUtils {
+public class UtilsManager implements IControllerUtils {
+
     private static UtilsManager UTMInstance;
+    private IPluginUtils PluginManager;
+    private IContextUtils ContextFunctions;
+    private IHWDevicesUtils HWManager;
+    private IDisplayUtils DisplayFunctions;
 
     public static UtilsManager getInstance() {
         if (UTMInstance == null) {
@@ -36,19 +44,36 @@ public class UtilsManager extends ControllerUtils {
     }
 
     private UtilsManager() {
-        this.PluginManager = new PluginUtility();
-        this.ContextFunctions = new ContextUtility();
-        this.HWManager = new HWUtility();
-        this.DisplayFunctions = new DisplayUtility();
+        PluginManager = new PluginUtility();
+        ContextFunctions = new ContextUtility();
+        HWManager = new HWUtility();
+        DisplayFunctions = new DisplayUtility();
     }
-        
-   
-    
 
     public void execUtilityPin(IPluginBaseConnection connector, PinDataUtils PData) {
         switch (PData.CommandType) {
             case UICONTEXT_GetUIContext:
                 break;
         }
+    }
+
+    @Override
+    public IContextUtils ContextFunctions() {
+        return ContextFunctions;
+    }
+
+    @Override
+    public IDisplayUtils DisplayFunctions() {
+        return DisplayFunctions;
+    }
+
+    @Override
+    public IHWDevicesUtils HWManager() {
+        return HWManager;
+    }
+
+    @Override
+    public IPluginUtils PluginManager() {
+        return PluginManager;
     }
 }

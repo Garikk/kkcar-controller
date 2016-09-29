@@ -200,10 +200,10 @@ public abstract class SystemMenu {
     private static MKMenuItem[] createQuickSettingsMenu()
     {
        MKMenuItem[] Ret;
-       Ret=new MKMenuItem[BCE.systemUtilities().PluginManager.GetLoadedPlugins().size()];
+       Ret=new MKMenuItem[BCE.systemUtilities().PluginManager().GetLoadedPlugins().size()];
         
        int i=0;
-       for (PluginInfo PI:BCE.systemUtilities().PluginManager.GetLoadedPlugins())
+       for (PluginInfo PI:BCE.systemUtilities().PluginManager().GetLoadedPlugins())
        {
            /*
            Ret[i]=new MKMenuItem();

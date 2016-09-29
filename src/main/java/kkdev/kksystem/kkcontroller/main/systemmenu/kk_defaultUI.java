@@ -36,7 +36,7 @@ public class kk_defaultUI {
         DP.isMultifeaturePage = true;
         DP.framesPack = FramePack[0];
         //
-        UtilsManager.getInstance().DisplayFunctions.AddUIDisplayPage(DP);
+        UtilsManager.getInstance().DisplayFunctions().AddUIDisplayPage(DP);
         //
         DP = new DisplayPage();
         DP.dynamicElements = false;
@@ -49,7 +49,7 @@ public class kk_defaultUI {
         DP.isMultifeaturePage = true;
         DP.framesPack = GetSystemFramePack()[1];
         //
-        UtilsManager.getInstance().DisplayFunctions.AddUIDisplayPage(DP);
+        UtilsManager.getInstance().DisplayFunctions().AddUIDisplayPage(DP);
         //
    
     }
