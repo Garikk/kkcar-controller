@@ -5,9 +5,13 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import kkdev.kksystem.base.classes.controls.PinDataControl;
 import static kkdev.kksystem.base.classes.controls.PinDataControl.*;
@@ -17,6 +21,8 @@ import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker;
 import kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.IMenuMakerItemSelected;
 import static kkdev.kksystem.base.classes.display.tools.menumaker.MenuMaker.KK_MENUMAKER_SPECIALCMD_SUBMENU;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
+import kkdev.kksystem.base.classes.plugins.ManagedParameter;
+import kkdev.kksystem.base.classes.plugins.PluginConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.classes.plugins.simple.managers.PluginManagerDataProcessor;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA;
@@ -200,30 +206,34 @@ public abstract class SystemMenu {
     private static MKMenuItem[] createQuickSettingsMenu()
     {
        MKMenuItem[] Ret;
-       Ret=new MKMenuItem[BCE.systemUtilities().PluginManager().GetLoadedPlugins().size()];
+       Map<PluginInfo,PluginConfiguration> PC=BCE.systemUtilities().PluginManager().getPluginsParameters();
+       Ret=new MKMenuItem[PC.keySet().size()];
         
        int i=0;
-       for (PluginInfo PI:BCE.systemUtilities().PluginManager().GetLoadedPlugins())
+       for (PluginInfo PI:PC.keySet())
        {
-           /*
+           List<MKMenuItem> subItems;
+           
            Ret[i]=new MKMenuItem();
            Ret[i].displayName=PI.PluginName;
            Ret[i].itemCommand=KK_MENUMAKER_SPECIALCMD_SUBMENU;
            
-           List<QuickParameterInfo> QPI=BCE.systemUtilities().PLUGINS_GetPluginQuickParameters(PI.PluginUUID);
+           subItems=new LinkedList<>();
            
-           Ret[i].subItems=new MKMenuItem[QPI.size()];
-           
-           int ii=0;
-           for (QuickParameterInfo Q:QPI)
+           Object PSettings=PC.get(PI);
+           for (Field F:PSettings.getClass().getDeclaredFields())
            {
-               Ret[i].subItems[ii].displayName=Q.Name;
-               Ret[i].subItems[ii].itemCommand="CHANGE QPR " + PI.PluginUUID + " " + Q.Name;
-               
-               ii++;
+             if (F.isAnnotationPresent(ManagedParameter.class))
+             {
+                 ManagedParameter MP=F.getAnnotation(ManagedParameter.class);
+                 
+                 MKMenuItem MM=new MKMenuItem();
+                 MM.displayName=MP.DisplayName();
+                 MM.itemCommand="CHANGE QPR " + PI.PluginUUID + " " + F.getName();
+             }
            }
+           Ret[i].subItems=(MKMenuItem[])subItems.toArray();
            i++;
-        */
        }
     
        return Ret;

@@ -5,7 +5,10 @@
  */
 package kkdev.kksystem.kkcontroller.main.utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import kkdev.kksystem.base.classes.plugins.PluginConfiguration;
 import kkdev.kksystem.base.classes.plugins.PluginInfo;
 import kkdev.kksystem.base.interfaces.IPluginUtils;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
@@ -17,8 +20,21 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 public class PluginUtility implements IPluginUtils{
 
     @Override
-    public List<PluginInfo> GetLoadedPlugins() {
+    public List<PluginInfo> getPluginsInfo() {
           return PluginLoader.GetActivePluginsInfo();
+    }
+
+    @Override
+    public Map<PluginInfo, PluginConfiguration> getPluginsParameters() {
+        HashMap Ret=new HashMap<>();
+        
+        for (String PID :PluginLoader.GetActivePluginUIDs())
+        {
+            PluginConfiguration PC=PluginLoader.getPluginByUUID(PID).getPluginSettings();
+            if (PC!=null)
+                Ret.put(PluginLoader.getPluginByUUID(PID).getPluginInfo(), PC);
+        }
+        return Ret;
     }
     
 }
