@@ -33,7 +33,7 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_UICONTEXT_GFX2;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.MenuOperations.ExecSysMenuOperation;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
-import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
+import kkdev.kksystem.base.interfaces.IBaseConnection;
 
 /**
  *
@@ -50,16 +50,19 @@ public abstract class SystemMenu {
     public static final String MNU_CMD_SYSMENU_PFX_BRDTOOLS = "TOOLS";
     public static final String MNU_CMD_SYSMENU_PFX_INFO = "INFO";
 
+    public static final String MNU_CMD_BRD_TOOLS_CHANGE_MANAGEDPARAMETER = "CHANGE_MPR";
     public static final String MNU_CMD_BRD_TOOLS_REBOOT = "REBOOT";
     public static final String MNU_CMD_BRD_TOOLS_POWEROFF = "POWEROFF";
     public static final String MNU_CMD_BRD_TOOLS_BOARDINFO = "BOARDINFO";
     public static final String MNU_CMD_BRD_INFO_PLUGINS = "PLUGINS";
     public static final String MNU_CMD_BRD_INFO_VERSION = "VERSION";
+    
+    
 
-    private static IPluginBaseConnection BCE;
+    private static IBaseConnection BCE;
     static PluginManagerDataProcessor PManager = new PluginManagerDataProcessor();
 
-    public static void initSystemMenu(IPluginBaseConnection BaseConnector) {
+    public static void initSystemMenu(IBaseConnection BaseConnector) {
         BCE = BaseConnector;
         PManager.setBaseConnector(BCE);
 
@@ -102,18 +105,19 @@ public abstract class SystemMenu {
             FeatureItems.add(MI);
         }
         //
-        boolean Ok=false;
-        for (MKMenuItem MI:  mainConfiguration.systemMenuItems) {
+        boolean Ok = false;
+        for (MKMenuItem MI : mainConfiguration.systemMenuItems) {
             for (MKMenuItem MSI : MI.subItems) {
                 if (MSI.itemCommand.equals("$KK_PLUGINS_QUICKSETTINGS")) {
-                    MSI.itemCommand=KK_MENUMAKER_SPECIALCMD_SUBMENU;
+                    MSI.itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
                     MSI.subItems = createQuickSettingsMenu();
-                    Ok=true;
+                    Ok = true;
                     break;
                 }
             }
-            if (Ok)
+            if (Ok) {
                 break;
+            }
         }
         //
         FeatureItems.addAll(Arrays.asList(mainConfiguration.systemMenuItems));
@@ -142,7 +146,7 @@ public abstract class SystemMenu {
                 SystemOperations.changeFeature(CMD[1], CMD[2]);
                 break;
             case MNU_CMD_SYSMENU_PFX:
-                ExecSysMenuOperation(CMD);
+                ExecSysMenuOperation(BCE,CMD);
                 break;
         }
 
@@ -203,52 +207,55 @@ public abstract class SystemMenu {
         PManager._DISPLAY_ActivatePageDirect(KK_BASE_FEATURES_SYSTEM_UID, KK_BASE_UICONTEXT_GFX2, mainConfiguration.systemDisplay_UID, "CLOCK");
 
     }
-    
-    private static MKMenuItem[] createQuickSettingsMenu()
-    {
-       MKMenuItem[] Ret;
-       Map<PluginInfo,PluginConfiguration> PC=BCE.systemUtilities().PluginManager().getPluginsParameters();
-       Ret=new MKMenuItem[PC.keySet().size()];
-        
-       int i=0;
-       for (PluginInfo PI:PC.keySet())
-       {
-           List<MKMenuItem> subItems;
-           
-           Ret[i]=new MKMenuItem();
-           Ret[i].displayName=PI.PluginName;
-           Ret[i].itemCommand=KK_MENUMAKER_SPECIALCMD_SUBMENU;
-           
-           subItems=new LinkedList<>();
-           
-           Object PSettings=PC.get(PI);
-           for (Field F:PSettings.getClass().getDeclaredFields())
-           {
-             if (F.isAnnotationPresent(ManagedParameter.class))
-             {
-                 ManagedParameter MP=F.getAnnotation(ManagedParameter.class);
-                 
-                 MKMenuItem MM=new MKMenuItem();
-                 MM.displayName=MP.DisplayName();
-                 MM.itemCommand="CHANGE QPR " + PI.PluginUUID + " " + F.getName();
-                 subItems.add(MM);
-             }
-           }
-           
-           Ret[i].subItems=new MKMenuItem[subItems.size()] ;
-           
-           int ii=0;
-           for (MKMenuItem MI:subItems)
-           {
-               if (MI!=null)
-               {
-                   Ret[i].subItems[ii]=MI;
-               }
+
+    private static MKMenuItem[] createQuickSettingsMenu() {
+        MKMenuItem[] Ret;
+        Map<PluginInfo, PluginConfiguration> PC = BCE.systemUtilities().PluginManager().getPluginsParameters();
+        Ret = new MKMenuItem[PC.keySet().size()];
+
+        int i = 0;
+        for (PluginInfo PI : PC.keySet()) {
+            List<MKMenuItem> subItems;
+
+            Ret[i] = new MKMenuItem();
+            Ret[i].displayName = PI.PluginName;
+            Ret[i].itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+
+            subItems = new LinkedList<>();
+
+            Object PSettings = PC.get(PI);
+            for (Field F : PSettings.getClass().getDeclaredFields()) {
+                if (F.isAnnotationPresent(ManagedParameter.class)) {
+                    ManagedParameter MP = F.getAnnotation(ManagedParameter.class);
+
+                    MKMenuItem MM = new MKMenuItem();
+                    MM.displayName = MP.DisplayName();
+                    MM.itemCommand = KK_MENUMAKER_SPECIALCMD_SUBMENU;
+
+                    MKMenuItem MValues[] = new MKMenuItem[2];
+                    MValues[0] = new MKMenuItem();
+                    MValues[1] = new MKMenuItem();
+                    MValues[0].displayName = "True";
+                    MValues[0].itemCommand = MNU_CMD_SYSMENU_PFX_BRDTOOLS+ " "+MNU_CMD_BRD_TOOLS_CHANGE_MANAGEDPARAMETER + " " + PI.PluginUUID + " " + F.getName() + " true";
+                    MValues[1].displayName = "False";
+                    MValues[0].itemCommand = MNU_CMD_SYSMENU_PFX_BRDTOOLS+ " "+MNU_CMD_BRD_TOOLS_CHANGE_MANAGEDPARAMETER + " " + PI.PluginUUID + " " + F.getName() + " false";
+                    MM.subItems=MValues;
+                    subItems.add(MM);
+                }
+            }
+
+            Ret[i].subItems = new MKMenuItem[subItems.size()];
+
+            int ii = 0;
+            for (MKMenuItem MI : subItems) {
+                if (MI != null) {
+                    Ret[i].subItems[ii] = MI;
+                }
                 ii++;
-           }
-           i++;
-       }
-    
-       return Ret;
+            }
+            i++;
+        }
+
+        return Ret;
     }
 }

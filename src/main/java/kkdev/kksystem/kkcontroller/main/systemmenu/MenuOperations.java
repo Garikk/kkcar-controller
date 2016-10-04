@@ -5,22 +5,26 @@
  */
 package kkdev.kksystem.kkcontroller.main.systemmenu;
 
-import kkdev.kksystem.base.classes.display.tools.infopage.PageMaker;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_INFO_PLUGINS;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_INFO_VERSION;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_TOOLS_BOARDINFO;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_TOOLS_POWEROFF;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_BRD_TOOLS_REBOOT;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_SYSMENU_PFX_BRDTOOLS;
-import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.MNU_CMD_SYSMENU_PFX_INFO;
+
+import kkdev.kksystem.base.classes.base.PinDataFtrCtx;
+import kkdev.kksystem.base.classes.base.PinDataSystemOperations;
+import kkdev.kksystem.base.classes.base.PluginMessageData;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_SYSTEMOPERATION;
+import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID;
+import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
+import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.*;
+import kkdev.kksystem.base.interfaces.IBaseConnection;
+
 
 /**
  *
  * @author sayma_000
  */
-public abstract class MenuOperations {
+public final class MenuOperations {
 
-    public static void ExecSysMenuOperation(String[] Command) {
+    public static void ExecSysMenuOperation(IBaseConnection BCE,String[] Command) {
         switch (Command[0]) {
             case MNU_CMD_SYSMENU_PFX_INFO:
                 switch (Command[1]) {
@@ -39,8 +43,12 @@ public abstract class MenuOperations {
                         break;
                     case MNU_CMD_BRD_TOOLS_REBOOT:
                         break;
+                    case MNU_CMD_BRD_TOOLS_CHANGE_MANAGEDPARAMETER:
+                        changeManagedParameter(BCE,Command);
+                        break;
                 }
                 break;
+            
         }
     }
 
@@ -55,5 +63,26 @@ public abstract class MenuOperations {
     
     private static void ExecSysMenuOperationKKTools(String[] Command)
     {
+    }
+    
+    private static void changeManagedParameter(IBaseConnection BCE,String[] Command)
+    {
+        String PluginUUID=Command[2];
+        String ParameterName=Command[3];
+        String ParameterValue=Command[4];
+
+        PinDataSystemOperations PData = new PinDataSystemOperations();
+        PData.CommandType=PinDataSystemOperations.SystemOperationsCommand.SYSTEM_CHANGE_MANAGEDPARAMETER;
+        PData.ParameterName=ParameterName;
+        PData.ParameterValue=ParameterValue;
+
+        PluginMessageData Msg = new PluginMessageData(PData);
+        Msg.pinName = KK_PLUGIN_BASE_PIN_SYSTEMOPERATION;
+        Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_UID);
+        Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;
+        
+        BCE._executePinCommandDirect(PluginUUID, Msg);
+
+    
     }
 }

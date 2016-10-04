@@ -19,15 +19,15 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
-import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
 import kkdev.kksystem.base.interfaces.IPluginConnection;
 import kkdev.kksystem.base.interfaces.IControllerUtils;
+import kkdev.kksystem.base.interfaces.IBaseConnection;
 
 /**
  *
  * @author blinov_is
  */
-public class PluginExecute implements IPluginBaseConnection {
+public class PluginExecute implements IBaseConnection {
 
     //Pin path: FeatureID,SenderID,PIN,array of connectors
     HashMap<String, HashMap<String, HashMap<String, ArrayList<IPluginConnection>>>> Pin;

@@ -17,11 +17,11 @@ import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
 import kkdev.kksystem.kkcontroller.main.utils.RS232.RS232Scanner;
 import kkdev.kksystem.kkcontroller.main.utils.display.DisplayPageStorage;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
-import kkdev.kksystem.base.interfaces.IPluginBaseConnection;
 import kkdev.kksystem.base.interfaces.IControllerUtils;
 import kkdev.kksystem.base.interfaces.IDisplayUtils;
 import kkdev.kksystem.base.interfaces.IHWDevicesUtils;
 import kkdev.kksystem.base.interfaces.IPluginUtils;
+import kkdev.kksystem.base.interfaces.IBaseConnection;
 
 /**
  *
@@ -50,7 +50,7 @@ public class UtilsManager implements IControllerUtils {
         DisplayFunctions = new DisplayUtility();
     }
 
-    public void execUtilityPin(IPluginBaseConnection connector, PinDataUtils PData) {
+    public void execUtilityPin(IBaseConnection connector, PinDataUtils PData) {
         switch (PData.CommandType) {
             case UICONTEXT_GetUIContext:
                 break;
