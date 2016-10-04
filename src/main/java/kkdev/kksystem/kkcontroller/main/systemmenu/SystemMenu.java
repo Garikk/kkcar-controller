@@ -106,6 +106,7 @@ public abstract class SystemMenu {
         for (MKMenuItem MI:  mainConfiguration.systemMenuItems) {
             for (MKMenuItem MSI : MI.subItems) {
                 if (MSI.itemCommand.equals("$KK_PLUGINS_QUICKSETTINGS")) {
+                    MSI.itemCommand=KK_MENUMAKER_SPECIALCMD_SUBMENU;
                     MSI.subItems = createQuickSettingsMenu();
                     Ok=true;
                     break;
@@ -230,9 +231,21 @@ public abstract class SystemMenu {
                  MKMenuItem MM=new MKMenuItem();
                  MM.displayName=MP.DisplayName();
                  MM.itemCommand="CHANGE QPR " + PI.PluginUUID + " " + F.getName();
+                 subItems.add(MM);
              }
            }
-           Ret[i].subItems=(MKMenuItem[])subItems.toArray();
+           
+           Ret[i].subItems=new MKMenuItem[subItems.size()] ;
+           
+           int ii=0;
+           for (MKMenuItem MI:subItems)
+           {
+               if (MI!=null)
+               {
+                   Ret[i].subItems[ii]=MI;
+               }
+                ii++;
+           }
            i++;
        }
     
