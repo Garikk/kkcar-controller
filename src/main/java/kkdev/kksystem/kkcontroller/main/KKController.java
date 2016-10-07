@@ -11,7 +11,6 @@ import static java.lang.System.out;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM_UID;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
-import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.CheckUpdate;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
@@ -22,6 +21,7 @@ import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.showMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.initSystemMenu;
 import static java.lang.Thread.sleep;
 import kkdev.kksystem.kkcontroller.main.utils.HWUtility;
+import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
 
 /**
  *
@@ -30,27 +30,27 @@ import kkdev.kksystem.kkcontroller.main.utils.HWUtility;
 public class KKController {
 
     public static String CONTROLLER_VERSION = "0.9.test";
-       
+
     static PluginLoader PM;
     static boolean Shutdown = false;
-    static boolean ServiceMode=false;
+    static boolean ServiceMode = false;
     static WatchDogService WDS;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, InterruptedException {
-        for (String A:args)
-            if (A.equals("service"))
-            {
-                ServiceMode=true;
+        for (String A : args) {
+            if (A.equals("service")) {
+                ServiceMode = true;
                 System.in.close();
                 System.out.close();
             }
+        }
         //
         out.println("KK System INIT Begin");
         //
-        WDS=WatchDogService.getInstance();
+        WDS = WatchDogService.getInstance();
         WDS.StartWDS();
         WDS.ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_ACTIVE); //Default state
         //
@@ -64,7 +64,7 @@ public class KKController {
                     SystemOperations.systemStateChangedAlert();
                 }
             } else {
-               Shutdown = true;
+                Shutdown = true;
             }
         }
         //
@@ -87,15 +87,15 @@ public class KKController {
         //
         //Check updates, if "true" - have updates, watchdog make update and start app
         //
-        if (CheckUpdate(CONTROLLER_VERSION)) {
+        if (SystemUpdater.getInstance().checkSystemUpdateOnStart(CONTROLLER_VERSION)) {
             exit(0);
         }
         out.println("================");
         out.println("Base utils:");
-          out.println("==");
+        out.println("==");
         out.println("Collect RS-232 ports:");
         //
-        ((HWUtility)UtilsManager.getInstance().HWManager()).getRS232Scanner().MakeRS232DevList();
+        ((HWUtility) UtilsManager.getInstance().HWManager()).getRS232Scanner().MakeRS232DevList();
         //
         out.println("==");
         out.println("Make system menu");
@@ -103,29 +103,28 @@ public class KKController {
         out.println("================");
         out.println("Plugins:");
         //
-        PluginLoader.InitPlugins();
+        PluginLoader.initPlugins();
         //
         out.println("================");
         //
         initSystemMenu(PlEx);
-        SystemOperations.changeFeature(KK_BASE_FEATURES_SYSTEM_UID,SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
+        SystemOperations.changeFeature(KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
         //
         out.println("================");
         out.println("System start:");
-        PluginLoader.StartPlugins();
+        PluginLoader.startPlugins();
         showMenu();
         //
     }
-    private static void StopSystem() 
-    {
+
+    private static void StopSystem() {
         out.println("================");
         out.println("Stop Plugins");
-        PluginLoader.StopPlugins();
+        PluginLoader.stopPlugins();
         out.println("================");
         out.println("Stop WDS");
         WDS.StopWDS();
-         out.println("================");
+        out.println("================");
     }
-
 
 }

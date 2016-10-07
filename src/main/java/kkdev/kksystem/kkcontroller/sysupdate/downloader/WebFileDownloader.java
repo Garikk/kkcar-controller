@@ -14,42 +14,37 @@ import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.System.out;
 import java.util.Set;
-import java.util.logging.Level;
 import static java.util.logging.Level.SEVERE;
-import java.util.logging.Logger;
 import static java.util.logging.Logger.getLogger;
 import static kkdev.kksystem.base.constants.SystemConsts.*;
-import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
-import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.GetExternalConfigurationsInfo;
-import static kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater.GetPluginFilesInfo;
+import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_File_Data;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
 
 /**
  *
  * @author blinov_is
  */
-public abstract class Downloader {
+public class WebFileDownloader {
 
-    public static void DownloadFiles(String ConfigUID, Set<String> ReqPlugins) {
+    public void downloadPluginFiles(String ConfigUID, WM_File_Data[] BinFilesToDownload,WM_File_Data[] ConfFilesToDownload) {
         out.println("Download updates");
         //
         // Create updater folders
         //
         // Base Update folder
-        
+
         File TempPath = new java.io.File(KK_BASE_UPDATE_TEMP);
         //
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
-         //
+        //
         // Main backup folder
         //
         TempPath = new java.io.File(KK_BASE_BACKUP);
@@ -81,7 +76,7 @@ public abstract class Downloader {
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
-  
+
         //
         //
         // Emergency backup folder
@@ -98,7 +93,7 @@ public abstract class Downloader {
             TempPath.mkdir();
         }
         //
-         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_CONF);
+        TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_CONF);
         //
         if (!TempPath.exists()) {
             TempPath.mkdir();
@@ -111,23 +106,20 @@ public abstract class Downloader {
         }
         //
         //
-        WM_File_Data[] BinFilesToDownload = GetPluginFilesInfo(ReqPlugins);
-        WM_File_Data[] ConfFilesToDownload = GetExternalConfigurationsInfo(ConfigUID);
-
         if (BinFilesToDownload != null) {
             for (WM_File_Data F : BinFilesToDownload) {
-                DownloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
+                downloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
             }
         }
 
         if (ConfFilesToDownload != null) {
             for (WM_File_Data F : ConfFilesToDownload) {
-                DownloadFile(KK_BASE_UPDATE_TEMP_EXTCONF, F.url, F.name);
+                downloadFile(KK_BASE_UPDATE_TEMP_EXTCONF, F.url, F.name);
             }
         }
     }
 
-    private static void DownloadFile(String Dir, String URL, String TargetName) {
+    private void downloadFile(String Dir, String URL, String TargetName) {
 
         HttpClient client = create().build();
 
@@ -138,7 +130,7 @@ public abstract class Downloader {
             HttpEntity entity = response.getEntity();
 
             try (BufferedInputStream bis = new BufferedInputStream(entity.getContent())) {
-                String filePath = Dir+"/"+TargetName;
+                String filePath = Dir + "/" + TargetName;
                 bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
                 int inByte;
                 while ((inByte = bis.read()) != -1) {
@@ -147,26 +139,27 @@ public abstract class Downloader {
             }
             bos.close();
         } catch (FileNotFoundException ex) {
-            getLogger(Downloader.class.getName()).log(SEVERE, null, ex);
+            getLogger(WebFileDownloader.class.getName()).log(SEVERE, null, ex);
         } catch (IOException ex) {
-            getLogger(Downloader.class.getName()).log(SEVERE, null, ex);
+            getLogger(WebFileDownloader.class.getName()).log(SEVERE, null, ex);
         } finally {
             try {
                 bos.close();
             } catch (IOException ex) {
-                getLogger(Downloader.class.getName()).log(SEVERE, null, ex);
+                getLogger(WebFileDownloader.class.getName()).log(SEVERE, null, ex);
             }
         }
     }
 
-    public static void SaveConfigFiles(String GlobalConfUID,WM_Configuration_Data ConfFile) {
+    public void saveConfigurationFiles(String GlobalConfUID, WM_Configuration_Data ConfFile) {
         FileWriter fw;
-        String Prefix="";
-        if (ConfFile.configurationtype==1)
-            Prefix="kksys_";
-        
+        String Prefix = "";
+        if (ConfFile.configurationtype == 1) {
+            Prefix = "kksys_";
+        }
+
         try {
-            fw = new FileWriter(KK_BASE_UPDATE_TEMP_CONF + "/" +Prefix+ GlobalConfUID + "_"+ ConfFile.uid + ".json");
+            fw = new FileWriter(KK_BASE_UPDATE_TEMP_CONF + "/" + Prefix + GlobalConfUID + "_" + ConfFile.uid + ".json");
             fw.write(ConfFile.data);
             fw.flush();
             fw.close();

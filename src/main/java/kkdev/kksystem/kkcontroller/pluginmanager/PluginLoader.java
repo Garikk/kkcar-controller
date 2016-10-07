@@ -32,18 +32,18 @@ import kkdev.kksystem.base.interfaces.IPluginConnection;
  *
  * @author blinov_is
  */
-public abstract class PluginLoader {
+public final class PluginLoader {
 
     static HashMap<String, IPluginConnection> ActivePlugins;
     public static PluginExecute PlEx;
 
-    public static void InitPlugins() {
+    public static void initPlugins() {
         Set<String> ToLoad;
         //Prepare config
-        ToLoad = GetRequiredPlugins(mainConfiguration.features);
+        ToLoad = getRequiredPlugins(mainConfiguration.features);
         //Load plugins
         if (ActivePlugins==null)
-            ActivePlugins = ConnectPlugins(ToLoad,false);
+            ActivePlugins = connectPlugins(ToLoad,false);
         //
         if (ActivePlugins == null) {
             return;
@@ -58,23 +58,23 @@ public abstract class PluginLoader {
     {
         return ActivePlugins.get(UUID);
     }
-    public static void PreInitAllPlugins()
+    public static void preInitAllPlugins()
     {
-        ActivePlugins=ConnectPlugins(null,true);
+        ActivePlugins=connectPlugins(null,true);
     }
-    public static Set<String> GetActivePluginUIDs()
+    public static Set<String> getActivePluginUIDs()
     {
         return ActivePlugins.keySet();
     }
     
-    public static void StartPlugins() {
+    public static void startPlugins() {
         PlEx.StartPlugins();
     }
-     public static void StopPlugins() {
+     public static void stopPlugins() {
         PlEx.StopPlugins();
     }
 
-    public static Set<String> GetRequiredPlugins(FeatureConfiguration[] Features) {
+    public static Set<String> getRequiredPlugins(FeatureConfiguration[] Features) {
         Set<String> Ret;
         Ret = new HashSet<>();
         
@@ -94,7 +94,7 @@ public abstract class PluginLoader {
         return Ret;
     }
 
-    private static String GetPluginConnectorClass(File FileToCheck) {
+    private static String getPluginConnectorClass(File FileToCheck) {
         String Ret;
 
         JarFile jarFile = null;
@@ -123,7 +123,7 @@ public abstract class PluginLoader {
         return Ret;
     }
 
-    private static HashMap<String, IPluginConnection> ConnectPlugins(Set<String> Plugins, boolean ConnectAllPlugins) {
+    private static HashMap<String, IPluginConnection> connectPlugins(Set<String> Plugins, boolean ConnectAllPlugins) {
         //
         int Counter = 0;
         HashMap<String, IPluginConnection> Ret = new HashMap<>();
@@ -154,7 +154,7 @@ public abstract class PluginLoader {
                 //
                 String ConnectorClass;
                 IPluginConnection PluginConnection;
-                ConnectorClass = GetPluginConnectorClass(loadFile);
+                ConnectorClass = getPluginConnectorClass(loadFile);
                 //
                 URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
                 //
@@ -178,7 +178,7 @@ public abstract class PluginLoader {
         return Ret;
     }
 
-    public static List<PluginInfo> GetActivePluginsInfo()
+    public static List<PluginInfo> getActivePluginsInfo()
     {
         List<PluginInfo> Ret;
         Ret=new ArrayList<>();

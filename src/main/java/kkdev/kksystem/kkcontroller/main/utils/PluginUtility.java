@@ -21,14 +21,14 @@ public class PluginUtility implements IPluginUtils{
 
     @Override
     public List<PluginInfo> getPluginsInfo() {
-          return PluginLoader.GetActivePluginsInfo();
+          return PluginLoader.getActivePluginsInfo();
     }
 
     @Override
     public Map<PluginInfo, PluginConfiguration> getPluginsParameters() {
         HashMap Ret=new HashMap<>();
         
-        for (String PID :PluginLoader.GetActivePluginUIDs())
+        for (String PID :PluginLoader.getActivePluginUIDs())
         {
             PluginConfiguration PC=PluginLoader.getPluginByUUID(PID).getPluginSettings();
             if (PC!=null)

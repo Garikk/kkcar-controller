@@ -19,10 +19,8 @@ import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import static kkdev.kksystem.base.classes.plugins.weblink.WM_KKMasterConsts.*;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.SaveLastConfUID;
-import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetRequiredPlugins;
-import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PreInitAllPlugins;
-import static kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader.DownloadFiles;
-import static kkdev.kksystem.kkcontroller.sysupdate.downloader.Downloader.SaveConfigFiles;
+import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
+import kkdev.kksystem.kkcontroller.sysupdate.downloader.WebFileDownloader;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Data;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
 import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
@@ -34,20 +32,29 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
 import org.apache.http.message.BasicNameValuePair;
-import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.GetActivePluginUIDs;
 
 /**
  *
  * @author blinov_is
  */
-public abstract class SystemUpdater {
+public final class SystemUpdater {
 
     final static String ___TEST_KKCAR_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
     final static String WEBMASTER_URL = "http://www.dingo-cloud.tk/";
     final static String WEBMASTER_URL_SERVICE = "weblink";
     final static int WEBMASTER_CLIENT_VERSION = 1;
 
-    public static boolean CheckUpdate(String KKControllerVersion) {
+    private static SystemUpdater instance;
+    
+    public static SystemUpdater getInstance()
+    {
+        if (instance==null)
+            instance=new SystemUpdater();
+        
+        return instance;
+    }
+    
+    public boolean checkSystemUpdateOnStart(String KKControllerVersion) {
         //Skip by now
        if (true) {
             return false;
@@ -57,14 +64,15 @@ public abstract class SystemUpdater {
 
         ControllerConfiguration UpdatedConfig = null;
         WM_Answer_Configuration_Data NewConfigurations = null;
-
+        WebFileDownloader ConfigFileDownloader=new WebFileDownloader();
+        
         //Check configuration
-        WM_Answer_Configuration_Info[] ConfInfo = GetConfigInfoFromWeb();
+        WM_Answer_Configuration_Info[] ConfInfo = getConfigInfoFromWeb();
         //
         if (ConfInfo[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo[0].confstamp))) {
             out.println("Loading new Config");
             NeedReload = true;
-            NewConfigurations = GetUpdatedConfigurations();
+            NewConfigurations = getUpdatedConfigurations();
         } else {
             UpdatedConfig = ControllerSettingsManager.mainConfiguration;
         }
@@ -80,7 +88,7 @@ public abstract class SystemUpdater {
                 }
             }
             for (WM_Configuration_Data DT : NewConfigurations.configurations) {
-                SaveConfigFiles(MainConfUID, DT);
+                ConfigFileDownloader.saveConfigurationFiles(MainConfUID, DT);
             }
             //
             SaveLastConfUID(MainConfUID);
@@ -92,15 +100,15 @@ public abstract class SystemUpdater {
         //
         //Pre init
         //
-        PreInitAllPlugins();
-        //
+        PluginLoader.preInitAllPlugins();
+        //InitAllPlugins
         //Get Available plugins list
         //
-        Set<String> AvailPlugins = GetActivePluginUIDs();
+        Set<String> AvailPlugins = PluginLoader.getActivePluginUIDs();
         //
         // Get Required plugins
         //
-        Set<String> ReqPlugins = GetRequiredPlugins(UpdatedConfig.features);
+        Set<String> ReqPlugins = PluginLoader.getRequiredPlugins(UpdatedConfig.features);
         //
         // Remove existed plugins from requierments list
         //
@@ -108,14 +116,17 @@ public abstract class SystemUpdater {
         AvailPlugins.stream().filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
             ReqPlugins.remove(RP);
         });
-
-        DownloadFiles(UpdatedConfig.configurationUID, ReqPlugins);
+        
+        WM_File_Data[] BinFilesToDownload = getPluginFilesInfo(ReqPlugins);
+        WM_File_Data[] ConfFilesToDownload = getExternalConfigurationsInfo(UpdatedConfig.configurationUID);
+  
+        ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload,ConfFilesToDownload);
 
         return NeedReload;
 
     }
 
-    private static List<NameValuePair> getCheckServerInfo() {
+    private List<NameValuePair> getCheckServerInfo() {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_CHECK));
@@ -127,7 +138,7 @@ public abstract class SystemUpdater {
         return nameValuePairs;
     }
 
-    private static List<NameValuePair> GetConfigurationInfoRequest() {
+    private List<NameValuePair> getConfigurationInfoRequest() {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_GET_MYCONF_INFO));
@@ -137,7 +148,7 @@ public abstract class SystemUpdater {
         return nameValuePairs;
     }
 
-    private static List<NameValuePair> GetConfigurationDataRequest() {
+    private List<NameValuePair> getConfigurationDataRequest() {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_GET_MYCONF_DATA));
@@ -147,7 +158,7 @@ public abstract class SystemUpdater {
         return nameValuePairs;
     }
 
-    private static List<NameValuePair> GetFilesInfoRequestBin(String ReqFiles) {
+    private List<NameValuePair> getFilesInfoRequestBin(String ReqFiles) {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_GET_FILES_INFO_BIN));
@@ -159,7 +170,7 @@ public abstract class SystemUpdater {
         return nameValuePairs;
     }
 
-    private static List<NameValuePair> GetFilesInfoRequestExtConf(String MainConf) {
+    private List<NameValuePair> getFilesInfoRequestExtConf(String MainConf) {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF));
@@ -171,7 +182,7 @@ public abstract class SystemUpdater {
         return nameValuePairs;
     }
 
-    public static WM_Answer_Configuration_Info[] GetConfigInfoFromWeb() {
+    public WM_Answer_Configuration_Info[] getConfigInfoFromWeb() {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
@@ -180,7 +191,7 @@ public abstract class SystemUpdater {
             HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
-            post.setEntity(new UrlEncodedFormEntity(GetConfigurationInfoRequest()));
+            post.setEntity(new UrlEncodedFormEntity(getConfigurationInfoRequest()));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -198,7 +209,7 @@ public abstract class SystemUpdater {
         }
     }
 
-    public static WM_Answer_Configuration_Data GetUpdatedConfigurations() {
+    public WM_Answer_Configuration_Data getUpdatedConfigurations() {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
@@ -207,7 +218,7 @@ public abstract class SystemUpdater {
             HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
-            post.setEntity(new UrlEncodedFormEntity(GetConfigurationDataRequest()));
+            post.setEntity(new UrlEncodedFormEntity(getConfigurationDataRequest()));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -229,7 +240,7 @@ public abstract class SystemUpdater {
         return null;
     }
 
-    public static WM_File_Data[] GetPluginFilesInfo(Set<String> Plugins) {
+    public WM_File_Data[] getPluginFilesInfo(Set<String> Plugins) {
         if (Plugins.isEmpty()) {
             return null;
         }
@@ -242,7 +253,7 @@ public abstract class SystemUpdater {
             HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
-            post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequestBin(join(",", Plugins))));
+            post.setEntity(new UrlEncodedFormEntity(getFilesInfoRequestBin(join(",", Plugins))));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -263,7 +274,7 @@ public abstract class SystemUpdater {
         return null;
     }
 
-    public static WM_File_Data[] GetExternalConfigurationsInfo(String MainConf) {
+    public WM_File_Data[] getExternalConfigurationsInfo(String MainConf) {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
@@ -272,7 +283,7 @@ public abstract class SystemUpdater {
             HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
-            post.setEntity(new UrlEncodedFormEntity(GetFilesInfoRequestExtConf(MainConf)));
+            post.setEntity(new UrlEncodedFormEntity(getFilesInfoRequestExtConf(MainConf)));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));

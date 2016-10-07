@@ -27,7 +27,7 @@ import kkdev.kksystem.base.interfaces.IBaseConnection;
  *
  * @author blinov_is
  */
-public class PluginExecute implements IBaseConnection {
+public final class PluginExecute implements IBaseConnection {
 
     //Pin path: FeatureID,SenderID,PIN,array of connectors
     HashMap<String, HashMap<String, HashMap<String, ArrayList<IPluginConnection>>>> Pin;
