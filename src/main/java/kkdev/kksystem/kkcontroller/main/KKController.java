@@ -34,7 +34,6 @@ public class KKController {
     static PluginLoader PM;
     static boolean Shutdown = false;
     static boolean ServiceMode = false;
-    static WatchDogService WDS;
 
     /**
      * @param args the command line arguments
@@ -50,17 +49,16 @@ public class KKController {
         //
         out.println("KK System INIT Begin");
         //
-        WDS = WatchDogService.getInstance();
-        WDS.StartWDS();
-        WDS.ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_ACTIVE); //Default state
+        WatchDogService.getInstance().StartWDS();
+        WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_ACTIVE); //Default state
         //
         InitSystem();
         //
         while (!Shutdown) {
-            if (WDS.getCurrentSystemState().CurrentState == WDSystemState.WDStates.WD_SysState_ACTIVE) {
+            if (WatchDogService.getInstance().getCurrentSystemState().CurrentState == WDSystemState.WDStates.WD_SysState_ACTIVE) {
                 sleep(1000);
-                if (WDS.StateChangeAlert) {
-                    WDS.StateChangeAlert = false;
+                if (WatchDogService.getInstance().StateChangeAlert) {
+                    WatchDogService.getInstance().StateChangeAlert = false;
                     SystemOperations.systemStateChangedAlert();
                 }
             } else {
@@ -123,7 +121,7 @@ public class KKController {
         PluginLoader.stopPlugins();
         out.println("================");
         out.println("Stop WDS");
-        WDS.StopWDS();
+        WatchDogService.getInstance().StopWDS();
         out.println("================");
     }
 

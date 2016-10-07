@@ -21,10 +21,10 @@ import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.SaveLastConfUID;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.WebFileDownloader;
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Data;
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Answer_Configuration_Info;
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_Configuration_Data;
-import kkdev.kksystem.kkcontroller.sysupdate.webmasterconnection.WM_File_Data;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Data;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Info;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -141,7 +141,7 @@ public final class SystemUpdater {
     private List<NameValuePair> getConfigurationInfoRequest() {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
-                WEBMASTER_REQUEST_GET_MYCONF_INFO));
+                String.valueOf(WEBMASTER_REQUEST_GET_MYCONF_INFO)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
 
@@ -151,7 +151,7 @@ public final class SystemUpdater {
     private List<NameValuePair> getConfigurationDataRequest() {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
-                WEBMASTER_REQUEST_GET_MYCONF_DATA));
+                String.valueOf(WEBMASTER_REQUEST_GET_MYCONF_DATA)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
 
@@ -161,7 +161,7 @@ public final class SystemUpdater {
     private List<NameValuePair> getFilesInfoRequestBin(String ReqFiles) {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
-                WEBMASTER_REQUEST_GET_FILES_INFO_BIN));
+                String.valueOf(WEBMASTER_REQUEST_GET_FILES_INFO_BIN)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_REQFILESBIN,
@@ -173,7 +173,7 @@ public final class SystemUpdater {
     private List<NameValuePair> getFilesInfoRequestExtConf(String MainConf) {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
-                WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF));
+                String.valueOf(WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_CONFUUID,
