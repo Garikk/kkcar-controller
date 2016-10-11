@@ -61,12 +61,20 @@ public final class SystemUpdater {
         }
 
         boolean NeedReload = false;
+    out.println("Check WebLink State");
+    out.println("Available SystemLevels:");
+    out.println("Level: __ Base: __ Controller: __");
+    out.println("Using: ___");
+  
 
+    
+   
         ControllerConfiguration UpdatedConfig = null;
         WM_Answer_Configuration_Data NewConfigurations = null;
         WebFileDownloader ConfigFileDownloader=new WebFileDownloader();
         
         //Check configuration
+         out.println("Check configuration changes");   
         WM_Answer_Configuration_Info[] ConfInfo = getConfigInfoFromWeb();
         //
         if (ConfInfo[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo[0].confstamp))) {
@@ -99,7 +107,7 @@ public final class SystemUpdater {
         //Check plugins
         //
         //Pre init
-        //
+           out.println("Check plugin changes");   
         PluginLoader.preInitAllPlugins();
         //InitAllPlugins
         //Get Available plugins list
