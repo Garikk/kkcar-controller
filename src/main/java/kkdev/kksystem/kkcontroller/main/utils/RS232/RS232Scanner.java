@@ -52,17 +52,13 @@ public class RS232Scanner {
                     SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1,
                     SerialPort.PARITY_NONE);
-            serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN
-                    | SerialPort.FLOWCONTROL_RTSCTS_OUT);
-            serialPort.writeString("ATI");
-            serialPort.writeString("\r\n");
-            //serialPort.writeString("\r\n");
+            serialPort.writeString("ATI\r\n");
 
             int i = 0;
             boolean Ok = false;
             while (i < 5 && Ok == false) {
                 String buffer = serialPort.readString();
-                //System.out.println("[UTIL] ANS " + buffer);
+                System.out.println("[UTIL] ANS " + buffer);
                 if (buffer != null) {
                     if (IsModem(buffer)) {
                         Ret = RS232DevType.Dev3GModem;
