@@ -23,6 +23,8 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.WebFileDownloader;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Info;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Data;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_SystemState;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data;
 import org.apache.http.HttpResponse;
@@ -45,36 +47,34 @@ public final class SystemUpdater {
     final static int WEBMASTER_CLIENT_VERSION = 1;
 
     private static SystemUpdater instance;
-    
-    public static SystemUpdater getInstance()
-    {
-        if (instance==null)
-            instance=new SystemUpdater();
-        
+
+    public static SystemUpdater getInstance() {
+        if (instance == null) {
+            instance = new SystemUpdater();
+        }
+
         return instance;
     }
-    
+
     public boolean checkSystemUpdateOnStart(String KKControllerVersion) {
         //Skip by now
-       if (true) {
+        if (true) {
             return false;
         }
 
         boolean NeedReload = false;
-    out.println("Check WebLink State");
-    out.println("Available SystemLevels:");
-    out.println("Level: __ Base: __ Controller: __");
-    out.println("Using: ___");
-  
+        out.println("Check WebLink State");
+        out.println("Available SystemLevels:");
+        out.println("Level: __ Base: __ Controller: __");
+        out.println("Using: ___");
 
-    
-   
+        //Init check
         ControllerConfiguration UpdatedConfig = null;
         WM_Answer_Configuration_Data NewConfigurations = null;
-        WebFileDownloader ConfigFileDownloader=new WebFileDownloader();
-        
+        WebFileDownloader ConfigFileDownloader = new WebFileDownloader();
+
         //Check configuration
-         out.println("Check configuration changes");   
+        out.println("Check configuration changes");
         WM_Answer_Configuration_Info[] ConfInfo = getConfigInfoFromWeb();
         //
         if (ConfInfo[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo[0].confstamp))) {
@@ -107,7 +107,7 @@ public final class SystemUpdater {
         //Check plugins
         //
         //Pre init
-           out.println("Check plugin changes");   
+        out.println("Check plugin changes");
         PluginLoader.preInitAllPlugins();
         //InitAllPlugins
         //Get Available plugins list
@@ -124,11 +124,11 @@ public final class SystemUpdater {
         AvailPlugins.stream().filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
             ReqPlugins.remove(RP);
         });
-        
+
         WM_File_Data[] BinFilesToDownload = getPluginFilesInfo(ReqPlugins);
         WM_File_Data[] ConfFilesToDownload = getExternalConfigurationsInfo(UpdatedConfig.configurationUID);
-  
-        ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload,ConfFilesToDownload);
+
+        ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
 
         return NeedReload;
 
@@ -188,6 +188,61 @@ public final class SystemUpdater {
                 MainConf));
 
         return nameValuePairs;
+    }
+
+    private WM_Answer_Data doRequest(WM_Answer_Data TargetType)
+    {
+        ControllerConfiguration Ret = null;
+        WM_Answer Ans;
+        Gson gson = new Gson();
+
+        try {
+            HttpClient client = create().build();
+            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
+
+            post.setEntity(new UrlEncodedFormEntity(getConfigurationInfoRequest()));
+
+            HttpResponse response = client.execute(post);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            Ans = gson.fromJson(rd, WM_Answer.class);
+
+            // if (Ans!=null || Ans[0].answerState == 0) {
+            return gson.fromJson(Ans.jsonData, TargetType.class);
+            //  } else {
+            //       return null;
+            //   }
+
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    
+    
+      public WM_Answer_SystemState[] getSystemStateInfo() {
+        ControllerConfiguration Ret = null;
+        WM_Answer Ans;
+        Gson gson = new Gson();
+
+        try {
+            HttpClient client = create().build();
+            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
+
+            post.setEntity(new UrlEncodedFormEntity(getConfigurationInfoRequest()));
+
+            HttpResponse response = client.execute(post);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            Ans = gson.fromJson(rd, WM_Answer.class);
+
+            // if (Ans!=null || Ans[0].answerState == 0) {
+            return gson.fromJson(Ans.jsonData, WM_Answer_Configuration_Info[].class
+            );
+            //  } else {
+            //       return null;
+            //   }
+
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public WM_Answer_Configuration_Info[] getConfigInfoFromWeb() {
