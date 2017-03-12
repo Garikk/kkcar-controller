@@ -59,9 +59,9 @@ public final class SystemUpdater {
 
     public boolean checkSystemUpdateOnStart(String KKControllerVersion) {
         //Skip by now
-        if (true) {
-            return false;
-        }
+       // if (true) {
+       //     return false;
+        //}
 
         boolean NeedReload = false;
         out.println("Check WebLink State");
