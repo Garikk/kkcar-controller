@@ -23,6 +23,7 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.WebFileDownloader;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Info;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Info_Pack;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_SystemState;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
@@ -75,12 +76,12 @@ public final class SystemUpdater {
 
         //Check configuration
         out.println("Check configuration changes");
-        WM_Answer_Configuration_Info[] ConfInfo = getConfigInfoFromWeb();
+        WM_Answer_Configuration_Info_Pack ConfInfo = (WM_Answer_Configuration_Info_Pack)doRequest(getConfigurationInfoRequest(), WM_Answer_Configuration_Info_Pack.class);
         //
-        if (ConfInfo[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo[0].confstamp))) {
+        if (ConfInfo.Pack[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo.Pack[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo.Pack[0].confstamp))) {
             out.println("Loading new Config");
             NeedReload = true;
-            NewConfigurations = getUpdatedConfigurations();
+            NewConfigurations =(WM_Answer_Configuration_Data)doRequest(getConfigurationDataRequest(),WM_Answer_Configuration_Data.class);// getUpdatedConfigurations();
         } else {
             UpdatedConfig = ControllerSettingsManager.mainConfiguration;
         }
@@ -125,10 +126,10 @@ public final class SystemUpdater {
             ReqPlugins.remove(RP);
         });
 
-        WM_File_Data[] BinFilesToDownload = getPluginFilesInfo(ReqPlugins);
-        WM_File_Data[] ConfFilesToDownload = getExternalConfigurationsInfo(UpdatedConfig.configurationUID);
+     //   WM_File_Data[] BinFilesToDownload = getPluginFilesInfo(ReqPlugins);
+     //   WM_File_Data[] ConfFilesToDownload = getExternalConfigurationsInfo(UpdatedConfig.configurationUID);
 
-        ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
+     //   ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
 
         return NeedReload;
 
@@ -190,7 +191,7 @@ public final class SystemUpdater {
         return nameValuePairs;
     }
 
-    private WM_Answer_Data doRequest(WM_Answer_Data TargetType)
+    private WM_Answer_Data doRequest(List<NameValuePair> Params,Class TargetType)
     {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
@@ -200,14 +201,14 @@ public final class SystemUpdater {
             HttpClient client = create().build();
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
 
-            post.setEntity(new UrlEncodedFormEntity(getConfigurationInfoRequest()));
+            post.setEntity(new UrlEncodedFormEntity(Params));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             Ans = gson.fromJson(rd, WM_Answer.class);
 
             // if (Ans!=null || Ans[0].answerState == 0) {
-            return gson.fromJson(Ans.jsonData, TargetType.class);
+            return (WM_Answer_Data)gson.fromJson(Ans.jsonData, TargetType);
             //  } else {
             //       return null;
             //   }
@@ -217,7 +218,11 @@ public final class SystemUpdater {
         }
     }
     
-    
+}
+
+
+
+    /*
       public WM_Answer_SystemState[] getSystemStateInfo() {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
@@ -363,5 +368,4 @@ public final class SystemUpdater {
         }
         return null;
     }
-
-}
+*/
