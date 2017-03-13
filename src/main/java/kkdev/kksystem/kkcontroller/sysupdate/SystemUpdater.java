@@ -106,6 +106,7 @@ public final class SystemUpdater {
                 if (DT.configurationtype == 1) {
                     Gson gson = new Gson();
                     UpdatedConfig = gson.fromJson(DT.data, ControllerConfiguration.class);
+                    out.println("KO: "+ DT.data);
                     MainConfUID = UpdatedConfig.configurationUID;
                 }
             }
@@ -218,18 +219,18 @@ public final class SystemUpdater {
                 client = create().build();
             }
 
-            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE + ServiceLink);
+            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE +"/"+ ServiceLink);
 
             post.setEntity(new UrlEncodedFormEntity(Params));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            
             Ans = gson.fromJson(rd, WM_Answer.class);
-
-            // if (Ans!=null || Ans[0].answerState == 0) {
-            return (WM_Answer_Data)gson.fromJson(Ans.jsonData, TargetType);
-            //  } else {
-            //       return nul
+           //  if (Ans!=null || Ans[0].answerState == 0) {
+                return (WM_Answer_Data)gson.fromJson(Ans.jsonData, TargetType);
+           //   } else {
+           //        return null
             //   }
 
         } catch (IOException e) {
