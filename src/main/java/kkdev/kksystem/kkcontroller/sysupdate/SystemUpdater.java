@@ -28,6 +28,7 @@ import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_SystemState;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data_Pack;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -92,7 +93,7 @@ public final class SystemUpdater {
         WM_Answer_Configuration_Info_Pack ConfInfo = (WM_Answer_Configuration_Info_Pack)doRequest(WEBMASTER_REQUEST_GET_MYCONF_INFO, getConfigurationInfoRequest(), WM_Answer_Configuration_Info_Pack.class);
         //
         if (ConfInfo.Pack[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo.Pack[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo.Pack[0].confstamp))) {
-            out.println("Loading new Config");
+            out.println("Loading updated configurations");
             NeedReload = true;
             NewConfigurations =(WM_Answer_Configuration_Data)doRequest(WEBMASTER_REQUEST_GET_MYCONF_DATA,getConfigurationDataRequest(),WM_Answer_Configuration_Data.class);// getUpdatedConfigurations();
         } else {
@@ -106,11 +107,11 @@ public final class SystemUpdater {
                 if (DT.configurationtype == 1) {
                     Gson gson = new Gson();
                     UpdatedConfig = gson.fromJson(DT.data, ControllerConfiguration.class);
-                    out.println("KO: "+ DT.data);
                     MainConfUID = UpdatedConfig.configurationUID;
                 }
             }
             for (WM_Configuration_Data DT : NewConfigurations.configurations) {
+                out.println("Store new configuration for WD: T:["+DT.configurationtype+"] U:[" + DT.uid +"]" );
                 ConfigFileDownloader.saveConfigurationFiles(MainConfUID, DT);
             }
             //
@@ -140,10 +141,11 @@ public final class SystemUpdater {
             ReqPlugins.remove(RP);
         });
 
-     //   WM_File_Data[] BinFilesToDownload = getPluginFilesInfo(ReqPlugins);
-     //   WM_File_Data[] ConfFilesToDownload = getExternalConfigurationsInfo(UpdatedConfig.configurationUID);
+        WM_File_Data_Pack BinFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_BIN, getFilesInfoRequestBin(ReqPlugins), WM_File_Data_Pack.class);
+        WM_File_Data_Pack ConfFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF, getFilesInfoRequestExtConf(UpdatedConfig.configurationUID), WM_File_Data_Pack.class);
 
-     //   ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
+
+        ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
 
         return NeedReload;
 
@@ -180,14 +182,14 @@ public final class SystemUpdater {
         return nameValuePairs;
     }
 
-    private List<NameValuePair> getFilesInfoRequestBin(String ReqFiles) {
+    private List<NameValuePair> getFilesInfoRequestBin(Set<String> ReqFiles) {
         List<NameValuePair> nameValuePairs = new ArrayList<>(1);
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 String.valueOf(WEBMASTER_REQUEST_GET_FILES_INFO_BIN)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_REQFILESBIN,
-                ReqFiles));
+                ReqFiles.spliterator().toString()));
 
         return nameValuePairs;
     }

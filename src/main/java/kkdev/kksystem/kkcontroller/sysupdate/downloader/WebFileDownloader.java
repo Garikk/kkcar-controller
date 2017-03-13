@@ -20,6 +20,7 @@ import static kkdev.kksystem.base.constants.SystemConsts.*;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data;
+import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data_Pack;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -32,8 +33,8 @@ import static org.apache.http.impl.client.HttpClientBuilder.create;
  */
 public class WebFileDownloader {
 
-    public void downloadPluginFiles(String ConfigUID, WM_File_Data[] BinFilesToDownload,WM_File_Data[] ConfFilesToDownload) {
-        out.println("Download updates");
+    public WebFileDownloader()
+    {
         //
         // Create updater folders
         //
@@ -104,16 +105,21 @@ public class WebFileDownloader {
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
+    }
+    
+    public void downloadPluginFiles(String ConfigUID, WM_File_Data_Pack BinFilesToDownload,WM_File_Data_Pack ConfFilesToDownload) {
+        out.println("Download updates");
+      
         //
         //
         if (BinFilesToDownload != null) {
-            for (WM_File_Data F : BinFilesToDownload) {
+            for (WM_File_Data F : BinFilesToDownload.Pack) {
                 downloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
             }
         }
 
         if (ConfFilesToDownload != null) {
-            for (WM_File_Data F : ConfFilesToDownload) {
+            for (WM_File_Data F : ConfFilesToDownload.Pack) {
                 downloadFile(KK_BASE_UPDATE_TEMP_EXTCONF, F.url, F.name);
             }
         }
@@ -164,7 +170,7 @@ public class WebFileDownloader {
             fw.flush();
             fw.close();
         } catch (IOException ex) {
-
+  getLogger(WebFileDownloader.class.getName()).log(SEVERE, null, ex);
         }
     }
 }
