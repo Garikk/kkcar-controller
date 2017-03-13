@@ -28,12 +28,14 @@ import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_SystemState;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
 /**
@@ -48,6 +50,9 @@ public final class SystemUpdater {
     final static int WEBMASTER_CLIENT_VERSION = 1;
 
     private static SystemUpdater instance;
+    private String proxyHost;
+    private int proxyPort;
+    
 
     public static SystemUpdater getInstance() {
         if (instance == null) {
@@ -56,7 +61,15 @@ public final class SystemUpdater {
 
         return instance;
     }
+    public void setProxyHost(String Proxy)
+    {
+        proxyHost=Proxy;
+    }
 
+    public void setProxyPort(int Port)
+    {
+        proxyPort=Port;
+    }
     public boolean checkSystemUpdateOnStart(String KKControllerVersion) {
         //Skip by now
        // if (true) {
@@ -65,9 +78,9 @@ public final class SystemUpdater {
 
         boolean NeedReload = false;
         out.println("Check WebLink State");
-        out.println("Available SystemLevels:");
+        out.println("Available System versions:");
         out.println("Level: __ Base: __ Controller: __");
-        out.println("Using: ___");
+        out.println("Using: __");
 
         //Init check
         ControllerConfiguration UpdatedConfig = null;
@@ -76,12 +89,12 @@ public final class SystemUpdater {
 
         //Check configuration
         out.println("Check configuration changes");
-        WM_Answer_Configuration_Info_Pack ConfInfo = (WM_Answer_Configuration_Info_Pack)doRequest(getConfigurationInfoRequest(), WM_Answer_Configuration_Info_Pack.class);
+        WM_Answer_Configuration_Info_Pack ConfInfo = (WM_Answer_Configuration_Info_Pack)doRequest(WEBMASTER_REQUEST_GET_MYCONF_INFO, getConfigurationInfoRequest(), WM_Answer_Configuration_Info_Pack.class);
         //
         if (ConfInfo.Pack[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo.Pack[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo.Pack[0].confstamp))) {
             out.println("Loading new Config");
             NeedReload = true;
-            NewConfigurations =(WM_Answer_Configuration_Data)doRequest(getConfigurationDataRequest(),WM_Answer_Configuration_Data.class);// getUpdatedConfigurations();
+            NewConfigurations =(WM_Answer_Configuration_Data)doRequest(WEBMASTER_REQUEST_GET_MYCONF_DATA,getConfigurationDataRequest(),WM_Answer_Configuration_Data.class);// getUpdatedConfigurations();
         } else {
             UpdatedConfig = ControllerSettingsManager.mainConfiguration;
         }
@@ -163,7 +176,6 @@ public final class SystemUpdater {
                 String.valueOf(WEBMASTER_REQUEST_GET_MYCONF_DATA)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
                 ___TEST_KKCAR_UUID_));
-
         return nameValuePairs;
     }
 
@@ -191,15 +203,22 @@ public final class SystemUpdater {
         return nameValuePairs;
     }
 
-    private WM_Answer_Data doRequest(List<NameValuePair> Params,Class TargetType)
+    private WM_Answer_Data doRequest(String ServiceLink,List<NameValuePair> Params,Class TargetType)
     {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
 
         try {
-            HttpClient client = create().build();
-            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE);
+            HttpClient client;
+            if (proxyHost != null) {
+                HttpHost proxy = new HttpHost(proxyHost, proxyPort, "http"); //only http by now, TODO use ssl
+                client = HttpClients.custom().setProxy(proxy).build();//create().build();
+            } else {
+                client = create().build();
+            }
+
+            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE + ServiceLink);
 
             post.setEntity(new UrlEncodedFormEntity(Params));
 
@@ -210,10 +229,11 @@ public final class SystemUpdater {
             // if (Ans!=null || Ans[0].answerState == 0) {
             return (WM_Answer_Data)gson.fromJson(Ans.jsonData, TargetType);
             //  } else {
-            //       return null;
+            //       return nul
             //   }
 
         } catch (IOException e) {
+            System.out.println(e.fillInStackTrace());
             return null;
         }
     }
