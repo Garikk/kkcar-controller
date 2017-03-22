@@ -29,6 +29,7 @@ import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_SystemState;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data_Pack;
+import kkdev.kksystem.base.constants.SystemConsts;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -80,8 +81,7 @@ public final class SystemUpdater {
         boolean NeedReload = false;
         out.println("Check WebLink State");
         out.println("Available System versions:");
-        out.println("Level: __ Base: __ Controller: __");
-        out.println("Using: __");
+        out.println("Base: "+SystemConsts.KK_BASE_VERSION+" Controller: "+KKControllerVersion);
 
         //Init check
         ControllerConfiguration UpdatedConfig = null;
@@ -133,6 +133,7 @@ public final class SystemUpdater {
         // Get Required plugins
         //
         Set<String> ReqPlugins = PluginLoader.getRequiredPlugins(UpdatedConfig.features);
+
         //
         // Remove existed plugins from requierments list
         //
@@ -141,11 +142,13 @@ public final class SystemUpdater {
             ReqPlugins.remove(RP);
         });
 
-        WM_File_Data_Pack BinFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_BIN, getFilesInfoRequestBin(ReqPlugins), WM_File_Data_Pack.class);
-        WM_File_Data_Pack ConfFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF, getFilesInfoRequestExtConf(UpdatedConfig.configurationUID), WM_File_Data_Pack.class);
+        if (ReqPlugins.size()>0)
+        {
+            WM_File_Data_Pack BinFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_BIN, getFilesInfoRequestBin(ReqPlugins), WM_File_Data_Pack.class);
+            WM_File_Data_Pack ConfFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF, getFilesInfoRequestExtConf(UpdatedConfig.configurationUID), WM_File_Data_Pack.class);
 
-
-        ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
+            ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
+        }
 
         return NeedReload;
 
@@ -222,7 +225,7 @@ public final class SystemUpdater {
             }
 
             HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE +"/"+ ServiceLink);
-
+            
             post.setEntity(new UrlEncodedFormEntity(Params));
 
             HttpResponse response = client.execute(post);
@@ -230,7 +233,10 @@ public final class SystemUpdater {
             
             Ans = gson.fromJson(rd, WM_Answer.class);
            //  if (Ans!=null || Ans[0].answerState == 0) {
+            out.println(Ans.jsonData);
+      
                 return (WM_Answer_Data)gson.fromJson(Ans.jsonData, TargetType);
+
            //   } else {
            //        return null
             //   }

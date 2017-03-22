@@ -29,7 +29,7 @@ import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
  */
 public class KKController {
 
-    public static String CONTROLLER_VERSION = "0.9.test";
+    public static String CONTROLLER_VERSION = "1.0.0.20170322";
 
     static PluginLoader PM;
     static boolean Shutdown = false;
