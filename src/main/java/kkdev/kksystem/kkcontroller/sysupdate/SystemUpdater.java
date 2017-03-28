@@ -46,7 +46,7 @@ import org.apache.http.message.BasicNameValuePair;
  */
 public final class SystemUpdater {
 
-    final static String ___TEST_KKCAR_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
+    final static String ___TEST_kkiot_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
     final static String WEBMASTER_URL = "http://www.dingo-cloud.tk/";
     final static String WEBMASTER_URL_SERVICE = "weblink";
     final static int WEBMASTER_CLIENT_VERSION = 1;
@@ -159,7 +159,7 @@ public final class SystemUpdater {
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 WEBMASTER_REQUEST_CHECK));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
-                ___TEST_KKCAR_UUID_));
+                ___TEST_kkiot_UUID_));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_CLIENTINFO,
                 String.valueOf(WEBMASTER_CLIENT_VERSION)));
 
@@ -171,7 +171,7 @@ public final class SystemUpdater {
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 String.valueOf(WEBMASTER_REQUEST_GET_MYCONF_INFO)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
-                ___TEST_KKCAR_UUID_));
+                ___TEST_kkiot_UUID_));
 
         return nameValuePairs;
     }
@@ -181,7 +181,7 @@ public final class SystemUpdater {
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 String.valueOf(WEBMASTER_REQUEST_GET_MYCONF_DATA)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
-                ___TEST_KKCAR_UUID_));
+                ___TEST_kkiot_UUID_));
         return nameValuePairs;
     }
 
@@ -190,7 +190,7 @@ public final class SystemUpdater {
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 String.valueOf(WEBMASTER_REQUEST_GET_FILES_INFO_BIN)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
-                ___TEST_KKCAR_UUID_));
+                ___TEST_kkiot_UUID_));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_REQFILESBIN,
                 ReqFiles.spliterator().toString()));
 
@@ -202,7 +202,7 @@ public final class SystemUpdater {
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_ACT,
                 String.valueOf(WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF)));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_MYUUID,
-                ___TEST_KKCAR_UUID_));
+                ___TEST_kkiot_UUID_));
         nameValuePairs.add(new BasicNameValuePair(WEBMASTER_REQUEST_CONFUUID,
                 MainConf));
 
