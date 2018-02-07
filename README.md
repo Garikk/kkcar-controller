@@ -1,4 +1,4 @@
-# KKCar
+# kkIOT
 
 
-https://github.com/Garikk/kkdev-carsystem
+https://github.com/Garikk/kkdev-iotsystem

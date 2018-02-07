@@ -59,21 +59,21 @@
                             <outputDirectory>${basedir}/target/lib</outputDirectory>
                             <resources>          
                                 <resource>
-                                    <directory>../kkcar-plugin-datadisplay/target/lib</directory>
+                                    <directory>../kkiot-plugin-datadisplay/target/lib</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-lcddisplay/target/lib</directory>
+                                    <directory>../kkiot-plugin-lcddisplay/target/lib</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-odb2/target/lib</directory>
+                                    <directory>../kkiot-plugin-odb2/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
@@ -81,21 +81,21 @@
                                    
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-controls/target/lib</directory>
+                                    <directory>../kkiot-plugin-controls/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-extconnector/target/lib</directory>
+                                    <directory>../kkiot-plugin-extconnector/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-bluetooth/target/lib</directory>
+                                    <directory>../kkiot-plugin-bluetooth/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
@@ -109,28 +109,28 @@
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-rscomm/target/lib</directory>
+                                    <directory>../kkiot-plugin-rscomm/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-tts/target/lib</directory>
+                                    <directory>../kkiot-plugin-tts/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-geo/target/lib</directory>
+                                    <directory>../kkiot-plugin-geo/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                   <resource>
-                                    <directory>../kkcar-plugin-mediacenter/target/lib</directory>
+                                    <directory>../kkiot-plugin-mediacenter/target/lib</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
@@ -153,70 +153,70 @@
                             <outputDirectory>${basedir}/target/plugins</outputDirectory>
                             <resources>          
                                 <resource>
-                                    <directory>../kkcar-plugin-datadisplay/target</directory>
+                                    <directory>../kkiot-plugin-datadisplay/target</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-lcddisplay/target</directory>
+                                    <directory>../kkiot-plugin-lcddisplay/target</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-odb2/target</directory>
+                                    <directory>../kkiot-plugin-odb2/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-controls/target</directory>
+                                    <directory>../kkiot-plugin-controls/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                  <resource>
-                                    <directory>../kkcar-plugin-extconnector/target</directory>
+                                    <directory>../kkiot-plugin-extconnector/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-bluetooth/target</directory>
+                                    <directory>../kkiot-plugin-bluetooth/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-rscomm/target</directory>
+                                    <directory>../kkiot-plugin-rscomm/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-tts/target</directory>
+                                    <directory>../kkiot-plugin-tts/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkcar-plugin-geo/target</directory>
+                                    <directory>../kkiot-plugin-geo/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>
                                     </includes>
                                 </resource>
                                   <resource>
-                                    <directory>../kkcar-plugin-mediacenter/target</directory>
+                                    <directory>../kkiot-plugin-mediacenter/target</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>*.jar</include>

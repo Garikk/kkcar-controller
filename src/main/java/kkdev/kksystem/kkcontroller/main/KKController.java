@@ -29,11 +29,14 @@ import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
  */
 public class KKController {
 
-    public static String CONTROLLER_VERSION = "0.9.test";
+    public static String CONTROLLER_VERSION = "1.0.0.20180207";
 
     static PluginLoader PM;
     static boolean Shutdown = false;
     static boolean ServiceMode = false;
+    static String SysProxyHost;
+    static int SysProxyPort;
+    
 
     /**
      * @param args the command line arguments
@@ -45,6 +48,15 @@ public class KKController {
                 System.in.close();
                 System.out.close();
             }
+            if (A.startsWith("proxyHost"))
+            {
+                SysProxyHost=A.split("=")[1];
+            }
+            if (A.startsWith("proxyPort"))
+            {
+                SysProxyPort=Integer.parseInt(A.split("=")[1]);
+            }
+
         }
         //
         out.println("KK System INIT Begin");
@@ -85,6 +97,8 @@ public class KKController {
         //
         //Check updates, if "true" - have updates, watchdog make update and start app
         //
+        SystemUpdater.getInstance().setProxyHost(SysProxyHost);
+        SystemUpdater.getInstance().setProxyPort(SysProxyPort);
         if (SystemUpdater.getInstance().checkSystemUpdateOnStart(CONTROLLER_VERSION)) {
             exit(0);
         }

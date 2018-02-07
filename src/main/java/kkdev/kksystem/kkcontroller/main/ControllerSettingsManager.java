@@ -85,7 +85,6 @@ public abstract class ControllerSettingsManager {
         return null;
     }
      public  static String SaveLastConfUID(String UID) {
-
         try (BufferedWriter br = new BufferedWriter(new FileWriter(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
           br.write(UID);
           br.close();
