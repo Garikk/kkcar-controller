@@ -29,7 +29,7 @@ import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
  */
 public class KKController {
 
-    public static String CONTROLLER_VERSION = "1.0.0.20180207";
+    public static String CONTROLLER_VERSION = "1.1.0.20190104";
 
     static PluginLoader PM;
     static boolean Shutdown = false;
@@ -58,14 +58,14 @@ public class KKController {
             }
 
         }
-        //
+
         out.println("KK System INIT Begin");
         //
         WatchDogService.getInstance().StartWDS();
         WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_ACTIVE); //Default state
-        //
+
         InitSystem();
-        //
+
         while (!Shutdown) {
             if (WatchDogService.getInstance().getCurrentSystemState().CurrentState == WDSystemState.WDStates.WD_SysState_ACTIVE) {
                 sleep(1000);
@@ -77,9 +77,8 @@ public class KKController {
                 Shutdown = true;
             }
         }
-        //
+        
         StopSystem();
-        //
 
         out.println("Stop");
         exit(0);
@@ -106,27 +105,28 @@ public class KKController {
         out.println("Base utils:");
         out.println("==");
         out.println("Collect RS-232 ports:");
-        //
+        
         ((HWUtility) UtilsManager.getInstance().HWManager()).getRS232Scanner().MakeRS232DevList();
-        //
         out.println("==");
         out.println("Make system menu");
         kk_defaultUI.AddDefaultSystemUIPages();
         out.println("================");
         out.println("Plugins:");
-        //
+   
         PluginLoader.initPlugins();
-        //
+
         out.println("================");
-        //
+        out.println("Services:");
+        out.println("================");
+        PluginLoader.initPlugins();
+
         initSystemMenu(PlEx);
         SystemOperations.changeFeature(KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
-        //
+
         out.println("================");
         out.println("System start:");
         PluginLoader.startPlugins();
         showMenu();
-        //
     }
 
     private static void StopSystem() {
