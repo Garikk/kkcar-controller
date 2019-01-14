@@ -17,3 +17,4 @@ public final class ServiceManager {
         SessionUID = java.util.UUID.randomUUID().toString();
     }
 
+}

@@ -6,8 +6,6 @@
 package kkdev.kksystem.kkcontroller.main.systemoperations;
 
 import kkdev.kksystem.base.classes.base.PinDataSystemOperations;
-import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
-import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 
 /**
  *
@@ -55,15 +53,15 @@ public class SystemKKControl {
     
     private static void CMD_Exec_SetPowerOffState()
     {
-            WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_POWEROFF);
+        //    WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_POWEROFF);
     }
     private static void CMD_Exec_SetRebootHWState()
     {
-            WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_REBOOT);
+       //     WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_REBOOT);
     }
-      private static void CMD_Exec_SetRebootKKState()
+    private static void CMD_Exec_SetRebootKKState()
     {
-             WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_REBOOT_KK);
+           //  WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_REBOOT_KK);
     }
     private static void CMD_Exec_ShutDownKKController()
     {

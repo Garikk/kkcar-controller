@@ -24,7 +24,6 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
-import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 
 /**
  *
@@ -112,10 +111,10 @@ public class SystemOperations {
    
    public static void systemStateChangedAlert()
    {
-       if (WatchDogService.getInstance().InternetState)
-            internetStateChanged(true);
-        else
-            internetStateChanged(false);
+       //if (WatchDogService.getInstance().InternetState)
+       //     internetStateChanged(true);
+       //else
+      //    internetStateChanged(false);
 
     }
 

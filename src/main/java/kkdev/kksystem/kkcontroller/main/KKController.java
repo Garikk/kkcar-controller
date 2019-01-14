@@ -12,9 +12,7 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_FEATURES_SYSTEM
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import static kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader.PlEx;
 import kkdev.kksystem.kkcontroller.main.utils.UtilsManager;
-import kkdev.kksystem.kkcontroller.wdconnection.WatchDogService;
 import kkdev.kksystem.kkcontroller.main.systemoperations.SystemOperations;
-import kkdev.kksystem.kkcontroller.wdconnection.WDSystemState;
 import kkdev.kksystem.base.constants.SystemConsts;
 import kkdev.kksystem.kkcontroller.main.systemmenu.kk_defaultUI;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.showMenu;
@@ -61,18 +59,16 @@ public class KKController {
 
         out.println("KK System INIT Begin");
         //
-        WatchDogService.getInstance().StartWDS();
-        WatchDogService.getInstance().ChangeWDStateCurrent(WDSystemState.WDStates.WD_SysState_ACTIVE); //Default state
 
         InitSystem();
 
         while (!Shutdown) {
-            if (WatchDogService.getInstance().getCurrentSystemState().CurrentState == WDSystemState.WDStates.WD_SysState_ACTIVE) {
+            if (1==1) {
                 sleep(1000);
-                if (WatchDogService.getInstance().StateChangeAlert) {
-                    WatchDogService.getInstance().StateChangeAlert = false;
-                    SystemOperations.systemStateChangedAlert();
-                }
+                //if (WatchDogService.getInstance().StateChangeAlert) {
+                //    WatchDogService.getInstance().StateChangeAlert = false;
+                //    SystemOperations.systemStateChangedAlert();
+                // }
             } else {
                 Shutdown = true;
             }
@@ -133,9 +129,6 @@ public class KKController {
         out.println("================");
         out.println("Stop Plugins");
         PluginLoader.stopPlugins();
-        out.println("================");
-        out.println("Stop WDS");
-        WatchDogService.getInstance().StopWDS();
         out.println("================");
     }
 
