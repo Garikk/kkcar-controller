@@ -94,9 +94,9 @@ public class KKController {
         //
         SystemUpdater.getInstance().setProxyHost(SysProxyHost);
         SystemUpdater.getInstance().setProxyPort(SysProxyPort);
-        if (SystemUpdater.getInstance().checkSystemUpdateOnStart(CONTROLLER_VERSION)) {
-            exit(0);
-        }
+        //if (SystemUpdater.getInstance().checkSystemUpdateOnStart(CONTROLLER_VERSION)) {
+        //    exit(0);
+        //}
         out.println("================");
         out.println("Base utils:");
         out.println("==");

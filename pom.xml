@@ -71,7 +71,7 @@
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkiot-plugin-lcddisplay/target/lib</directory>
+                                    <directory>../kkiot-plugin-leddisplay/target/lib</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
@@ -165,7 +165,7 @@
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>../kkiot-plugin-lcddisplay/target</directory>
+                                    <directory>../kkiot-plugin-leddisplay/target</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.jar</include>
