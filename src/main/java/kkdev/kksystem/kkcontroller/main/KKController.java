@@ -122,6 +122,8 @@ public class KKController {
         out.println("================");
         out.println("System start:");
         PluginLoader.startPlugins();
+        out.println("================");
+        out.println("Load ok");
         showMenu();
     }
 

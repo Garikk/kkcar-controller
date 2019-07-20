@@ -80,14 +80,16 @@ public final class PluginExecute implements IBaseConnection {
 
     public void InitPlugins() {
         ActivePlugins.values().stream().forEach((CONN) -> {
+            System.out.println("init to: " + CONN.getPluginInfo().PluginUUID);
             CONN.pluginInit(this, mainConfiguration.configurationUID);
+            System.out.println("ok to: " + CONN.getPluginInfo().PluginName);
         });
 
     }
 
     public void StartPlugins() {
         ActivePlugins.values().stream().forEach((CONN) -> {
-            CONN.pluginStart();
+               CONN.pluginStart();
         });
 
     }

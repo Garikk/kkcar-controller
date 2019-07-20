@@ -2,3 +2,8 @@
 /nbproject/
 /bin/
 /etc/
+/.idea/
+/nb-configuration.xml
+/tmp/
+/backup/
+/build/
