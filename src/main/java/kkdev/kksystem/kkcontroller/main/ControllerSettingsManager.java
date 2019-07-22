@@ -45,7 +45,7 @@ public abstract class ControllerSettingsManager {
 
     public static void init() {
         
-        String ConfFileUID=getLastConfUID();
+        var ConfFileUID=getLastConfUID();
         
         if (ConfFileUID!=null)
             settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +ConfFileUID+"_"+ ConfFileUID+".json", ControllerConfiguration.class);
@@ -66,12 +66,12 @@ public abstract class ControllerSettingsManager {
 
     private static String getLastConfUID() {
 
-        File dir = new java.io.File(KK_BASE_CONFPATH);
+        var dir = new java.io.File(KK_BASE_CONFPATH);
         if (!dir.exists()) {
             return null;
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
+        try (var br = new BufferedReader(new FileReader(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
             String line;
             while ((line = br.readLine()) != null) {
                 br.close();
@@ -85,7 +85,7 @@ public abstract class ControllerSettingsManager {
         return null;
     }
      public  static String SaveLastConfUID(String UID) {
-        try (BufferedWriter br = new BufferedWriter(new FileWriter(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
+        try (var br = new BufferedWriter(new FileWriter(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
           br.write(UID);
           br.close();
         } catch (FileNotFoundException ex) {
@@ -100,7 +100,7 @@ public abstract class ControllerSettingsManager {
         ControllerConfiguration Ret;
         out.println("Load plugin connection config.");
 
-        File dir = new java.io.File(KK_BASE_CONFPATH);
+        var dir = new java.io.File(KK_BASE_CONFPATH);
         if (!dir.exists()) {
             dir.mkdir();
         }
@@ -120,7 +120,7 @@ public abstract class ControllerSettingsManager {
         //
         out.println("Creating default plugin connections config");
         //
-        FeatureConfiguration[] DefConfFeatures = GetDefaultFeature();
+        var DefConfFeatures = GetDefaultFeature();
         //
         DefConfig.systemDisplay_UID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
         DefConfig.systemHID_UID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;

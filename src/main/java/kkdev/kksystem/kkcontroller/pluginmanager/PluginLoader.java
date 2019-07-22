@@ -78,9 +78,9 @@ public final class PluginLoader {
         Set<String> Ret;
         Ret = new HashSet<>();
         
-        for (FeatureConfiguration FT : Features) {
+        for (var FT : Features) {
             if (FT.Connections != null) {
-                for (PluginConnection PCC : FT.Connections) {
+                for (var PCC : FT.Connections) {
                     if (!Ret.contains(PCC.SourcePluginUID)) {
                         Ret.add(PCC.SourcePluginUID);
                     }
@@ -102,7 +102,7 @@ public final class PluginLoader {
         try {
             jarFile = new JarFile(FileToCheck);
             //
-            Manifest MF = jarFile.getManifest();
+            var MF = jarFile.getManifest();
             Ret = MF.getMainAttributes().getValue(KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR);
             //
             if (Ret == null) {
@@ -125,12 +125,12 @@ public final class PluginLoader {
 
     private static HashMap<String, IPluginConnection> connectPlugins(Set<String> Plugins, boolean ConnectAllPlugins) {
         //
-        int Counter = 0;
-        HashMap<String, IPluginConnection> Ret = new HashMap<>();
+        var Counter = 0;
+        var Ret = new HashMap<String, IPluginConnection>();
         //
         //
-        File folder = new File(KK_BASE_PLUGINPATH);
-        File[] PluginFiles = folder.listFiles();
+        var folder = new File(KK_BASE_PLUGINPATH);
+        var PluginFiles = folder.listFiles();
         //
         if (PluginFiles == null) {
             out.println("No plugins found...exitting");
@@ -140,8 +140,8 @@ public final class PluginLoader {
         out.println("Plugin files count: " + PluginFiles.length);
         //
 
-        for (File loadFile : PluginFiles) {
-            boolean Err = false;
+        for (var loadFile : PluginFiles) {
+            var Err = false;
             //Check load only Jar file
             if (!loadFile.getName().endsWith(".jar") | loadFile.isDirectory()) {
                 continue;
@@ -156,7 +156,7 @@ public final class PluginLoader {
                 IPluginConnection PluginConnection;
                 ConnectorClass = getPluginConnectorClass(loadFile);
                 //
-                URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
+                var CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
                 //
                 PluginConnection = (IPluginConnection) CLoader.loadClass(ConnectorClass).newInstance();
                 //
@@ -183,7 +183,7 @@ public final class PluginLoader {
         List<PluginInfo> Ret;
         Ret=new ArrayList<>();
         //
-        for (IPluginConnection PK:ActivePlugins.values())
+        for (var PK:ActivePlugins.values())
         {
             Ret.add(PK.getPluginInfo());
         }

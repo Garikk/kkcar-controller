@@ -5,6 +5,8 @@
  */
 package kkdev.kksystem.kkcontroller.servicemanager;
 
+import static java.util.UUID.randomUUID;
+
 /**
  *
  * @author sayma
@@ -14,7 +16,7 @@ public final class ServiceManager {
     
     public ServiceManager()
     {
-        SessionUID = java.util.UUID.randomUUID().toString();
+        SessionUID = randomUUID().toString();
     }
 
 }

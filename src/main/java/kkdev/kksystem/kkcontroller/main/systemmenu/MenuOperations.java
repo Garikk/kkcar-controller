@@ -8,6 +8,7 @@ package kkdev.kksystem.kkcontroller.main.systemmenu;
 
 import kkdev.kksystem.base.classes.base.PinDataFtrCtx;
 import kkdev.kksystem.base.classes.base.PinDataSystemOperations;
+import static kkdev.kksystem.base.classes.base.PinDataSystemOperations.SystemOperationsCommand.SYSTEM_CHANGE_MANAGEDPARAMETER;
 import kkdev.kksystem.base.classes.base.PluginMessageData;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_COMMAND;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PIN_SYSTEMOPERATION;
@@ -67,16 +68,15 @@ public final class MenuOperations {
     
     private static void changeManagedParameter(IBaseConnection BCE,String[] Command)
     {
-        String PluginUUID=Command[2];
-        String ParameterName=Command[3];
-        String ParameterValue=Command[4];
-
-        PinDataSystemOperations PData = new PinDataSystemOperations();
-        PData.CommandType=PinDataSystemOperations.SystemOperationsCommand.SYSTEM_CHANGE_MANAGEDPARAMETER;
+        var PluginUUID=Command[2];
+        var ParameterName=Command[3];
+        var ParameterValue=Command[4];
+        var PData = new PinDataSystemOperations();
+        PData.CommandType=SYSTEM_CHANGE_MANAGEDPARAMETER;
         PData.ParameterName=ParameterName;
         PData.ParameterValue=ParameterValue;
 
-        PluginMessageData Msg = new PluginMessageData(PData);
+        var Msg = new PluginMessageData(PData);
         Msg.pinName = KK_PLUGIN_BASE_PIN_SYSTEMOPERATION;
         Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_UID);
         Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;

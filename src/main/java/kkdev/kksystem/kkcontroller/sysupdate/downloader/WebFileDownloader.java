@@ -40,7 +40,7 @@ public class WebFileDownloader {
         //
         // Base Update folder
 
-        File TempPath = new java.io.File(KK_BASE_UPDATE_TEMP);
+        var TempPath = new java.io.File(KK_BASE_UPDATE_TEMP);
         //
         if (!TempPath.exists()) {
             TempPath.mkdir();
@@ -113,13 +113,13 @@ public class WebFileDownloader {
         //
         //
         if (BinFilesToDownload != null) {
-            for (WM_File_Data F : BinFilesToDownload.Pack) {
+            for (var F : BinFilesToDownload.Pack) {
                 downloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
             }
         }
 
         if (ConfFilesToDownload != null) {
-            for (WM_File_Data F : ConfFilesToDownload.Pack) {
+            for (var F : ConfFilesToDownload.Pack) {
                 downloadFile(KK_BASE_UPDATE_TEMP_EXTCONF, F.url, F.name);
             }
         }
@@ -131,12 +131,12 @@ public class WebFileDownloader {
 
         BufferedOutputStream bos = null;
         try {
-            HttpGet httpget = new HttpGet(URL);
-            HttpResponse response = client.execute(httpget);
-            HttpEntity entity = response.getEntity();
+            var httpget = new HttpGet(URL);
+            var response = client.execute(httpget);
+            var entity = response.getEntity();
 
-            try (BufferedInputStream bis = new BufferedInputStream(entity.getContent())) {
-                String filePath = Dir + "/" + TargetName;
+            try (var bis = new BufferedInputStream(entity.getContent())) {
+                var filePath = Dir + "/" + TargetName;
                 bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
                 int inByte;
                 while ((inByte = bis.read()) != -1) {
@@ -159,7 +159,7 @@ public class WebFileDownloader {
 
     public void saveConfigurationFiles(String GlobalConfUID, WM_Configuration_Data ConfFile) {
         FileWriter fw;
-        String Prefix = "";
+        var Prefix = "";
         if (ConfFile.configurationtype == 1) {
             Prefix = "kksys_";
         }
