@@ -114,7 +114,7 @@ public class KKController {
         out.println("================");
         out.println("Services:");
         out.println("================");
-        PluginLoader.initPlugins();
+        //PluginLoader.initPlugins();
 
         initSystemMenu(PlEx);
         SystemOperations.changeFeature(KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
