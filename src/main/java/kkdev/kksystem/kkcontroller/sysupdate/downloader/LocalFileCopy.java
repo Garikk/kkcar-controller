@@ -27,10 +27,10 @@ public class LocalFileCopy {
                 target.mkdir();
             }
 
-            var listFile = source.listFiles();
-            for (var f : listFile) {
-                var sourceFile = new File(source, f.getName());
-                var outputFile = new File(target, f.getName());
+            File[] listFile = source.listFiles();
+            for (File f : listFile) {
+                File sourceFile = new File(source, f.getName());
+                File outputFile = new File(target, f.getName());
                 if (f.isDirectory()) {
                     copyDirectory(sourceFile,
                             outputFile);
@@ -47,10 +47,10 @@ public class LocalFileCopy {
     // Copy file method
     public static void copyFile(File input, File output) throws IOException {
         // target file declaration
-        try (var inputStream = new FileInputStream(input)) {
-            var outputStream = new FileOutputStream(output);
+        try (FileInputStream inputStream = new FileInputStream(input)) {
+            FileOutputStream outputStream = new FileOutputStream(output);
             int lengthStream;
-            var buff = new byte[1024];
+            byte[] buff = new byte[1024];
             while ((lengthStream = inputStream.read(buff)) > 0) {
                 // writing to the target file contents of the source file
                 outputStream.write(buff, 0, lengthStream);

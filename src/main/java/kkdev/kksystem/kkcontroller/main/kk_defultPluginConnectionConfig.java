@@ -29,7 +29,7 @@ public final class kk_defultPluginConnectionConfig {
     static int FEATURE_MEDIACENTER = 5;
 
     public static FeatureConfiguration[] GetDefaultFeature() {
-        var Ret = new FeatureConfiguration[6];
+        FeatureConfiguration[] Ret = new FeatureConfiguration[6];
 
         Ret[FEATURE_VERSION] = new FeatureConfiguration();
         Ret[FEATURE_VERSION].FeatureName = "Version info";

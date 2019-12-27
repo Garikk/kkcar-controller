@@ -68,15 +68,15 @@ public final class MenuOperations {
     
     private static void changeManagedParameter(IBaseConnection BCE,String[] Command)
     {
-        var PluginUUID=Command[2];
-        var ParameterName=Command[3];
-        var ParameterValue=Command[4];
-        var PData = new PinDataSystemOperations();
+        String PluginUUID=Command[2];
+        String ParameterName=Command[3];
+        String ParameterValue=Command[4];
+        PinDataSystemOperations PData = new PinDataSystemOperations();
         PData.CommandType=SYSTEM_CHANGE_MANAGEDPARAMETER;
         PData.ParameterName=ParameterName;
         PData.ParameterValue=ParameterValue;
 
-        var Msg = new PluginMessageData(PData);
+        PluginMessageData Msg = new PluginMessageData(PData);
         Msg.pinName = KK_PLUGIN_BASE_PIN_SYSTEMOPERATION;
         Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_UID);
         Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;

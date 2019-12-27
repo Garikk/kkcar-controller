@@ -80,7 +80,7 @@ public class KKController {
         exit(0);
     }
 
-    private static void InitSystem() throws IOException {
+    public static void InitSystem() throws IOException {
         out.println("================");
         out.println("OS: " + System.getProperty("os.name").toLowerCase());
         out.println("ARCH: " + System.getProperty("os.arch").toLowerCase());
@@ -127,7 +127,7 @@ public class KKController {
         showMenu();
     }
 
-    private static void StopSystem() {
+    public static void StopSystem() {
         out.println("================");
         out.println("Stop Plugins");
         PluginLoader.stopPlugins();
