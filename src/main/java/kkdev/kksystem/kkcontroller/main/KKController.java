@@ -18,6 +18,8 @@ import kkdev.kksystem.kkcontroller.main.systemmenu.kk_defaultUI;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.showMenu;
 import static kkdev.kksystem.kkcontroller.main.systemmenu.SystemMenu.initSystemMenu;
 import static java.lang.Thread.sleep;
+import java.util.ArrayList;
+import java.util.List;
 import kkdev.kksystem.kkcontroller.main.utils.HWUtility;
 import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
 
@@ -34,25 +36,27 @@ public class KKController {
     static boolean ServiceMode = false;
     static String SysProxyHost;
     static int SysProxyPort;
-    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, InterruptedException {
+        List<String> Profiles = new ArrayList();
         for (String A : args) {
             if (A.equals("service")) {
                 ServiceMode = true;
                 System.in.close();
                 System.out.close();
             }
-            if (A.startsWith("proxyHost"))
-            {
-                SysProxyHost=A.split("=")[1];
+            else if (A.startsWith("proxyHost")) {
+                SysProxyHost = A.split("=")[1];
             }
-            if (A.startsWith("proxyPort"))
+            else if (A.startsWith("proxyPort")) {
+                SysProxyPort = Integer.parseInt(A.split("=")[1]);
+            }
+            else
             {
-                SysProxyPort=Integer.parseInt(A.split("=")[1]);
+                Profiles.add(A);
             }
 
         }
@@ -60,10 +64,10 @@ public class KKController {
         out.println("KK System INIT Begin");
         //
 
-        InitSystem();
+        InitSystem(Profiles);
 
         while (!Shutdown) {
-            if (1==1) {
+            if (1 == 1) {
                 sleep(1000);
                 //if (WatchDogService.getInstance().StateChangeAlert) {
                 //    WatchDogService.getInstance().StateChangeAlert = false;
@@ -73,14 +77,14 @@ public class KKController {
                 Shutdown = true;
             }
         }
-        
+
         StopSystem();
 
         out.println("Stop");
         exit(0);
     }
 
-    public static void InitSystem() throws IOException {
+    public static void InitSystem(List<String> Profiles) throws IOException {
         out.println("================");
         out.println("OS: " + System.getProperty("os.name").toLowerCase());
         out.println("ARCH: " + System.getProperty("os.arch").toLowerCase());
@@ -88,7 +92,7 @@ public class KKController {
         out.println("================");
         out.println("Settings:");
         //
-        ControllerSettingsManager.init();
+        ControllerSettingsManager.init(Profiles);
         //
         //Check updates, if "true" - have updates, watchdog make update and start app
         //
@@ -101,14 +105,14 @@ public class KKController {
         out.println("Base utils:");
         out.println("==");
         out.println("Collect RS-232 ports:");
-        
+
         ((HWUtility) UtilsManager.getInstance().HWManager()).getRS232Scanner().MakeRS232DevList();
         out.println("==");
         out.println("Make system menu");
         kk_defaultUI.AddDefaultSystemUIPages();
         out.println("================");
         out.println("Plugins:");
-   
+
         PluginLoader.initPlugins();
 
         out.println("================");

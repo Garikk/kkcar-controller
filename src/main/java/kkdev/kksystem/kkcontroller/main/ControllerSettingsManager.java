@@ -14,12 +14,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.System.exit;
 import static java.lang.System.out;
+import java.util.List;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import kkdev.kksystem.base.classes.plugins.simple.SettingsManager;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_HID_UUID;
 import static kkdev.kksystem.base.constants.PluginConsts.KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
-import kkdev.kksystem.base.constants.SystemConsts;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_CONFPATH;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
@@ -27,6 +27,8 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_SETTINGS_FILE_P
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_SETTINGS_LASTCONF_FILE;
 import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.GetDefaultFeature;
 import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.GetDefaultSystemMenuItems;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -34,6 +36,7 @@ import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.G
  */
 public abstract class ControllerSettingsManager {
 
+    private static final Logger logger = LogManager.getLogger("CONTROLLER_CONFIG");
     public static ControllerConfiguration mainConfiguration;
     private static SettingsManager settings;
 
@@ -43,22 +46,22 @@ public abstract class ControllerSettingsManager {
 
     }
 
-    public static void init() {
-        
-        String ConfFileUID=getLastConfUID();
-        
-        if (ConfFileUID!=null)
-            settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +ConfFileUID+"_"+ ConfFileUID+".json", ControllerConfiguration.class);
-        else //config not found
+    public static void init(List<String> Profiles) {
+
+        String ConfFileUID = getLastConfUID();
+
+        if (ConfFileUID != null) {
+            settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX + ConfFileUID + "_" + ConfFileUID + ".json", ControllerConfiguration.class);
+        } else //config not found
         {
-            settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX +KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+"_"+ KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID+".json", ControllerConfiguration.class);
+            settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX + KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID + "_" + KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID + ".json", ControllerConfiguration.class);
             SaveLastConfUID(KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID);
         }
         //
-        LoadControllerConfiguration();
+        LoadControllerConfiguration(Profiles);
         //
         if (mainConfiguration == null) {
-            out.print("Load error");
+            logger.error("Load error, not found configuration");
             exit(0);
         }
 
@@ -75,7 +78,7 @@ public abstract class ControllerSettingsManager {
             String line;
             while ((line = br.readLine()) != null) {
                 br.close();
-               return line;
+                return line;
             }
         } catch (FileNotFoundException ex) {
             return null;
@@ -84,10 +87,11 @@ public abstract class ControllerSettingsManager {
         }
         return null;
     }
-     public  static String SaveLastConfUID(String UID) {
+
+    public static String SaveLastConfUID(String UID) {
         try (BufferedWriter br = new BufferedWriter(new FileWriter(KK_BASE_CONFPATH + "//" + KK_BASE_SETTINGS_LASTCONF_FILE))) {
-          br.write(UID);
-          br.close();
+            br.write(UID);
+            br.close();
         } catch (FileNotFoundException ex) {
             return null;
         } catch (IOException ex) {
@@ -96,9 +100,9 @@ public abstract class ControllerSettingsManager {
         return null;
     }
 
-    private static void LoadControllerConfiguration() {
+    private static void LoadControllerConfiguration(List<String> Profiles) {
         ControllerConfiguration Ret;
-        out.println("Load plugin connection config.");
+        logger.info("Load plugin connection config.");
 
         File dir = new java.io.File(KK_BASE_CONFPATH);
         if (!dir.exists()) {
@@ -108,20 +112,22 @@ public abstract class ControllerSettingsManager {
         mainConfiguration = (ControllerConfiguration) settings.loadConfig();
 
         if (mainConfiguration == null) {
-            settings.saveConfig(MakeDefaultPluginConf());
+
+            settings.saveConfig(MakeDefaultPluginConf(Profiles));
+
             mainConfiguration = (ControllerConfiguration) settings.loadConfig();
         }
 
     }
 
-    private static ControllerConfiguration MakeDefaultPluginConf() {
+    private static ControllerConfiguration MakeDefaultPluginConf(List<String> Profiles) {
         ControllerConfiguration DefConfig;
         DefConfig = new ControllerConfiguration();
-        //
-        out.println("Creating default plugin connections config");
-        //
-        FeatureConfiguration[] DefConfFeatures = GetDefaultFeature();
-        //
+
+        logger.warn("Creating default plugin connections config");
+
+        FeatureConfiguration[] DefConfFeatures = GetDefaultFeature(kk_DefConfProfileTypes.GetProfiles(Profiles));
+
         DefConfig.systemDisplay_UID = KK_PLUGIN_BASE_PLUGIN_LEDDISPLAY_UUID;
         DefConfig.systemHID_UID = KK_PLUGIN_BASE_PLUGIN_HID_UUID;
 
@@ -130,7 +136,6 @@ public abstract class ControllerSettingsManager {
         DefConfig.configurationStamp = KK_BASE_DEFAULT_CONTROLLER_CONFIG_STAMP_UID;
         DefConfig.configurationUID = KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID;
 
-        //
         return DefConfig;
     }
 }
