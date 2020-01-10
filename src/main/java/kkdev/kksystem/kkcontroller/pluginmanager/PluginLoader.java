@@ -42,42 +42,43 @@ public final class PluginLoader {
         //Prepare config
         ToLoad = getRequiredPlugins(mainConfiguration.features);
         //Load plugins
-        if (ActivePlugins==null)
-            ActivePlugins = connectPlugins(ToLoad,false);
-        //
+        if (ActivePlugins == null) {
+            ActivePlugins = connectPlugins(ToLoad, false);
+        }
+
         if (ActivePlugins == null) {
             return;
         }
-        //
+
         PlEx = new PluginExecute(ActivePlugins);
         PlEx.InitPlugins();
 
     }
 
-    public static IPluginConnection getPluginByUUID(String UUID)
-    {
+    public static IPluginConnection getPluginByUUID(String UUID) {
         return ActivePlugins.get(UUID);
     }
-    public static void preInitAllPlugins()
-    {
-        ActivePlugins=connectPlugins(null,true);
+
+    public static void preInitAllPlugins() {
+        ActivePlugins = connectPlugins(null, true);
     }
-    public static Set<String> getActivePluginUIDs()
-    {
+
+    public static Set<String> getActivePluginUIDs() {
         return ActivePlugins.keySet();
     }
-    
+
     public static void startPlugins() {
         PlEx.StartPlugins();
     }
-     public static void stopPlugins() {
+
+    public static void stopPlugins() {
         PlEx.StopPlugins();
     }
 
     public static Set<String> getRequiredPlugins(FeatureConfiguration[] Features) {
         Set<String> Ret;
         Ret = new HashSet<>();
-        
+
         for (FeatureConfiguration FT : Features) {
             if (FT.Connections != null) {
                 for (PluginConnection PCC : FT.Connections) {
@@ -89,7 +90,7 @@ public final class PluginLoader {
                     }
                 }
             }
-            //
+
         }
         return Ret;
     }
@@ -101,15 +102,15 @@ public final class PluginLoader {
         InputStream IS = null;
         try {
             jarFile = new JarFile(FileToCheck);
-            //
+
             Manifest MF = jarFile.getManifest();
             Ret = MF.getMainAttributes().getValue(KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR);
-            //
+
             if (Ret == null) {
                 out.println("Plugin read error (kkconnector attribute in Manifest)");
                 return null;
             }
-            //
+
             jarFile.close();
         } catch (IOException ex) {
             out.println("Plugin info read error: " + ex.getMessage());
@@ -119,26 +120,24 @@ public final class PluginLoader {
             }
             return null;
         }
-        //
+
         return Ret;
     }
 
     private static HashMap<String, IPluginConnection> connectPlugins(Set<String> Plugins, boolean ConnectAllPlugins) {
-        //
+
         Integer Counter = 0;
         HashMap Ret = new HashMap<String, IPluginConnection>();
-        //
-        //
+
         File folder = new File(KK_BASE_PLUGINPATH);
         File[] PluginFiles = folder.listFiles();
-        //
+
         if (PluginFiles == null) {
             out.println("No plugins found...exitting");
             exit(0);
         }
-        //
+
         out.println("Plugin files count: " + PluginFiles.length);
-        //
 
         for (File loadFile : PluginFiles) {
             Boolean Err = false;
@@ -149,45 +148,41 @@ public final class PluginLoader {
             out.println("--------------------");
             out.println("File: " + loadFile.getName());
 
-            //
             try {
-                //
+
                 String ConnectorClass;
                 IPluginConnection PluginConnection;
                 ConnectorClass = getPluginConnectorClass(loadFile);
-                //
+
                 URLClassLoader CLoader = new URLClassLoader(new URL[]{loadFile.toURI().toURL()});
-                //
+
                 PluginConnection = (IPluginConnection) CLoader.loadClass(ConnectorClass).newInstance();
-                //
-                if ( (!ConnectAllPlugins) && (!Plugins.contains(PluginConnection.getPluginInfo().PluginUUID)) ) {
+
+                if ((!ConnectAllPlugins) && (!Plugins.contains(PluginConnection.getPluginInfo().PluginUUID))) {
                     out.println("Config: not in config. skip");
                     continue;
                 }
                 Ret.put(PluginConnection.getPluginInfo().PluginUUID, PluginConnection);
-                //
+
                 out.println("Load: ok");
-                //
+
                 Counter++;
-            } catch (MalformedURLException | InstantiationException | ClassNotFoundException |NullPointerException | IllegalAccessException e) {
+            } catch (MalformedURLException | InstantiationException | ClassNotFoundException | NullPointerException | IllegalAccessException e) {
                 out.println("Load Error: " + loadFile.getName() + " " + e.toString());
             }
-            //
 
         }
         return Ret;
     }
 
-    public static List<PluginInfo> getActivePluginsInfo()
-    {
+    public static List<PluginInfo> getActivePluginsInfo() {
         List<PluginInfo> Ret;
-        Ret=new ArrayList<>();
-        //
-        for (IPluginConnection PK:ActivePlugins.values())
-        {
+        Ret = new ArrayList<>();
+
+        for (IPluginConnection PK : ActivePlugins.values()) {
             Ret.add(PK.getPluginInfo());
         }
-        //
+
         return Ret;
     }
 }

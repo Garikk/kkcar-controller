@@ -57,9 +57,9 @@ public abstract class ControllerSettingsManager {
             settings = new SettingsManager(KK_BASE_SETTINGS_FILE_PFX + KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID + "_" + KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID + ".json", ControllerConfiguration.class);
             SaveLastConfUID(KK_BASE_DEFAULT_CONTROLLER_CONFIG_UID);
         }
-        //
+       
         LoadControllerConfiguration(Profiles);
-        //
+        
         if (mainConfiguration == null) {
             logger.error("Load error, not found configuration");
             exit(0);

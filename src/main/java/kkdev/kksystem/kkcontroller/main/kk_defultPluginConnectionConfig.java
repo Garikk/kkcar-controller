@@ -44,7 +44,7 @@ public final class kk_defultPluginConnectionConfig {
         Ret[FEATURE_SETTINGS].DefaultUIContext = KK_BASE_UICONTEXT_DEFAULT;
 
         PluginConnection NewPC;
-        if (profile.contains(kk_DefConfProfileTypes.ODB_DATAVIEW)) {
+        if (profile.contains(kk_DefConfProfileTypes.PRF_ODB_DATAVIEW)) {
             Ret[FEATURE_ODB] = new FeatureConfiguration();
             Ret[FEATURE_ODB].FeatureName = "ODB Diag Displ";
             Ret[FEATURE_ODB].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_UID;
@@ -169,7 +169,7 @@ public final class kk_defultPluginConnectionConfig {
             NewPC.PinName[0] = KK_PLUGIN_BASE_NOTIFY_DATA;
             Ret[FEATURE_ODB].Connections.add(NewPC);
         }
-        if (profile.contains(kk_DefConfProfileTypes.BLUETOOTH_ANDROID) | profile.contains(kk_DefConfProfileTypes.BLUETOOTH_RPI)) {
+        if (profile.contains(kk_DefConfProfileTypes.PRF_BLUETOOTH_ANDROID) | profile.contains(kk_DefConfProfileTypes.PRF_BLUETOOTH_RPI)) {
             Ret[FEATURE_BLUETOOTH] = new FeatureConfiguration();
             Ret[FEATURE_BLUETOOTH].FeatureName = "Bluetooth";
             Ret[FEATURE_BLUETOOTH].FeatureUUID = KK_BASE_FEATURES_BLUETOOTH_UID;
@@ -219,7 +219,7 @@ public final class kk_defultPluginConnectionConfig {
             NewPC.PinName[0] = KK_PLUGIN_BASE_NOTIFY_DATA;
             Ret[FEATURE_BLUETOOTH].Connections.add(NewPC);
         }
-        if (profile.contains(kk_DefConfProfileTypes.ANDROID_EXT_CONNECTOR)) {
+        if (profile.contains(kk_DefConfProfileTypes.PRF_ANDROID_EXT_CONNECTOR)) {
             Ret[FEATURE_MOBILEANDROID] = new FeatureConfiguration();
             Ret[FEATURE_MOBILEANDROID].FeatureName = "Android App";
             Ret[FEATURE_MOBILEANDROID].FeatureUUID = KK_BASE_FEATURES_ODB_DIAG_ANDROIDAPP_UID;
@@ -251,7 +251,7 @@ public final class kk_defultPluginConnectionConfig {
             NewPC.PinName[1] = KK_PLUGIN_BASE_ODB2_COMMAND;
             Ret[FEATURE_MOBILEANDROID].Connections.add(NewPC);
         }
-        if (profile.contains(kk_DefConfProfileTypes.MEDIACENTER)) {
+        if (profile.contains(kk_DefConfProfileTypes.PRF_MEDIACENTER)) {
             // Mediacenter
             //Controls->Mediacenter
             Ret[FEATURE_MEDIACENTER] = new FeatureConfiguration();

@@ -22,36 +22,35 @@ public class kk_defaultUI {
     public static void AddDefaultSystemUIPages() {
         DisplayPage DP;
         UIFramePack[] FramePack;
-        //
-        FramePack=GetSystemFramePack();
-        //
+
+        FramePack = GetSystemFramePack();
+
         DP = new DisplayPage();
         DP.dynamicElements = false;
-        DP.contexts=new String[1];
-        DP.contexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+        DP.contexts = new String[1];
+        DP.contexts[0] = SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         DP.features = new String[1];
         DP.features[0] = KK_BASE_FEATURES_SYSTEM_UID;
         DP.pageName = KK_DISPLAY_PAGES_SIMPLEMENU_TXT_C1RX_PREFIX;
         DP.isDefaultPage = false;
         DP.isMultifeaturePage = true;
         DP.framesPack = FramePack[0];
-        //
+
         UtilsManager.getInstance().DisplayFunctions().AddUIDisplayPage(DP);
-        //
+
         DP = new DisplayPage();
         DP.dynamicElements = false;
         DP.features = new String[1];
         DP.features[0] = KK_BASE_FEATURES_SYSTEM_UID;
-        DP.contexts=new String[1];
-        DP.contexts[0]= SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
+        DP.contexts = new String[1];
+        DP.contexts[0] = SystemConsts.KK_BASE_UICONTEXT_DEFAULT;
         DP.pageName = KK_DISPLAY_PAGES_SIMPLECLOCK_TXT_PREFIX;
         DP.isDefaultPage = false;
         DP.isMultifeaturePage = true;
         DP.framesPack = GetSystemFramePack()[1];
-        //
+
         UtilsManager.getInstance().DisplayFunctions().AddUIDisplayPage(DP);
-        //
-   
+
     }
 
     private static UIFramePack[] GetSystemFramePack() {
@@ -62,8 +61,8 @@ public class kk_defaultUI {
         Ret[0].data = new UIFrameData[2];
         Ret[0].data[0] = new UIFrameData();
         Ret[0].data[1] = new UIFrameData();
-   
-        //
+
+       
         Ret[0] = new UIFramePack();
         Ret[0].name = "SYSTEM MENU 1 Col X Row";
         Ret[0].packID = "";
@@ -71,7 +70,7 @@ public class kk_defaultUI {
         Ret[0].data[0] = new UIFrameData();
         Ret[0].data[0].frameData = "[SEL_[$COUNT]][SYSMENU_[$COUNT]][SEL_[$COUNT]]\r\n";
         Ret[0].data[0].fontSize = 2;
-      
+
         Ret[1] = new UIFramePack();
         Ret[1].name = "Default Clock";
         Ret[1].packID = "";
@@ -83,4 +82,3 @@ public class kk_defaultUI {
     }
 
 }
-

@@ -13,13 +13,13 @@ import java.util.List;
  * @author Garikk
  */
 public enum kk_DefConfProfileTypes {
-    ODB_DATAVIEW,
-    MEDIACENTER,
-    BLUETOOTH_RPI,
-    BLUETOOTH_ANDROID,
-    ANDROID_EXT_CONNECTOR,
-    ANDROID_HOST,
-    UNKNOWN;
+    PRF_ODB_DATAVIEW,
+    PRF_MEDIACENTER,
+    PRF_BLUETOOTH_RPI,
+    PRF_BLUETOOTH_ANDROID,
+    PRF_ANDROID_EXT_CONNECTOR,
+    PRF_ANDROID_HOST,
+    PRF_UNKNOWN;
 
     public static List<kk_DefConfProfileTypes> GetProfiles(List<String> Profiles) {
         List<kk_DefConfProfileTypes> Ret = new ArrayList();
@@ -27,7 +27,7 @@ public enum kk_DefConfProfileTypes {
             try {
                 Ret.add(kk_DefConfProfileTypes.valueOf(i));
             } catch (IllegalArgumentException ex) {
-                Ret.add(kk_DefConfProfileTypes.UNKNOWN);
+                Ret.add(kk_DefConfProfileTypes.PRF_UNKNOWN);
             }
         });
         return Ret;

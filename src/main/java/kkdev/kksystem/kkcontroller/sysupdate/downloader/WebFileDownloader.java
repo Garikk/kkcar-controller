@@ -33,8 +33,7 @@ import static org.apache.http.impl.client.HttpClientBuilder.create;
  */
 public class WebFileDownloader {
 
-    public WebFileDownloader()
-    {
+    public WebFileDownloader() {
         //
         // Create updater folders
         //
@@ -81,37 +80,34 @@ public class WebFileDownloader {
         //
         //
         // Emergency backup folder
-        //
         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_PLUGINS);
-        //
+
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
-        //
+
         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_BASE);
-        //
+
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
-        //
+
         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_CONF);
-        //
+
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
-        //
+
         TempPath = new java.io.File(KK_BASE_UPDATE_TEMP_EXTCONF);
-        //
+
         if (!TempPath.exists()) {
             TempPath.mkdir();
         }
     }
-    
-    public void downloadPluginFiles(String ConfigUID, WM_File_Data_Pack BinFilesToDownload,WM_File_Data_Pack ConfFilesToDownload) {
+
+    public void downloadPluginFiles(String ConfigUID, WM_File_Data_Pack BinFilesToDownload, WM_File_Data_Pack ConfFilesToDownload) {
         out.println("Download updates");
-      
-        //
-        //
+
         if (BinFilesToDownload != null) {
             for (WM_File_Data F : BinFilesToDownload.Pack) {
                 downloadFile(KK_BASE_UPDATE_TEMP_PLUGINS, F.url, F.name);
@@ -170,7 +166,7 @@ public class WebFileDownloader {
             fw.flush();
             fw.close();
         } catch (IOException ex) {
-  getLogger(WebFileDownloader.class.getName()).log(SEVERE, null, ex);
+            getLogger(WebFileDownloader.class.getName()).log(SEVERE, null, ex);
         }
     }
 }

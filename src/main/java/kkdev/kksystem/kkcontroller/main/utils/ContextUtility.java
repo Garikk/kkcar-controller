@@ -33,10 +33,10 @@ public class ContextUtility implements IContextUtils {
         //Fill additional indo
         UIContextInfo Ret;
         Ret = UICtxStor.GetContext(ContextID);
-        //
+
         Ret.ActiveFeature = SystemOperations.getActiveFeatureID(ContextID);
         Ret.ActivePage = SystemOperations.ActivePage;
-        //
+
         return Ret;
     }
 

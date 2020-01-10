@@ -35,9 +35,9 @@ public final class PluginExecute implements IBaseConnection {
 
     public PluginExecute(HashMap<String, IPluginConnection> Plugins) {
         ActivePlugins = Plugins;
-        //
+
         Pin = new HashMap();
-        //
+
         for (FeatureConfiguration Feature : mainConfiguration.features) {
             if (Feature.Connections != null) {
                 for (PluginConnection PC : Feature.Connections) {
@@ -58,24 +58,24 @@ public final class PluginExecute implements IBaseConnection {
     }
 
     private void RegisterPINTarget(String FeatureID, String SenderPluginUUID, String TargetPluginUID, String PIN) {
-        //
+
         if (!Pin.containsKey(FeatureID)) {
             Pin.put(FeatureID, new HashMap());
         }
-        //
+
         if (!Pin.get(FeatureID).containsKey(SenderPluginUUID)) {
             Pin.get(FeatureID).put(SenderPluginUUID, new HashMap());
         }
-        //
+
         if (!Pin.get(FeatureID).get(SenderPluginUUID).containsKey(PIN)) {
             Pin.get(FeatureID).get(SenderPluginUUID).put(PIN, new ArrayList<>());
         }
-        //
+
         //System.out.println("[PKK] Reg PIN " +PIN + " " +TargetPluginUID +" " +  ActivePlugins.get(TargetPluginUID));
         if (!Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).contains(ActivePlugins.get(TargetPluginUID))) {
             Pin.get(FeatureID).get(SenderPluginUUID).get(PIN).add(ActivePlugins.get(TargetPluginUID));
         }
-        //
+
     }
 
     public void InitPlugins() {
@@ -89,7 +89,7 @@ public final class PluginExecute implements IBaseConnection {
 
     public void StartPlugins() {
         ActivePlugins.values().stream().forEach((CONN) -> {
-               CONN.pluginStart();
+            CONN.pluginStart();
         });
 
     }
@@ -104,16 +104,15 @@ public final class PluginExecute implements IBaseConnection {
     public void executePinCommand(PluginMessage PP) {
         internalExecutePin(PP);
     }
-    //
 
     private void internalExecutePin(PluginMessage PP) {
         if (PP.FeatureID == null) {
             out.println("[ERR] Wrong PluginMessage! Not found FeatureID Plugin: " + PP.SenderUID + " Pin: " + PP.pinName);
             return;
         }
-        // 
+
         SystemBasePINReceiver(PP.cloneMessage());
-        //
+
         if (PP.FeatureID.contains(KK_BASE_FEATURES_SYSTEM_UID) & !PP.SenderUID.contains(PluginConsts.KK_PLUGIN_BASE_PLUGIN_UUID)) {
             return;
         }
@@ -135,7 +134,6 @@ public final class PluginExecute implements IBaseConnection {
         }
 
         ArrayList<IPluginConnection> Exec;
-        //
 
         if (PP.FeatureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID) || PP.FeatureID.contains(SystemConsts.KK_BASE_FEATURES_SYSTEM_BROADCAST_UID)) {
             Exec = Pin.get(SystemConsts.KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID).get(PP.SenderUID).get(PP.pinName);
@@ -177,7 +175,6 @@ public final class PluginExecute implements IBaseConnection {
         }
     }
 
-    //
     private void SystemBasePINReceiver(PluginMessage PP) {
         //Standart PINs
         if (PP.FeatureID.contains(KK_BASE_FEATURES_SYSTEM_MULTIFEATURE_UID) || PP.FeatureID.contains(KK_BASE_FEATURES_SYSTEM_UID)) {

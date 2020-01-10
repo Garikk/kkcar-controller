@@ -30,12 +30,12 @@ import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
  * @author blinov_is
  */
 public class SystemOperations {
+
     public static String CurrentFeatureGlobal;
-    public static HashMap<String,String> ActivePage;    // Feature, PageID
-    public static HashMap<String,String> ActiveFeature; // CtxID, FeatureID
-    
-    public static void processSystemPIN(PluginMessage Msg)
-    {
+    public static HashMap<String, String> ActivePage;    // Feature, PageID
+    public static HashMap<String, String> ActiveFeature; // CtxID, FeatureID
+
+    public static void processSystemPIN(PluginMessage Msg) {
         //Redirect all control data into menu module
         switch (Msg.pinName) {
             case (PluginConsts.KK_PLUGIN_BASE_CONTROL_DATA):
@@ -52,78 +52,71 @@ public class SystemOperations {
                 }
                 break;
             case (PluginConsts.KK_KKCONTROLLER_PIN_UTIL):
-                UtilsManager.getInstance().execUtilityPin(PluginLoader.PlEx,(PinDataUtils)Msg.getPinData());
+                UtilsManager.getInstance().execUtilityPin(PluginLoader.PlEx, (PinDataUtils) Msg.getPinData());
                 break;
         }
     }
 
     public static void processSpecialPIN(PluginMessage Msg) {
-        if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_LED_COMMAND))
-            setActivePageInfo(Msg.FeatureID.iterator().next(),(PinDataLed)Msg.getPinData());
+        if (Msg.pinName.equals(PluginConsts.KK_PLUGIN_BASE_LED_COMMAND)) {
+            setActivePageInfo(Msg.FeatureID.iterator().next(), (PinDataLed) Msg.getPinData());
+        }
 
     }
-    
-     //Change active system state
-   public static void internetStateChanged(boolean State)
-   {
-       
-        //
+
+    //Change active system state
+    public static void internetStateChanged(boolean State) {
+
         PinDataNotifySystemState PData = new PinDataNotifySystemState();
-        if (State)
-            PData.systemState=PinDataNotifySystemState.SystemStateInfo.INERNET_ACTIVE;
-        else
-            PData.systemState=PinDataNotifySystemState.SystemStateInfo.INERNET_INACTIVE;
-        //
+        if (State) {
+            PData.systemState = PinDataNotifySystemState.SystemStateInfo.INERNET_ACTIVE;
+        } else {
+            PData.systemState = PinDataNotifySystemState.SystemStateInfo.INERNET_INACTIVE;
+        }
+
         PluginMessage Msg = new PluginMessageData_Notify(PData);
         Msg.pinName = PluginConsts.KK_PLUGIN_BASE_PIN_SYSTEMSTATE;
         Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID);
-        //
 
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
         //
-   }
-   
-   public static void setActivePageInfo(String FeatureID,PinDataLed PData)
-   {
-       if (PData.command==DisplayConstants.KK_DISPLAY_COMMAND.DISPLAY_KKSYS_PAGE_ACTIVATE)
-           setActivePageID(FeatureID,PData.targetPage);
-   }
-   
-   //Change active system feature
-   public static void changeFeature(String FeatureID,String UIContextID)
-   {
-       
-        //
+    }
+
+    public static void setActivePageInfo(String FeatureID, PinDataLed PData) {
+        if (PData.command == DisplayConstants.KK_DISPLAY_COMMAND.DISPLAY_KKSYS_PAGE_ACTIVATE) {
+            setActivePageID(FeatureID, PData.targetPage);
+        }
+    }
+
+    //Change active system feature
+    public static void changeFeature(String FeatureID, String UIContextID) {
+
         PinDataFtrCtx PData = new PinDataFtrCtx();
-        PData.managementCommand=PinDataFtrCtx.FCManagementCommand.ChangeFeature;
-        PData.manageUIContextID=UIContextID;
-        PData.manageFeatureID=FeatureID;
-        //
+        PData.managementCommand = PinDataFtrCtx.FCManagementCommand.ChangeFeature;
+        PData.manageUIContextID = UIContextID;
+        PData.manageFeatureID = FeatureID;
+
         PluginMessageData Msg = new PluginMessageData(PData);
         Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
         Msg.FeatureID.add(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID);
-        Msg.SenderUID=KK_PLUGIN_BASE_PLUGIN_UUID;
-        
-        //
+        Msg.SenderUID = KK_PLUGIN_BASE_PLUGIN_UUID;
+
         PluginLoader.PlEx.ExecuteDirectCommand(KK_BASE_FEATURES_SYSTEM_BROADCAST_UID, Msg);
-        //
-   }
-   
-   public static void systemStateChangedAlert()
-   {
-       //if (WatchDogService.getInstance().InternetState)
-       //     internetStateChanged(true);
-       //else
-      //    internetStateChanged(false);
+
+    }
+
+    public static void systemStateChangedAlert() {
+        //if (WatchDogService.getInstance().InternetState)
+        //     internetStateChanged(true);
+        //else
+        //    internetStateChanged(false);
 
     }
 
     public static void sendCurrentFeatures() {
 
-        //
         PinDataFtrCtx PData = new PinDataFtrCtx();
         PData.managementCommand = PinDataFtrCtx.FCManagementCommand.CurrentFeature;
-        //
 
         PluginMessage Msg = new PluginMessageData(PData);
         Msg.pinName = KK_PLUGIN_BASE_PIN_COMMAND;
@@ -147,11 +140,12 @@ public class SystemOperations {
 
         ActiveFeature.put(UIContext, FeatureID);
     }
-     public static String getActivePageID(String FeatureID) {
+
+    public static String getActivePageID(String FeatureID) {
         if (ActivePage == null) {
             ActivePage = new HashMap<>();
         }
-        return ActivePage.get(FeatureID);        
+        return ActivePage.get(FeatureID);
     }
 
     public static String getActiveFeatureID(String UIContext) {
@@ -160,10 +154,11 @@ public class SystemOperations {
         }
         return ActiveFeature.get(UIContext);
     }
-      public static Map<String,String> getActiveFeatureID() {
+
+    public static Map<String, String> getActiveFeatureID() {
         if (ActiveFeature == null) {
             ActiveFeature = new HashMap<>();
         }
-        return (Map<String,String>)ActiveFeature.clone();
+        return (Map<String, String>) ActiveFeature.clone();
     }
 }

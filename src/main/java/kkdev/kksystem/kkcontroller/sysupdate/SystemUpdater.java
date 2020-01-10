@@ -51,7 +51,6 @@ public final class SystemUpdater {
     private static SystemUpdater instance;
     private String proxyHost;
     private int proxyPort;
-    
 
     public static SystemUpdater getInstance() {
         if (instance == null) {
@@ -60,25 +59,25 @@ public final class SystemUpdater {
 
         return instance;
     }
-    public void setProxyHost(String Proxy)
-    {
-        proxyHost=Proxy;
+
+    public void setProxyHost(String Proxy) {
+        proxyHost = Proxy;
     }
 
-    public void setProxyPort(int Port)
-    {
-        proxyPort=Port;
+    public void setProxyPort(int Port) {
+        proxyPort = Port;
     }
+
     public boolean checkSystemUpdateOnStart(String KKControllerVersion) {
         //Skip by now
-       // if (true) {
-       //     return false;
+        // if (true) {
+        //     return false;
         //}
 
         boolean NeedReload = false;
         out.println("Check WebLink State");
         out.println("Available System versions:");
-        out.println("Base: "+SystemConsts.KK_BASE_VERSION+" Controller: "+KKControllerVersion);
+        out.println("Base: " + SystemConsts.KK_BASE_VERSION + " Controller: " + KKControllerVersion);
 
         //Init check
         ControllerConfiguration UpdatedConfig = null;
@@ -87,16 +86,15 @@ public final class SystemUpdater {
 
         //Check configuration
         out.println("Check configuration changes");
-        WM_Answer_Configuration_Info_Pack ConfInfo = (WM_Answer_Configuration_Info_Pack)doRequest(WEBMASTER_REQUEST_GET_MYCONF_INFO, getConfigurationInfoRequest(), WM_Answer_Configuration_Info_Pack.class);
-        //
+        WM_Answer_Configuration_Info_Pack ConfInfo = (WM_Answer_Configuration_Info_Pack) doRequest(WEBMASTER_REQUEST_GET_MYCONF_INFO, getConfigurationInfoRequest(), WM_Answer_Configuration_Info_Pack.class);
+
         if (ConfInfo.Pack[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo.Pack[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo.Pack[0].confstamp))) {
             out.println("Loading updated configurations");
             NeedReload = true;
-            NewConfigurations =(WM_Answer_Configuration_Data)doRequest(WEBMASTER_REQUEST_GET_MYCONF_DATA,getConfigurationDataRequest(),WM_Answer_Configuration_Data.class);// getUpdatedConfigurations();
+            NewConfigurations = (WM_Answer_Configuration_Data) doRequest(WEBMASTER_REQUEST_GET_MYCONF_DATA, getConfigurationDataRequest(), WM_Answer_Configuration_Data.class);// getUpdatedConfigurations();
         } else {
             UpdatedConfig = ControllerSettingsManager.mainConfiguration;
         }
-        //
 
         if (NewConfigurations != null) {
             String MainConfUID = "";
@@ -108,25 +106,23 @@ public final class SystemUpdater {
                 }
             }
             for (WM_Configuration_Data DT : NewConfigurations.configurations) {
-                out.println("Store new configuration for WD: T:["+DT.configurationtype+"] U:[" + DT.uid +"]" );
+                out.println("Store new configuration for WD: T:[" + DT.configurationtype + "] U:[" + DT.uid + "]");
                 ConfigFileDownloader.saveConfigurationFiles(MainConfUID, DT);
             }
-            //
+
             SaveLastConfUID(MainConfUID);
-            //
+
         }
 
-        //
         //Check plugins
-        //
         //Pre init
         out.println("Check plugin changes");
         PluginLoader.preInitAllPlugins();
         //InitAllPlugins
         //Get Available plugins list
-        //
+        
         Set<String> AvailPlugins = PluginLoader.getActivePluginUIDs();
-        //
+        
         // Get Required plugins
         //
         Set<String> ReqPlugins = PluginLoader.getRequiredPlugins(UpdatedConfig.features);
@@ -134,15 +130,13 @@ public final class SystemUpdater {
         //
         // Remove existed plugins from requierments list
         //
-
         AvailPlugins.stream().filter((RP) -> (ReqPlugins.contains(RP))).forEach((RP) -> {
             ReqPlugins.remove(RP);
         });
 
-        if (ReqPlugins.size()>0)
-        {
-            WM_File_Data_Pack BinFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_BIN, getFilesInfoRequestBin(ReqPlugins), WM_File_Data_Pack.class);
-            WM_File_Data_Pack ConfFilesToDownload= (WM_File_Data_Pack)doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF, getFilesInfoRequestExtConf(UpdatedConfig.configurationUID), WM_File_Data_Pack.class);
+        if (ReqPlugins.size() > 0) {
+            WM_File_Data_Pack BinFilesToDownload = (WM_File_Data_Pack) doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_BIN, getFilesInfoRequestBin(ReqPlugins), WM_File_Data_Pack.class);
+            WM_File_Data_Pack ConfFilesToDownload = (WM_File_Data_Pack) doRequest(WEBMASTER_REQUEST_GET_FILES_INFO_EXTCONF, getFilesInfoRequestExtConf(UpdatedConfig.configurationUID), WM_File_Data_Pack.class);
 
             ConfigFileDownloader.downloadPluginFiles(UpdatedConfig.configurationUID, BinFilesToDownload, ConfFilesToDownload);
         }
@@ -206,8 +200,7 @@ public final class SystemUpdater {
         return nameValuePairs;
     }
 
-    private WM_Answer_Data doRequest(String ServiceLink,List<NameValuePair> Params,Class TargetType)
-    {
+    private WM_Answer_Data doRequest(String ServiceLink, List<NameValuePair> Params, Class TargetType) {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
         Gson gson = new Gson();
@@ -221,34 +214,31 @@ public final class SystemUpdater {
                 client = create().build();
             }
 
-            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE +"/"+ ServiceLink);
-            
+            HttpPost post = new HttpPost(WEBMASTER_URL + WEBMASTER_URL_SERVICE + "/" + ServiceLink);
+
             post.setEntity(new UrlEncodedFormEntity(Params));
 
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            
+
             Ans = gson.fromJson(rd, WM_Answer.class);
-           //  if (Ans!=null || Ans[0].answerState == 0) {
+            //  if (Ans!=null || Ans[0].answerState == 0) {
             out.println(Ans.jsonData);
-      
-                return (WM_Answer_Data)gson.fromJson(Ans.jsonData, TargetType);
 
-           //   } else {
-           //        return null
+            return (WM_Answer_Data) gson.fromJson(Ans.jsonData, TargetType);
+
+            //   } else {
+            //        return null
             //   }
-
         } catch (IOException e) {
             System.out.println(e.fillInStackTrace());
             return null;
         }
     }
-    
+
 }
 
-
-
-    /*
+/*
       public WM_Answer_SystemState[] getSystemStateInfo() {
         ControllerConfiguration Ret = null;
         WM_Answer Ans;
@@ -394,4 +384,4 @@ public final class SystemUpdater {
         }
         return null;
     }
-*/
+ */

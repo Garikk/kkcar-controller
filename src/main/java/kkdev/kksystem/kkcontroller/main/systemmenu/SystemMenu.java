@@ -86,7 +86,7 @@ public abstract class SystemMenu {
         }
 
         SysMenu = new MenuMaker(BCE.systemUtilities(), KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT, null, BaseConnector, new MenuCallBack(), mainConfiguration.systemDisplay_UID, true);
-        //
+       
         //  MenuItem[] MenuItemsToLoad = SettingsManager.mainConfiguration.systemMenuItems;
         List<MKMenuItem> FeatureItems = new ArrayList<>();
         for (FeatureConfiguration FT : mainConfiguration.features) {
@@ -99,12 +99,12 @@ public abstract class SystemMenu {
 
             MKMenuItem MI = new MKMenuItem();
             MI.displayName = FT.FeatureName;
-            //
+           
             MI.itemCommand = MNU_CMD_CHANGE_FEATURE + " " + FT.FeatureUUID + " " + FT.DefaultUIContext;
-            //
+           
             FeatureItems.add(MI);
         }
-        //
+        
         boolean Ok = false;
         for (MKMenuItem MI : mainConfiguration.systemMenuItems) {
             for (MKMenuItem MSI : MI.subItems) {
@@ -119,10 +119,10 @@ public abstract class SystemMenu {
                 break;
             }
         }
-        //
+       
         FeatureItems.addAll(Arrays.asList(mainConfiguration.systemMenuItems));
-        //
-        //
+        
+        
         MKMenuItem[] MT = new MKMenuItem[FeatureItems.size()];
         int i = 0;
         for (MKMenuItem M : FeatureItems) {
@@ -131,7 +131,7 @@ public abstract class SystemMenu {
         }
 
         SysMenu.addMenuItems(MT);
-        //
+       
     }
 
     public static void showMenu() {
@@ -162,7 +162,7 @@ public abstract class SystemMenu {
     }
 
     private static void processMenuManager(Set<String> FeatureID, PinDataControl PD) {
-        //
+       
 
         switch (PD.controlDataType) {
             case CONTROL_LONGPRESS:

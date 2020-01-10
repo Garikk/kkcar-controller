@@ -54,15 +54,22 @@ public class KKController {
             else if (A.startsWith("proxyPort")) {
                 SysProxyPort = Integer.parseInt(A.split("=")[1]);
             }
-            else
+            else if (A.startsWith("PRF"))
             {
                 Profiles.add(A);
             }
-
+        }
+        if (Profiles.isEmpty())
+        {
+            //Add default profiles
+            Profiles.add(kk_DefConfProfileTypes.PRF_MEDIACENTER.toString());
+            Profiles.add(kk_DefConfProfileTypes.PRF_ODB_DATAVIEW.toString());
+            Profiles.add(kk_DefConfProfileTypes.PRF_ANDROID_EXT_CONNECTOR.toString());
+            Profiles.add(kk_DefConfProfileTypes.PRF_BLUETOOTH_RPI.toString());
         }
 
         out.println("KK System INIT Begin");
-        //
+        
 
         InitSystem(Profiles);
 
@@ -91,7 +98,7 @@ public class KKController {
 
         out.println("================");
         out.println("Settings:");
-        //
+       
         ControllerSettingsManager.init(Profiles);
         //
         //Check updates, if "true" - have updates, watchdog make update and start app
