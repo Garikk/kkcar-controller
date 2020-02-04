@@ -22,13 +22,14 @@ import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainCon
 import kkdev.kksystem.base.interfaces.IPluginConnection;
 import kkdev.kksystem.base.interfaces.IControllerUtils;
 import kkdev.kksystem.base.interfaces.IBaseConnection;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author blinov_is
  */
 public final class PluginExecute implements IBaseConnection {
-
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_PlEx");
     //Pin path: FeatureID,SenderID,PIN,array of connectors
     HashMap<String, HashMap<String, HashMap<String, ArrayList<IPluginConnection>>>> Pin;
     HashMap<String, IPluginConnection> ActivePlugins;
@@ -80,9 +81,9 @@ public final class PluginExecute implements IBaseConnection {
 
     public void InitPlugins() {
         ActivePlugins.values().stream().forEach((CONN) -> {
-            System.out.println("init to: " + CONN.getPluginInfo().PluginUUID);
+            logger.info("init to: " + CONN.getPluginInfo().PluginUUID);
             CONN.pluginInit(this, mainConfiguration.configurationUID);
-            System.out.println("ok to: " + CONN.getPluginInfo().PluginName);
+            logger.info("ok to: " + CONN.getPluginInfo().PluginName);
         });
 
     }
@@ -107,7 +108,7 @@ public final class PluginExecute implements IBaseConnection {
 
     private void internalExecutePin(PluginMessage PP) {
         if (PP.FeatureID == null) {
-            out.println("[ERR] Wrong PluginMessage! Not found FeatureID Plugin: " + PP.SenderUID + " Pin: " + PP.pinName);
+            logger.warn("[ERR] Wrong PluginMessage! Not found FeatureID Plugin: " + PP.SenderUID + " Pin: " + PP.pinName);
             return;
         }
 
@@ -118,17 +119,17 @@ public final class PluginExecute implements IBaseConnection {
         }
 
         if (!Pin.keySet().containsAll(PP.FeatureID)) {
-            out.println("Wrong PIN received (not found feature) FTR " + PP.FeatureID + " PIN " + PP.pinName);
+            logger.warn("Wrong PIN received (not found feature) FTR " + PP.FeatureID + " PIN " + PP.pinName);
             return;
         }
         for (String Ftr : PP.FeatureID) {
             if (!Pin.get(Ftr).containsKey(PP.SenderUID)) {
-                out.println("Wrong PIN received (not found sender) FTR " + PP.FeatureID + " PIN " + PP.pinName);
+                logger.warn("Wrong PIN received (not found sender) FTR " + PP.FeatureID + " PIN " + PP.pinName);
                 return;
             }
 
             if (!Pin.get(Ftr).get(PP.SenderUID).containsKey(PP.pinName)) {
-                out.println("Wrong PIN received (Not found Pin) FTR " + PP.FeatureID + " PIN " + PP.pinName);
+                logger.warn("Wrong PIN received (Not found Pin) FTR " + PP.FeatureID + " PIN " + PP.pinName);
                 return;
             }
         }

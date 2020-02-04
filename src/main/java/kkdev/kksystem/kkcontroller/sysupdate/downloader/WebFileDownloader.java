@@ -26,13 +26,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author blinov_is
  */
 public class WebFileDownloader {
-
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_WEBDWLD");
     public WebFileDownloader() {
         //
         // Create updater folders
@@ -106,7 +107,7 @@ public class WebFileDownloader {
     }
 
     public void downloadPluginFiles(String ConfigUID, WM_File_Data_Pack BinFilesToDownload, WM_File_Data_Pack ConfFilesToDownload) {
-        out.println("Download updates");
+        logger.info("Download updates");
 
         if (BinFilesToDownload != null) {
             for (WM_File_Data F : BinFilesToDownload.Pack) {

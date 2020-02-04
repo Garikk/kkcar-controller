@@ -15,13 +15,14 @@ import jssc.SerialPortException;
 import jssc.SerialPortList;
 import kkdev.kksystem.base.classes.kkcontroller.RS232Device.RS232DevType;
 import kkdev.kksystem.base.classes.kkcontroller.RS232Device;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author sayma_000
  */
 public class RS232Scanner {
-
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_RS232SCN");
     public List<RS232Device> RS232Ports;
     SerialPort serialPort;
 
@@ -46,7 +47,7 @@ public class RS232Scanner {
         RS232DevType Ret = RS232DevType.Other;
         serialPort = new SerialPort(DevName);
         try {
-            out.println("Check " + DevName);
+            logger.info("Check " + DevName);
             serialPort.openPort();
             serialPort.setParams(SerialPort.BAUDRATE_9600,
                     SerialPort.DATABITS_8,
@@ -87,7 +88,7 @@ public class RS232Scanner {
             Logger.getLogger(RS232Scanner.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        out.println("Result " + Ret);
+        logger.info("Result " + Ret);
         return Ret;
     }
 

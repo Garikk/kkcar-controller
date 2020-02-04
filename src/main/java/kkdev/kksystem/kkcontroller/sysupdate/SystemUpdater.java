@@ -36,13 +36,14 @@ import org.apache.http.client.methods.HttpPost;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author blinov_is
  */
 public final class SystemUpdater {
-
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_SELFUPD");
     final static String ___TEST_kkiot_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
     final static String WEBMASTER_URL = "http://www.dingo-cloud.tk/";
     final static String WEBMASTER_URL_SERVICE = "weblink";
@@ -75,9 +76,9 @@ public final class SystemUpdater {
         //}
 
         boolean NeedReload = false;
-        out.println("Check WebLink State");
-        out.println("Available System versions:");
-        out.println("Base: " + SystemConsts.KK_BASE_VERSION + " Controller: " + KKControllerVersion);
+        logger.info("Check WebLink State");
+        logger.info("Available System versions:");
+        logger.info("Base: " + SystemConsts.KK_BASE_VERSION + " Controller: " + KKControllerVersion);
 
         //Init check
         ControllerConfiguration UpdatedConfig = null;
@@ -85,11 +86,11 @@ public final class SystemUpdater {
         WebFileDownloader ConfigFileDownloader = new WebFileDownloader();
 
         //Check configuration
-        out.println("Check configuration changes");
+        logger.info("Check configuration changes");
         WM_Answer_Configuration_Info_Pack ConfInfo = (WM_Answer_Configuration_Info_Pack) doRequest(WEBMASTER_REQUEST_GET_MYCONF_INFO, getConfigurationInfoRequest(), WM_Answer_Configuration_Info_Pack.class);
 
         if (ConfInfo.Pack[0] != null && (!ControllerSettingsManager.mainConfiguration.configurationUID.equals(ConfInfo.Pack[0].confuuid) | !ControllerSettingsManager.mainConfiguration.configurationStamp.equals(ConfInfo.Pack[0].confstamp))) {
-            out.println("Loading updated configurations");
+            logger.info("Loading updated configurations");
             NeedReload = true;
             NewConfigurations = (WM_Answer_Configuration_Data) doRequest(WEBMASTER_REQUEST_GET_MYCONF_DATA, getConfigurationDataRequest(), WM_Answer_Configuration_Data.class);// getUpdatedConfigurations();
         } else {
@@ -106,7 +107,7 @@ public final class SystemUpdater {
                 }
             }
             for (WM_Configuration_Data DT : NewConfigurations.configurations) {
-                out.println("Store new configuration for WD: T:[" + DT.configurationtype + "] U:[" + DT.uid + "]");
+                logger.info("Store new configuration for WD: T:[" + DT.configurationtype + "] U:[" + DT.uid + "]");
                 ConfigFileDownloader.saveConfigurationFiles(MainConfUID, DT);
             }
 
@@ -116,7 +117,7 @@ public final class SystemUpdater {
 
         //Check plugins
         //Pre init
-        out.println("Check plugin changes");
+        logger.info("Check plugin changes");
         PluginLoader.preInitAllPlugins();
         //InitAllPlugins
         //Get Available plugins list
@@ -223,7 +224,7 @@ public final class SystemUpdater {
 
             Ans = gson.fromJson(rd, WM_Answer.class);
             //  if (Ans!=null || Ans[0].answerState == 0) {
-            out.println(Ans.jsonData);
+            logger.info(Ans.jsonData);
 
             return (WM_Answer_Data) gson.fromJson(Ans.jsonData, TargetType);
 
