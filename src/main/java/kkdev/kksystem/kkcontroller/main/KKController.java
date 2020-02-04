@@ -22,14 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 import kkdev.kksystem.kkcontroller.main.utils.HWUtility;
 import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author blinov_is
  */
 public class KKController {
-
-    public static String CONTROLLER_VERSION = "1.2.0.20200111";
+    private static final Logger logger = LogManager.getLogger("CONTROLLER_MAIN");
+    public static String CONTROLLER_VERSION = "1.2.0.20200204";
 
     static PluginLoader PM;
     static boolean Shutdown = false;
@@ -68,7 +69,7 @@ public class KKController {
             Profiles.add(kk_DefConfProfileTypes.PRF_BLUETOOTH_RPI.toString());
         }
 
-        out.println("KK System INIT Begin");
+        logger.info("KK System INIT Begin");
         
 
         InitSystem(Profiles);
@@ -87,17 +88,17 @@ public class KKController {
 
         StopSystem();
 
-        out.println("Stop");
+        logger.info("Stop");
         exit(0);
     }
 
     public static void InitSystem(List<String> Profiles) throws IOException {
-        out.println("================");
-        out.println("OS: " + System.getProperty("os.name").toLowerCase());
-        out.println("ARCH: " + System.getProperty("os.arch").toLowerCase());
+        logger.info("================");
+        logger.info("OS: " + System.getProperty("os.name").toLowerCase());
+        logger.info("ARCH: " + System.getProperty("os.arch").toLowerCase());
 
-        out.println("================");
-        out.println("Settings:");
+        logger.info("================");
+        logger.info("Settings:");
        
         ControllerSettingsManager.init(Profiles);
         //
@@ -108,41 +109,41 @@ public class KKController {
         //if (SystemUpdater.getInstance().checkSystemUpdateOnStart(CONTROLLER_VERSION)) {
         //    exit(0);
         //}
-        out.println("================");
-        out.println("Base utils:");
-        out.println("==");
-        out.println("Collect RS-232 ports:");
+        logger.info("================");
+        logger.info("Base utils:");
+        logger.info("==");
+        logger.info("Collect RS-232 ports:");
 
         ((HWUtility) UtilsManager.getInstance().HWManager()).getRS232Scanner().MakeRS232DevList();
-        out.println("==");
-        out.println("Make system menu");
+        logger.info("==");
+        logger.info("Make system menu");
         kk_defaultUI.AddDefaultSystemUIPages();
-        out.println("================");
-        out.println("Plugins:");
+        logger.info("================");
+        logger.info("Plugins:");
 
         PluginLoader.initPlugins();
 
-        out.println("================");
-        out.println("Services:");
-        out.println("================");
+        logger.info("================");
+        logger.info("Services:");
+        logger.info("================");
         //PluginLoader.initPlugins();
 
         initSystemMenu(PlEx);
         SystemOperations.changeFeature(KK_BASE_FEATURES_SYSTEM_UID, SystemConsts.KK_BASE_UICONTEXT_DEFAULT);
 
-        out.println("================");
-        out.println("System start:");
+        logger.info("================");
+        logger.info("System start:");
         PluginLoader.startPlugins();
-        out.println("================");
-        out.println("Load ok");
+        logger.info("================");
+        logger.info("Load ok");
         showMenu();
     }
 
     public static void StopSystem() {
-        out.println("================");
-        out.println("Stop Plugins");
+        logger.info("================");
+        logger.info("Stop Plugins");
         PluginLoader.stopPlugins();
-        out.println("================");
+        logger.info("================");
     }
 
 }

@@ -27,13 +27,15 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINPATH;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
 import kkdev.kksystem.base.interfaces.IPluginConnection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author blinov_is
  */
 public final class PluginLoader {
-
+    private static final Logger logger = LogManager.getLogger("CONTROLLER_PLOADER");
     static HashMap<String, IPluginConnection> ActivePlugins;
     public static PluginExecute PlEx;
 
@@ -107,13 +109,13 @@ public final class PluginLoader {
             Ret = MF.getMainAttributes().getValue(KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR);
 
             if (Ret == null) {
-                out.println("Plugin read error (kkconnector attribute in Manifest)");
+                logger.error("Plugin read error (kkconnector attribute in Manifest)");
                 return null;
             }
 
             jarFile.close();
         } catch (IOException ex) {
-            out.println("Plugin info read error: " + ex.getMessage());
+            logger.error("Plugin info read error: " + ex.getMessage());
             try {
                 jarFile.close();
             } catch (Exception Ex) {
@@ -133,11 +135,11 @@ public final class PluginLoader {
         File[] PluginFiles = folder.listFiles();
 
         if (PluginFiles == null) {
-            out.println("No plugins found...exitting");
+            logger.warn("No plugins found...exitting");
             exit(0);
         }
 
-        out.println("Plugin files count: " + PluginFiles.length);
+        logger.info("Plugin files count: " + PluginFiles.length);
 
         for (File loadFile : PluginFiles) {
             Boolean Err = false;
@@ -145,8 +147,8 @@ public final class PluginLoader {
             if (!loadFile.getName().endsWith(".jar") | loadFile.isDirectory()) {
                 continue;
             }
-            out.println("--------------------");
-            out.println("File: " + loadFile.getName());
+            logger.info("--------------------");
+            logger.info("File: " + loadFile.getName());
 
             try {
 
@@ -159,16 +161,16 @@ public final class PluginLoader {
                 PluginConnection = (IPluginConnection) CLoader.loadClass(ConnectorClass).newInstance();
 
                 if ((!ConnectAllPlugins) && (!Plugins.contains(PluginConnection.getPluginInfo().PluginUUID))) {
-                    out.println("Config: not in config. skip");
+                    logger.info("Config: not in config. skip");
                     continue;
                 }
                 Ret.put(PluginConnection.getPluginInfo().PluginUUID, PluginConnection);
 
-                out.println("Load: ok");
+                logger.info("Load: ok");
 
                 Counter++;
             } catch (MalformedURLException | InstantiationException | ClassNotFoundException | NullPointerException | IllegalAccessException e) {
-                out.println("Load Error: " + loadFile.getName() + " " + e.toString());
+                logger.error("Load Error: " + loadFile.getName() + " " + e.toString());
             }
 
         }
