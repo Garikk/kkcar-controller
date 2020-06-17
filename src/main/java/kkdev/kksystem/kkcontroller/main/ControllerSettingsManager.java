@@ -13,7 +13,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.System.exit;
-import static java.lang.System.out;
 import java.util.List;
 import kkdev.kksystem.base.classes.plugins.FeatureConfiguration;
 import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
@@ -27,16 +26,14 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_SETTINGS_FILE_P
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_SETTINGS_LASTCONF_FILE;
 import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.GetDefaultFeature;
 import static kkdev.kksystem.kkcontroller.main.kk_defultPluginConnectionConfig.GetDefaultSystemMenuItems;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author blinov_is
  */
 public abstract class ControllerSettingsManager {
-
-    private static final Logger logger = LogManager.getLogger("CONTROLLER_CONFIG");
+    static org.slf4j.Logger logger = LoggerFactory.getLogger(ControllerSettingsManager.class);
     public static ControllerConfiguration mainConfiguration;
     private static SettingsManager settings;
 

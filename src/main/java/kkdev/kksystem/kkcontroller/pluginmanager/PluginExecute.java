@@ -5,7 +5,6 @@
  */
 package kkdev.kksystem.kkcontroller.pluginmanager;
 
-import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
 import kkdev.kksystem.base.classes.plugins.PluginConnection;
@@ -22,14 +21,14 @@ import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainCon
 import kkdev.kksystem.base.interfaces.IPluginConnection;
 import kkdev.kksystem.base.interfaces.IControllerUtils;
 import kkdev.kksystem.base.interfaces.IBaseConnection;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author blinov_is
  */
 public final class PluginExecute implements IBaseConnection {
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_PlEx");
+    static org.slf4j.Logger logger = LoggerFactory.getLogger(PluginExecute.class);
     //Pin path: FeatureID,SenderID,PIN,array of connectors
     HashMap<String, HashMap<String, HashMap<String, ArrayList<IPluginConnection>>>> Pin;
     HashMap<String, IPluginConnection> ActivePlugins;

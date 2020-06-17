@@ -15,14 +15,14 @@ import jssc.SerialPortException;
 import jssc.SerialPortList;
 import kkdev.kksystem.base.classes.kkcontroller.RS232Device.RS232DevType;
 import kkdev.kksystem.base.classes.kkcontroller.RS232Device;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author sayma_000
  */
 public class RS232Scanner {
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_RS232SCN");
+    static org.slf4j.Logger logger = LoggerFactory.getLogger(RS232Scanner.class);
     public List<RS232Device> RS232Ports;
     SerialPort serialPort;
 

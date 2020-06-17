@@ -26,14 +26,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author blinov_is
  */
 public class WebFileDownloader {
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_WEBDWLD");
+    static org.slf4j.Logger logger = LoggerFactory.getLogger(WebFileDownloader.class);
     public WebFileDownloader() {
         //
         // Create updater folders

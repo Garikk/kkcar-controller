@@ -22,14 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 import kkdev.kksystem.kkcontroller.main.utils.HWUtility;
 import kkdev.kksystem.kkcontroller.sysupdate.SystemUpdater;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author blinov_is
  */
 public class KKController {
-    private static final Logger logger = LogManager.getLogger("CONTROLLER_MAIN");
+    static Logger logger = LoggerFactory.getLogger(KKController.class);
     public static String CONTROLLER_VERSION = "1.2.0.20200204";
 
     static PluginLoader PM;

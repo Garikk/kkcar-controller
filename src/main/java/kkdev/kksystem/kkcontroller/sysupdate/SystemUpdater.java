@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,13 +17,13 @@ import kkdev.kksystem.base.classes.plugins.ControllerConfiguration;
 import static kkdev.kksystem.base.classes.plugins.weblink.WM_KKMasterConsts.*;
 import kkdev.kksystem.kkcontroller.main.ControllerSettingsManager;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.SaveLastConfUID;
+
 import kkdev.kksystem.kkcontroller.pluginmanager.PluginLoader;
 import kkdev.kksystem.kkcontroller.sysupdate.downloader.WebFileDownloader;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Configuration_Info_Pack;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Answer_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_Configuration_Data;
-import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data;
 import kkdev.kksystem.base.classes.plugins.weblink.WM_File_Data_Pack;
 import kkdev.kksystem.base.constants.SystemConsts;
 import org.apache.http.HttpHost;
@@ -36,14 +35,14 @@ import org.apache.http.client.methods.HttpPost;
 import static org.apache.http.impl.client.HttpClientBuilder.create;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author blinov_is
  */
 public final class SystemUpdater {
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("CONTROLLER_SELFUPD");
+    static org.slf4j.Logger logger = LoggerFactory.getLogger(SystemUpdater.class);
     final static String ___TEST_kkiot_UUID_ = "2e2efd7b-ab83-42fa-9c00-2e45bb4b3ba1";
     final static String WEBMASTER_URL = "http://www.dingo-cloud.tk/";
     final static String WEBMASTER_URL_SERVICE = "weblink";

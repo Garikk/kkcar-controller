@@ -27,15 +27,14 @@ import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINPATH;
 import static kkdev.kksystem.base.constants.SystemConsts.KK_BASE_PLUGINS_MANIFEST_CONNECTOR_ATTR;
 import static kkdev.kksystem.kkcontroller.main.ControllerSettingsManager.mainConfiguration;
 import kkdev.kksystem.base.interfaces.IPluginConnection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author blinov_is
  */
 public final class PluginLoader {
-    private static final Logger logger = LogManager.getLogger("CONTROLLER_PLOADER");
+    static org.slf4j.Logger logger = LoggerFactory.getLogger(PluginLoader.class);
     static HashMap<String, IPluginConnection> ActivePlugins;
     public static PluginExecute PlEx;
 
